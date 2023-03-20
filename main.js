@@ -1,11 +1,13 @@
+
 let myForm = document.getElementById('my-form');
 
 
 async function saveUser(user){
     try{
         let result = await axios.post('http://localhost:5000/add-User',user);
-        user.id = result.data.id;
-        console.log(result);
+        if(result){
+            alert('User already exists')
+        }
     }
     catch(err){
         console.log(err);

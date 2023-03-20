@@ -5,14 +5,22 @@ exports.addUser = (req,res) =>{
     const userEmail = req.body.userEmail;
     const userPassword = req.body.userPassword;
 
-    User.create({
-        userName:userName,
-        userEmail:userEmail,
-        userPassword:userPassword
-    })
+    User.findByPk(userName)
     .then((result) =>{
-        console.log('User added');
-        res.json(result);
+        if(result){
+            res.json(result);
+            return true;
+        }
+        User.create({
+            userName:userName,
+            userEmail:userEmail,
+            userPassword:userPassword
+        })
+        .then((result) =>{
+            console.log('User added');
+            res.json(result);
+        })
+        .catch(err => console.log(err));
     })
     .catch(err => console.log(err));
 }
