@@ -33,7 +33,7 @@ exports.checkSignIn = (req,res) =>{
     User.findByPk(userEmail)
     .then((result) =>{
         if(result == null){
-            res.json({success:false , message:"not present"});
+            res.json({success:false , message:"response 404 (User not found)"});
         }
         else if(result){
             User.findAll({
@@ -48,7 +48,7 @@ exports.checkSignIn = (req,res) =>{
                     res.json({success:true,message:"User signed in"});
                 }
                 else{
-                    res.json({success:false , message:"Password mismatched"});
+                    res.json({success:false , message:"response 401 (User not authorized)"});
                 }
             })
             .catch(err => console.log(err));
