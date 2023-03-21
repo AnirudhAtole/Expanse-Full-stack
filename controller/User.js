@@ -5,22 +5,54 @@ exports.addUser = (req,res) =>{
     const userEmail = req.body.userEmail;
     const userPassword = req.body.userPassword;
 
-    User.findByPk(userName)
+    User.findByPk(userEmail)
     .then((result) =>{
         if(result){
-            res.json(result);
-            return true;
+            res.json({success:false , message:"UserEmail already exists"});
         }
-        User.create({
-            userName:userName,
-            userEmail:userEmail,
-            userPassword:userPassword
-        })
-        .then((result) =>{
-            console.log('User added');
-            res.json(result);
-        })
-        .catch(err => console.log(err));
+        else{
+            User.create({
+                userName:userName,
+                userEmail:userEmail,
+                userPassword:userPassword
+            })
+            .then((result) =>{
+                console.log('User added');
+                res.json({success:true , message:"User created succesfully"});
+            })
+            .catch(err => console.log(err));
+        }
+    })
+    .catch(err => console.log(err));
+}
+
+exports.checkSignIn = (req,res) =>{
+    const userEmail = req.body.userEmail;
+    const userPassword = req.body.userPassword;
+
+    User.findByPk(userEmail)
+    .then((result) =>{
+        if(result == null){
+            res.json({success:false , message:"not present"});
+        }
+        else if(result){
+            User.findAll({
+                where:{
+                    userEmail:userEmail,
+                    userPassword:userPassword
+                }
+            })
+            .then((result) =>{
+                console.log(result)
+                if(result.length){
+                    res.json({success:true,message:"User signed in"});
+                }
+                else{
+                    res.json({success:false , message:"Password mismatched"});
+                }
+            })
+            .catch(err => console.log(err));
+        }
     })
     .catch(err => console.log(err));
 }
