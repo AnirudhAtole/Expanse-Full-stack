@@ -1,58 +1,74 @@
 const User = require('../models/User');
+const Bcrypt = require('bcrypt');
 
-exports.addUser = (req,res) =>{
-    const userName = req.body.userName;
-    const userEmail = req.body.userEmail;
-    const userPassword = req.body.userPassword;
-
-    User.findByPk(userEmail)
-    .then((result) =>{
+exports.addUser = async (req,res) =>{
+    try{
+        const userName = req.body.userName;
+        const userEmail = req.body.userEmail;
+        const userPassword = req.body.userPassword;
+    
+        let result = await User.findByPk(userEmail);
         if(result){
-            res.json({success:false , message:"UserEmail already exists"});
+            res.status(400).json({success:false , message:"UserEmail already exists"});
         }
         else{
-            User.create({
-                userName:userName,
-                userEmail:userEmail,
-                userPassword:userPassword
-            })
-            .then((result) =>{
-                console.log('User added');
-                res.json({success:true , message:"User created succesfully"});
-            })
-            .catch(err => console.log(err));
+            try{
+                Bcrypt.hash(userPassword,10, async(err,hash)=>{
+                    console.log(err);
+                    await User.create({
+                        userName:userName,
+                        userEmail:userEmail,
+                        userPassword:hash
+                    })
+                    res.status(200).json({success:true , message:"User created succesfully"});
+                })
+            }
+            catch(err){
+                console.log(err);
+            }
+            }
         }
-    })
-    .catch(err => console.log(err));
+    catch(err){
+        console.log(err);
+    }
+
 }
 
-exports.checkSignIn = (req,res) =>{
+exports.checkSignIn = async (req,res) =>{
     const userEmail = req.body.userEmail;
     const userPassword = req.body.userPassword;
 
-    User.findByPk(userEmail)
-    .then((result) =>{
-        if(result == null){
-            res.json({success:false , message:"response 404 (User not found)"});
+    try{
+        let result = await User.findByPk(userEmail);
+        if(result === null){
+            res.status(404).json({success:false , message:"response 404 (User not found)"});
         }
-        else if(result){
-            User.findAll({
-                where:{
-                    userEmail:userEmail,
-                    userPassword:userPassword
-                }
-            })
-            .then((result) =>{
-                console.log(result)
+        else{
+            try{
+                let result = await User.findAll({
+                    where:{
+                        userEmail:userEmail,
+                    }
+                })
+
                 if(result.length){
-                    res.json({success:true,message:"User signed in"});
+                    Bcrypt.compare(userPassword , result[0].userPassword ,(err ,result)=>{
+                        if(result){
+                            res.json({success:true,message:"User signed in"});
+                        }
+                        else{
+                            res.json({success:false , message:"response 401 (User not authorized)"});
+                        }
+                    })
+                   
                 }
-                else{
-                    res.json({success:false , message:"response 401 (User not authorized)"});
-                }
-            })
-            .catch(err => console.log(err));
+            }
+            catch(err){
+                console.log(err);
+            }
         }
-    })
-    .catch(err => console.log(err));
+    }
+    catch(err){
+        console.log(err);
+    }
 }
