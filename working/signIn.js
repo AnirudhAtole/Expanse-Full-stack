@@ -13,6 +13,7 @@ async function SignIn(user){
         let result = await axios.post('http://localhost:5000/signIn',user);
         if(result.data.success){
             alert(result.data.message);
+            window.open('../views/expansePage.html')
         }
         else{
             alert(result.data.message);
