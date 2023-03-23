@@ -5,6 +5,7 @@ async function saveUser(user){
         let result = await axios.post('http://localhost:5000/add-User',user);
         if(result.data.success){
             alert(result.data.message)
+            window.location.href = '../views/login.html';
         }
         else{
             alert(result.data.message)

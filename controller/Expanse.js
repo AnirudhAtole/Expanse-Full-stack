@@ -1,7 +1,11 @@
 const Expanse = require('../models/Expanse');
 
 exports.getExpanses = (req,res,next) =>{
-    Expanse.findAll()
+    Expanse.findAll({
+        where:{
+            UserUserID:req.userId
+        }
+    })
     .then((result)=>{
         res.json(result);
     })

@@ -24,9 +24,9 @@ function showExpanse(obj){
 }
 
 
-async function getAllExpanses(){
+async function getAllExpanses(token){
     try{
-        let response = await axios.get('http://localhost:5000/expanses');
+        let response = await axios.get('http://localhost:5000/expanses' , {headers:{"Authorization":token}});
         response.data.forEach(entry => showExpanse(entry));
     }
     catch(err)
@@ -57,7 +57,8 @@ async function saveExpanse(expanse){
 }
 
 window.addEventListener("DOMContentLoaded" , ()=>{
-    getAllExpanses();
+    const token = localStorage.getItem('token');
+    getAllExpanses(token);
 })
 
 function save_expanse(e){

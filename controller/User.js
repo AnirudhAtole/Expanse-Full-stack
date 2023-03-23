@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.addUser = async (req,res) =>{
     try{
@@ -34,13 +35,22 @@ exports.addUser = async (req,res) =>{
 
 }
 
+function generateToken(id){
+    return jwt.sign({userId : id} ,'bangaram1002Kannalu100204pandaGuddumuduu')
+}
+
 exports.checkSignIn = async (req,res) =>{
     const userEmail = req.body.userEmail;
     const userPassword = req.body.userPassword;
 
     try{
-        let result = await User.findByPk(userEmail);
-        if(result === null){
+        let check = await User.findAll({
+            where:{
+                userEmail:userEmail
+            }
+        }
+            );
+        if(check === null){
             res.status(404).json({success:false , message:"response 404 (User not found)"});
         }
         else{
@@ -50,11 +60,11 @@ exports.checkSignIn = async (req,res) =>{
                         userEmail:userEmail,
                     }
                 })
-
+                const id =result[0].userId
                 if(result.length){
                     Bcrypt.compare(userPassword , result[0].userPassword ,(err ,result)=>{
                         if(result){
-                            res.json({success:true,message:"User signed in"});
+                            res.json({success:true,message:"User signed in" , token:generateToken(id)});
                         }
                         else{
                             res.json({success:false , message:"response 401 (User not authorized)"});
