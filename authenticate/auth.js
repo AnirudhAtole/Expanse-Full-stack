@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-exports.authenticate = async (res,req , next) =>{
+exports.authenticate = async (req,res, next) =>{
     try{
-        const token = req.header('Authorization');
-        console.log(token);
+        const token = req.header("Authorization");
         const Id = jwt.verify(token,'bangaram1002Kannalu100204pandaGuddumuduu')
-        const userId = await User.findByPk(Id);
-        req.userId =  userId;
+        console.log(Id.userId)
+        const userId = await User.findByPk(Id.userId);
+        req.user =  userId;
         next();
     }
     catch(err){

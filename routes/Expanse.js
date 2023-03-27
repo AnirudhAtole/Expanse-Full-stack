@@ -7,6 +7,6 @@ const Authenticate = require('../authenticate/auth')
 
 router.get('/expanses' , Authenticate.authenticate, expanseController.getExpanses );
 router.post('/del-expanse/:id',expanseController.delExpanse);
-router.post('/add-expanse',expanseController.addExpanse);
+router.post('/add-expanse',Authenticate.authenticate,expanseController.addExpanse);
 
 module.exports = router;

@@ -10,8 +10,13 @@ const sequelize = require('./utils/database');
 
 const User = require('./models/User');
 const expanse = require('./models/Expanse');
+const Order = require('./models/orders');
 
 User.hasMany(expanse);
+expanse.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 app.use(bodyParser.json({extended:false}));
 app.use(UserRoutes);
@@ -20,7 +25,8 @@ app.use(cors());
 
 
 
-sequelize.sync()
+sequelize.sync({force:true})
 .then(() =>{
     app.listen(5000);
 })
+.catch(err => console.log(err));
