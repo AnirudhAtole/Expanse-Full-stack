@@ -1,4 +1,3 @@
-const Razorpay = require('razorpay');
 let my_form = document.getElementById('my-form');
 let expanse_list = document.getElementById('expenses-list');
 let premium = document.getElementById('premium');

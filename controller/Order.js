@@ -54,3 +54,5 @@ exports.updateTransaction = async (req , res) =>{
         console.log(err);
     }
 }
+
+exports.RazorPay = RazorPay;

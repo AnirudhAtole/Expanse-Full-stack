@@ -13,7 +13,8 @@ exports.addExpanse = (req,res,next) =>{
         const amount = req.body.amount;
         const description = req.body.description;
         const category = req.body.category;
-        req.user.createExpanse(
+        console.log(User.dataValues)
+        User.createExpanse(
             {
                 amount:amount,
                 description:description,
