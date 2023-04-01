@@ -1,7 +1,11 @@
+
 let my_form = document.getElementById('my-form');
-let expanse_list = document.getElementById('expenses-list');
-let premium = document.getElementById('premium');
+let outputTable  = document.getElementById('entries');
+let premium = document.getElementById('prem');
+const leader = document.getElementById('leader');
 my_form.addEventListener('submit',save_expanse);
+leader.addEventListener('onclick',showLeader)
+
 
 premium.onclick  = async function (e){
     const token = localStorage.getItem('token');
@@ -16,8 +20,8 @@ premium.onclick  = async function (e){
                 order_id : options.order_id,
                 payment_id : response.razorpay_payment_id,   
             }, {headers : {'Authorization' : token}})
-
             alert("You are a Premium User Now");
+            showPremium();
         },
     };
     
@@ -31,25 +35,56 @@ premium.onclick  = async function (e){
     });
 }
 
+function showPremium(){
+    const showText = document.createElement('h3');
+    showText.appendChild(document.createTextNode('You  are a premium user now'));
+
+    premium.setAttribute('hidden','hidden');
+    leader.removeAttribute('hidden');
+    premium.parentElement.appendChild(showText);
+}
+
+function IsPremium(token){
+        axios.get('http://localhost:5000/isPremium' , { headers :{"Authorization":token}})
+        .then((result)=>{
+            if(result.data.success){
+                showPremium()
+            }
+        })
+        .catch(err => console.log(err));
+}
+
 
 function showExpanse(obj){
-    let li = document.createElement('li');
+    let row = document.createElement('tr');
+    const entry = {
+        category : obj.category,
+        description : obj.description,
+        amount : obj.amount
+    }
+
+    for(let i in entry){
+        let values = document.createElement('td');
+        values.appendChild(document.createTextNode(entry[i]));
+        row.appendChild(values)
+    }
+
 
     // DELETE BUTTON//
+    let delbtnRow = document.createElement('td');
     let del_button = document.createElement('input');
     del_button.type = 'button';
     del_button.value = 'delete';
     del_button.className = 'btn btn-danger';
     del_button.appendChild(document.createTextNode('delete'));
+    delbtnRow.appendChild(del_button);
 
-    let user_details = obj.amount + ' - ' + obj.description + ' - ' + obj.category;
-    li.appendChild(document.createTextNode(user_details));
-    li.appendChild(del_button);
+    row.appendChild(delbtnRow);
 
-    expanse_list.appendChild(li);
+    outputTable.appendChild(row);
     let id = obj.id;
 
-    del_button.onclick =()=> delExpanse(id,li);
+    del_button.onclick =()=> delExpanse(id,row);
 }
 
 
@@ -67,7 +102,7 @@ async function getAllExpanses(token){
 async function delExpanse(id,li){
     try{
        await axios.post(`http://localhost:5000/del-expanse/${id}`)
-       expanse_list.removeChild(li);
+       outputTable.removeChild(li);
     }
     catch(err){
         console.log(err);
@@ -88,9 +123,10 @@ async function saveExpanse(expanse){
 
 window.addEventListener("DOMContentLoaded" , ()=>{
     const token = localStorage.getItem('token');
+    IsPremium(token);
     getAllExpanses(token);
+    
 })
-
 function save_expanse(e){
     e.preventDefault();
     const expanse ={
@@ -99,4 +135,11 @@ function save_expanse(e){
     expanse.description = document.getElementById('desc').value;
     expanse.category = document.getElementById('category').value;
     saveExpanse(expanse);
+    document.getElementById('expanse-amount').value = "";
+    document.getElementById('desc').value = "";
+    document.getElementById('category').value = "";
+}
+
+function showLeader(e){
+    e.preventDefault()
 }

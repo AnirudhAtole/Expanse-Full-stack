@@ -2,7 +2,12 @@ const Expanse = require('../models/Expanse');
 const User = require('../models/User');
 
 exports.getExpanses = (req,res,next) =>{
-    req.user.getExpanses()
+    // req.user.getExpanse()
+    Expanse.findAll({
+        where:{
+            UserUserId : req.user.dataValues.userId
+        }
+    })
     .then((result)=>{
         res.json(result);
     })
@@ -13,12 +18,19 @@ exports.addExpanse = (req,res,next) =>{
         const amount = req.body.amount;
         const description = req.body.description;
         const category = req.body.category;
-        console.log(User.dataValues)
-        User.createExpanse(
+        console.log(req.user.dataValues)
+        // req.user.createExpanse({
+        //     amount:amount,
+        //         description:description,
+        //         category:category,
+        //         // UserUserId : req.user.dataValues.userId
+        // })
+        Expanse.create(
             {
                 amount:amount,
                 description:description,
                 category:category,
+                UserUserId : req.user.dataValues.userId
             }
         )
         .then((result) =>{

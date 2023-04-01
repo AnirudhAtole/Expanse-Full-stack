@@ -9,7 +9,7 @@ const Expanse = sequelize.define('Expanse-list',{
         autoIncrement : true,
         primaryKey : true
     },
-    amount: Sequelize.STRING,
+    amount: Sequelize.INTEGER,
     description : Sequelize.STRING,
     category : Sequelize.STRING
 });

@@ -82,3 +82,7 @@ exports.checkSignIn = async (req,res) =>{
         console.log(err);
     }
 }
+
+exports.isPremium = async (req,res) =>{
+    res.json({success:req.user.isPremium});
+}

@@ -1,3 +1,4 @@
+require('dotenv').config();
 let express = require('express');
 const bodyParser = require('body-parser');
 
@@ -6,6 +7,7 @@ const app = express();
 
 const UserRoutes = require('./routes/User');
 const ExpanseRoutes = require('./routes/Expanse');
+const OrderRoutes = require('./routes/Orders');
 const sequelize = require('./utils/database');
 
 const User = require('./models/User');
@@ -21,6 +23,7 @@ Order.belongsTo(User);
 app.use(bodyParser.json({extended:false}));
 app.use(UserRoutes);
 app.use(ExpanseRoutes);
+app.use(OrderRoutes);
 app.use(cors());
 
 
