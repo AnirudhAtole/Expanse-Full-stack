@@ -4,7 +4,6 @@ let outputTable  = document.getElementById('entries');
 let premium = document.getElementById('prem');
 const leader = document.getElementById('leader');
 my_form.addEventListener('submit',save_expanse);
-leader.addEventListener('onclick',showLeader)
 
 
 premium.onclick  = async function (e){
@@ -140,6 +139,42 @@ function save_expanse(e){
     document.getElementById('category').value = "";
 }
 
-function showLeader(e){
+leader.onclick = async function (e){
     e.preventDefault()
+    const userList = await axios.get(`http://localhost:5000/premium/leaderBoard`);
+    showUserList(userList.data)
+}
+
+function showUserList(userlist){
+    let userTable = document.createElement('table');
+    userTable.className = 'table table-borderless';
+
+    userTable.innerHTML =`
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Rank</th>
+        <th scope="col">Name</th>
+        <th scope="col">Amount</th>
+      </tr>
+    </thead>
+    <tbody id="userList">
+    </tbody>`
+
+
+  document.getElementById('show').appendChild(userTable)
+  const tableBody = document.getElementById('userList');
+  let index = 1 ;
+  for(let user of userlist){
+    const rowValues = document.createElement('tr');
+    const rank = document.createElement('td');
+    rank.appendChild(document.createTextNode(''+index));
+    rowValues.appendChild(rank);
+    for(let i in user){
+        const value = document.createElement('td');
+        value.appendChild(document.createTextNode(user[i]))
+        rowValues.append(value);
+    }
+    index++;
+    tableBody.appendChild(rowValues);
+  }
 }
