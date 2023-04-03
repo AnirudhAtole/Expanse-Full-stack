@@ -27,6 +27,10 @@ const User = sequelize.define('User',{
 
     isPremium :{
         type: Sequelize.BOOLEAN,
+    },
+
+    totalExpanse :{
+        type : Sequelize.INTEGER,
     }
 });
 

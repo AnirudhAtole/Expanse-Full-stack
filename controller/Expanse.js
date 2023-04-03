@@ -14,18 +14,18 @@ exports.getExpanses = (req,res,next) =>{
     .catch(err => console.log(err));
 }
 
-exports.addExpanse = (req,res,next) =>{
+exports.addExpanse = async (req,res,next) =>{
         const amount = req.body.amount;
         const description = req.body.description;
         const category = req.body.category;
-        console.log(req.user.dataValues)
+        const totalexpanse = req.user.dataValues.totalExpanse;
         // req.user.createExpanse({
         //     amount:amount,
         //         description:description,
         //         category:category,
         //         // UserUserId : req.user.dataValues.userId
         // })
-        Expanse.create(
+        const promise1 = Expanse.create(
             {
                 amount:amount,
                 description:description,
@@ -33,6 +33,10 @@ exports.addExpanse = (req,res,next) =>{
                 UserUserId : req.user.dataValues.userId
             }
         )
+
+        const promise2 = User.increment('totalExpanse' , {by : amount , where :{ userId : req.user.dataValues.userId}})
+
+        Promise.all([promise1,promise2])
         .then((result) =>{
             console.log('created entryy');
             res.json(result);
