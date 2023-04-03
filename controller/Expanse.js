@@ -44,11 +44,14 @@ exports.addExpanse = async (req,res,next) =>{
         .catch(err => console.log(err));
 }
 
-exports.delExpanse = (req , res , next) =>{
+exports.delExpanse = async (req , res , next) =>{
     const expanseId = req.params.id;
-    Expanse.findByPk(expanseId)
-    .then((Expanse) =>{
-        res.json(Expanse.destroy());
-    })
+    const expanse = await Expanse.findByPk(expanseId)
+    const amount = expanse.dataValues.amount;
+    const userId = expanse.dataValues.UserUserId;
+    console.log(amount,userId);
+    await User.increment('totalExpanse' , {by : -amount , where :{ userId : userId}})
+    .then( res.json(expanse.destroy()))
+    
     .catch(err => console.log(err))
 }

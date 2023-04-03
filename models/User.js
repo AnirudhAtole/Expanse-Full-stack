@@ -31,6 +31,7 @@ const User = sequelize.define('User',{
 
     totalExpanse :{
         type : Sequelize.INTEGER,
+        defaultValue: 0
     }
 });
 

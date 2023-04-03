@@ -6,14 +6,8 @@ exports.leaderBoard = async (req,res) =>{
     try{
         const userList = await User.findAll(
             {
-                attributes : ['userName',[sequelize.fn('sum' , sequelize.col('expanse-lists.amount')) , 'totalAmount']],
-                include : [{
-                    model : Expanse,
-                    attributes : []
-                }],
-                group : ['userId'],
-                order : [['totalAmount' , 'DESC']]
-    
+                attributes : ['userName','totalExpanse'],
+                order : [['totalExpanse' , 'DESC']]
             }
         )
        res.json(userList)
