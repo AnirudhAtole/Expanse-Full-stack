@@ -8,7 +8,8 @@ const app = express();
 const UserRoutes = require('./routes/User');
 const ExpanseRoutes = require('./routes/Expanse');
 const OrderRoutes = require('./routes/Orders');
-const premiumRoutes = require('./routes/premium')
+const premiumRoutes = require('./routes/premium');
+const passwordRoutes = require('./routes/password');
 
 const sequelize = require('./utils/database');
 
@@ -28,6 +29,7 @@ app.use(UserRoutes);
 app.use(ExpanseRoutes);
 app.use(OrderRoutes);
 app.use(premiumRoutes);
+app.use(passwordRoutes);
 
 
 
