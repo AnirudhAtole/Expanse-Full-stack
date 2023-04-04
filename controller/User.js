@@ -35,8 +35,8 @@ exports.addUser = async (req,res) =>{
 
 }
 
-function generateToken(id){
-    return jwt.sign({userId : id} ,'bangaram1002Kannalu100204pandaGuddumuduu')
+function generateToken(id,isPremium){
+    return jwt.sign({userId : id , isPremium:isPremium} ,'bangaram1002Kannalu100204pandaGuddumuduu')
 }
 
 exports.checkSignIn = async (req,res) =>{
@@ -61,10 +61,11 @@ exports.checkSignIn = async (req,res) =>{
                     }
                 })
                 const id =result[0].userId
+                const isPremium = result[0].isPremium;
                 if(result.length){
                     Bcrypt.compare(userPassword , result[0].userPassword ,(err ,result)=>{
                         if(result){
-                            res.json({success:true,message:"User signed in" , token:generateToken(id)});
+                            res.json({success:true,message:"User signed in" , token:generateToken(id,isPremium)});
                         }
                         else{
                             res.json({success:false , message:"response 401 (User not authorized)"});
@@ -86,3 +87,5 @@ exports.checkSignIn = async (req,res) =>{
 exports.isPremium = async (req,res) =>{
     res.json({success:req.user.isPremium});
 }
+
+exports.createToken = generateToken;

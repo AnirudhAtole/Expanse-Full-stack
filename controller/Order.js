@@ -1,6 +1,7 @@
 const RazorPay = require('razorpay')
 const Order = require('../models/orders');
 const User = require('../models/User');
+const UserController = require('../controller/User');
 
 exports.purchasePremium = (req,res) =>{
     try{
@@ -30,13 +31,14 @@ exports.purchasePremium = (req,res) =>{
 exports.updateTransaction = async (req , res) =>{
     try{
         const {payment_id , order_id} = req.body;
+        const userId = req.user.dataValues.userId;  
         const order = await Order.findOne({where : {orderId : order_id}})
 
             const promise1 = order.update({paymentId : payment_id , status : 'SUCCESSFUL'});
             const promise2 = req.user.update({isPremium : true});
             Promise.all([promise1,promise2])
                 .then(() => {
-                    return res.status(202).json({sucess : true , message : 'Transaction Sucessful'});
+                    return res.status(202).json({sucess : true , message : 'Transaction Sucessful' , token:UserController.createToken(userId,true)});
                 })
     }
     catch(err){

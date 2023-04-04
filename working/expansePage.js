@@ -15,11 +15,14 @@ premium.onclick  = async function (e){
         "order_id" : response.data.order.id,
 
         "handler" : async function (response){
-            await axios.post('http://localhost:5000/updateTransaction' , {
+            const result = await axios.post('http://localhost:5000/updateTransaction' , {
                 order_id : options.order_id,
                 payment_id : response.razorpay_payment_id,   
             }, {headers : {'Authorization' : token}})
+
+            console.log(result);
             alert("You are a Premium User Now");
+            localStorage.setItem('token',result.data.token)
             showPremium();
         },
     };
@@ -43,14 +46,10 @@ function showPremium(){
     premium.parentElement.appendChild(showText);
 }
 
-function IsPremium(token){
-        axios.get('http://localhost:5000/isPremium' , { headers :{"Authorization":token}})
-        .then((result)=>{
-            if(result.data.success){
-                showPremium()
-            }
-        })
-        .catch(err => console.log(err));
+function IsPremium(decoded){
+    if(decoded.isPremium){
+        showPremium()
+    }
 }
 
 
@@ -120,9 +119,21 @@ async function saveExpanse(expanse){
     }
 }
 
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
 window.addEventListener("DOMContentLoaded" , ()=>{
     const token = localStorage.getItem('token');
-    IsPremium(token);
+    const decoded = parseJwt(token);
+    console.log(decoded)
+    IsPremium(decoded);
     getAllExpanses(token);
     
 })

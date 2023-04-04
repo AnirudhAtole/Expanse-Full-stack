@@ -1,5 +1,6 @@
 const Expanse = require('../models/Expanse');
 const User = require('../models/User');
+const sequelize = require('../utils/database')
 
 exports.getExpanses = (req,res,next) =>{
     // req.user.getExpanse()
@@ -15,33 +16,34 @@ exports.getExpanses = (req,res,next) =>{
 }
 
 exports.addExpanse = async (req,res,next) =>{
-        const amount = req.body.amount;
-        const description = req.body.description;
-        const category = req.body.category;
-        const totalexpanse = req.user.dataValues.totalExpanse;
-        // req.user.createExpanse({
-        //     amount:amount,
-        //         description:description,
-        //         category:category,
-        //         // UserUserId : req.user.dataValues.userId
-        // })
-        const promise1 = Expanse.create(
-            {
-                amount:amount,
-                description:description,
-                category:category,
-                UserUserId : req.user.dataValues.userId
-            }
-        )
+    let t;
+    try{
+        t = await sequelize.transaction();
+    const amount = req.body.amount;
+    const description = req.body.description;
+    const category = req.body.category;
+    const result = await Expanse.create(
+        {
+            amount:amount,
+            description:description,
+            category:category,
+            UserUserId : req.user.dataValues.userId
+        },
+        {
+            transaction:t
+        }
+     )
 
-        const promise2 = User.increment('totalExpanse' , {by : amount , where :{ userId : req.user.dataValues.userId}})
+    await User.increment('totalExpanse' , {by : amount , where :{ userId : req.user.dataValues.userId}, transaction:t})
 
-        Promise.all([promise1,promise2])
-        .then((result) =>{
-            console.log('created entryy');
-            res.json(result);
-        })
-        .catch(err => console.log(err));
+    console.log("entry created");
+    await t.commit()
+    res.json(result);
+    }
+    catch(t){
+        console.log(err)
+        await t.rollback();
+    }
 }
 
 exports.delExpanse = async (req , res , next) =>{
@@ -50,8 +52,14 @@ exports.delExpanse = async (req , res , next) =>{
     const amount = expanse.dataValues.amount;
     const userId = expanse.dataValues.UserUserId;
     console.log(amount,userId);
-    await User.increment('totalExpanse' , {by : -amount , where :{ userId : userId}})
-    .then( res.json(expanse.destroy()))
+    const promise1 =  User.increment('totalExpanse' , {by : -amount , where :{ userId : userId}})
+    const promise2 = Expanse.destroy({
+        where:{
+            id:expanseId
+        }
+    })
+    Promise.all([promise1,promise2])
+    .then(res.json({success:true}))
     
     .catch(err => console.log(err))
 }
