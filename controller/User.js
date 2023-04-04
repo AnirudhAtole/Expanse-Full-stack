@@ -1,8 +1,10 @@
 const User = require('../models/User');
 const Bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const sequelize = require('../utils/database')
 
 exports.addUser = async (req,res) =>{
+    const t = await sequelize.transaction();
     try{
         const userName = req.body.userName;
         const userEmail = req.body.userEmail;
@@ -20,11 +22,16 @@ exports.addUser = async (req,res) =>{
                         userName:userName,
                         userEmail:userEmail,
                         userPassword:hash
+                    },
+                    {
+                        transaction:t
                     })
+                    await t.commit();
                     res.status(200).json({success:true , message:"User created succesfully"});
                 })
             }
             catch(err){
+                await t.rollback();
                 console.log(err);
             }
             }
@@ -84,8 +91,5 @@ exports.checkSignIn = async (req,res) =>{
     }
 }
 
-exports.isPremium = async (req,res) =>{
-    res.json({success:req.user.isPremium});
-}
 
 exports.createToken = generateToken;

@@ -2,7 +2,7 @@ const Expanse = require('../models/Expanse');
 const User = require('../models/User');
 const sequelize = require('../utils/database')
 
-exports.getExpanses = (req,res,next) =>{
+exports.getExpanses = async (req,res,next) =>{
     // req.user.getExpanse()
     Expanse.findAll({
         where:{
@@ -16,13 +16,12 @@ exports.getExpanses = (req,res,next) =>{
 }
 
 exports.addExpanse = async (req,res,next) =>{
-    let t;
+    const t = await sequelize.transaction();
     try{
-        t = await sequelize.transaction();
     const amount = req.body.amount;
     const description = req.body.description;
     const category = req.body.category;
-    const result = await Expanse.create(
+    const promise1 = Expanse.create(
         {
             amount:amount,
             description:description,
@@ -34,32 +33,40 @@ exports.addExpanse = async (req,res,next) =>{
         }
      )
 
-    await User.increment('totalExpanse' , {by : amount , where :{ userId : req.user.dataValues.userId}, transaction:t})
+    const promise2 = User.increment('totalExpanse' , {by : amount , where :{ userId : req.user.dataValues.userId}, transaction:t})
 
+    const result = await Promise.all([promise1,promise2])
     console.log("entry created");
     await t.commit()
     res.json(result);
     }
-    catch(t){
+    catch(err){
         console.log(err)
         await t.rollback();
     }
 }
 
 exports.delExpanse = async (req , res , next) =>{
+    const t = await sequelize.transaction();
+    try{
     const expanseId = req.params.id;
     const expanse = await Expanse.findByPk(expanseId)
     const amount = expanse.dataValues.amount;
     const userId = expanse.dataValues.UserUserId;
     console.log(amount,userId);
-    const promise1 =  User.increment('totalExpanse' , {by : -amount , where :{ userId : userId}})
+    const promise1 =  User.increment('totalExpanse' , {by : -amount , where :{ userId : userId} , transaction:t})
     const promise2 = Expanse.destroy({
         where:{
             id:expanseId
-        }
+        },
+        transaction:t
     })
-    Promise.all([promise1,promise2])
-    .then(res.json({success:true}))
-    
-    .catch(err => console.log(err))
+    await Promise.all([promise1,promise2])
+    await t.commit();
+    res.json({success:true});
+    }
+    catch(err){
+        await t.rollback();
+        console.log(err);
+    }
 }

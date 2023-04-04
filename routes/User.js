@@ -7,6 +7,5 @@ const userController = require('../controller/User');
 
 router.post('/add-User', userController.addUser);
 router.post('/signIn',userController.checkSignIn);
-router.get('/isPremium',Authenticate.authenticate ,userController.isPremium)
 
 module.exports = router;
