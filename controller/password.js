@@ -6,13 +6,15 @@ const Bcrypt = require('bcrypt');
 const sequelize = require('../utils/database');
 
 exports.forgotPassword = async(req,res) =>{
-
+    const t = await sequelize.transaction();
     try{
         const email = req.body.email;
         const user = await User.findOne({
         where:{
             userEmail : email
-        }}
+        }
+    }
+        
         )
         if(user){
                 //creating uuid and forgotpasswordreq
@@ -22,7 +24,9 @@ exports.forgotPassword = async(req,res) =>{
                     id : uuid,
                     isActive : true,
                     UserUserId : user.dataValues.userId
-                })
+                },{
+                    transaction :t}
+                    )
                 
                 //sending mail
                 const client = sib.ApiClient.instance;
@@ -47,9 +51,11 @@ exports.forgotPassword = async(req,res) =>{
                     subject : 'Regarding password failure',
                     htmlContent : `<a href="http://localhost:5000/password/resetpassword/${uuid}">Reset password</a>`
                 })
+                await t.commit();
                 res.json({sucess:true , messageId : result})
             }
             else{
+                await t.rollback();
                 res.json({sucess:false , message:'No user present with this email'})
             }
         }
@@ -159,6 +165,7 @@ exports.resetPassword = async (req,res) => {
 }
 
 exports.updatePassword = async(req,res) =>{
+    const t = await sequelize.transaction();
     try{
         const newPassword = req.body.password;
         const resetId = req.params.uuid;
@@ -167,7 +174,7 @@ exports.updatePassword = async(req,res) =>{
                 id:resetId
             }
         })
-        await frgtPassReq.update({isActive:false});
+        await frgtPassReq.update({isActive:false}, {transaction:t});
         const user = await User.findOne({
             where:{
                 UserId : frgtPassReq.UserUserId
@@ -182,13 +189,15 @@ exports.updatePassword = async(req,res) =>{
                 }
                 user.update({
                     userPassword : hash
-                }).then(()=>{
+                },{transaction:t}).then(async()=>{
                     res.status(201).json({success:true , message:'password updated succesfully'});
+                    await t.commit()
                 })
             })
         }
     }
     catch(err){
+        await t.rollback();
         console.log(err);
     }
 }
