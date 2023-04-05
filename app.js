@@ -40,7 +40,7 @@ app.use(passwordRoutes);
 
 
 
-sequelize.sync({force:true})
+sequelize.sync()
 .then(() =>{
     app.listen(5000);
 })

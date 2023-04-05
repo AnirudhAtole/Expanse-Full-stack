@@ -9,6 +9,9 @@ btn.onclick = async function(e){
         if(result.data.success){
             alert("Email has  been sent");
         }
+        else{
+            alert(result.data.message)
+        }
     }
     catch(err){
         console.log(err);

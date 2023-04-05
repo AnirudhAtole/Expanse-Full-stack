@@ -8,37 +8,50 @@ const sequelize = require('../utils/database');
 exports.forgotPassword = async(req,res) =>{
 
     try{
-        //creating uuid and forgotpasswordreq
-        const uuid = Uuid.v4();
-        await req.body.user.createForgotPasswordRequest({
-            id : uuid,
-            isActive : true
-        })
-        
-        //sending mail
-        const client = sib.ApiClient.instance;
-        const apiKey = client.authentications['api-key']
-        apiKey.apiKey = process.env.SEND_IN_BLUE;
+        const email = req.body.email;
+        const user = await User.findOne({
+        where:{
+            userEmail : email
+        }}
+        )
+        if(user){
+                //creating uuid and forgotpasswordreq
+                const uuid = Uuid.v4();
+                console.log(uuid)
+                await ForgotPasswordRequest.create({
+                    id : uuid,
+                    isActive : true,
+                    UserUserId : user.dataValues.userId
+                })
+                
+                //sending mail
+                const client = sib.ApiClient.instance;
+                const apiKey = client.authentications['api-key']
+                apiKey.apiKey = process.env.SEND_IN_BLUE;
 
-        const transEmailApi = new sib.TransactionalEmailsApi();
+                const transEmailApi = new sib.TransactionalEmailsApi();
 
-        const sender = {
-            email : 'anirudhatole@gmail.com'
-        }
+                const sender = {
+                    email : 'anirudhatole@gmail.com'
+                }
 
-        const receiver = [
-            {
-                email : req.body.email
-            },
-        ];
+                const receiver = [
+                    {
+                        email : req.body.email
+                    },
+                ];
 
-        const result = await transEmailApi.sendTransacEmail({
-            sender,
-            to :receiver,
-            subject : 'Regarding password failure',
-            htmlContent : `<a href="http://localhost:5000/password/resetpassword/${uuid}">Reset password</a>`
-        })
-        res.json({sucess:true , messageId : result})
+                const result = await transEmailApi.sendTransacEmail({
+                    sender,
+                    to :receiver,
+                    subject : 'Regarding password failure',
+                    htmlContent : `<a href="http://localhost:5000/password/resetpassword/${uuid}">Reset password</a>`
+                })
+                res.json({sucess:true , messageId : result})
+            }
+            else{
+                res.json({sucess:false , message:'No user present with this email'})
+            }
         }
         catch(err){
             console.log(err)
@@ -51,7 +64,7 @@ exports.resetPassword = async (req,res) => {
     const validReq = await ForgotPasswordRequest.findOne(
         {
             where:{
-                id:uuid,
+                id:id,
                 isActive : true
             }
         }
@@ -66,26 +79,6 @@ exports.resetPassword = async (req,res) => {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Forgot Password</title>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-            <script>
-                const form = document.getElementById("my-form");
-                form.addEventListener("submit",formSubmit);
-
-                async function formSubmit(e){
-                    e.preventDefault();
-                    const pass1 = document.getElementById('pass1').value;
-                    const pass2 = document.getElementById('pass2').value;
-
-                    if(pass1 === pass2){
-                    const result = await axios.post("http://localhost:5000/password/updatePassword/${id}" ,{password:pass1});
-                    if(result.data.success){
-                        alert(result.data.message);
-                    }
-                    }
-                    else{
-                        alert('password not matching with each other')
-                    }
-                }
-            </script>
             </head>
             <body>
             <section class=" gradient-form text-center" style="background-color: rgb(29, 25, 25);">
@@ -134,9 +127,27 @@ exports.resetPassword = async (req,res) => {
                 </div>
                 </div>
             </section>
+            <script>
+                const form = document.getElementById("my-form");
+                form.addEventListener("submit",formSubmit);
+
+                async function formSubmit(e){
+                    e.preventDefault();
+                    const pass1 = document.getElementById('pass1').value;
+                    const pass2 = document.getElementById('pass2').value;
+
+                    if(pass1 === pass2){
+                    const result = await axios.post("http://localhost:5000/password/updatePassword/${id}" ,{password:pass1});
+                    if(result.data.success){
+                        alert(result.data.message);
+                    }
+                    }
+                    else{
+                        alert('password not matching with each other')
+                    }
+                }
+            </script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
             </body>
             </html>
         `)
@@ -150,12 +161,13 @@ exports.resetPassword = async (req,res) => {
 exports.updatePassword = async(req,res) =>{
     try{
         const newPassword = req.body.password;
-        const resetId = req.params;
+        const resetId = req.params.uuid;
         const frgtPassReq = await ForgotPasswordRequest.findOne({
             where:{
                 id:resetId
             }
         })
+        await frgtPassReq.update({isActive:false});
         const user = await User.findOne({
             where:{
                 UserId : frgtPassReq.UserUserId
