@@ -16,6 +16,8 @@ const sequelize = require('./utils/database');
 const User = require('./models/User');
 const expanse = require('./models/Expanse');
 const Order = require('./models/orders');
+const frgtPassReq = require('./models/ForgotPassRequests');
+
 
 User.hasMany(expanse);
 expanse.belongsTo(User);
@@ -23,7 +25,11 @@ expanse.belongsTo(User);
 User.hasMany(Order);
 Order.belongsTo(User);
 
-app.use(bodyParser.json({extended:false}));
+User.hasMany(frgtPassReq);
+frgtPassReq.belongsTo(User);
+
+
+app.use(bodyParser.json());
 app.use(cors());
 app.use(UserRoutes);
 app.use(ExpanseRoutes);
@@ -34,7 +40,7 @@ app.use(passwordRoutes);
 
 
 
-sequelize.sync()
+sequelize.sync({force:true})
 .then(() =>{
     app.listen(5000);
 })
