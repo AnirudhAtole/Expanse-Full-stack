@@ -3,9 +3,12 @@ let my_form = document.getElementById('my-form');
 let outputTable  = document.getElementById('entries');
 let premium = document.getElementById('prem');
 const leader = document.getElementById('leader');
+const showReport = document.getElementById('report');
 my_form.addEventListener('submit',save_expanse);
 
-
+showReport.onclick = ()=>{
+    window.location.href ='../views/report.html'
+}
 premium.onclick  = async function (e){
     const token = localStorage.getItem('token');
     const response = await axios.get('http://localhost:5000/premiumMembership' , {headers : {'Authorization' : token}});
@@ -43,6 +46,7 @@ function showPremium(){
 
     premium.setAttribute('hidden','hidden');
     leader.removeAttribute('hidden');
+    showReport.removeAttribute('disabled');
     premium.parentElement.appendChild(showText);
 }
 
