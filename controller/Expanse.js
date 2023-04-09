@@ -1,6 +1,8 @@
 const Expanse = require('../models/Expanse');
 const User = require('../models/User');
-const sequelize = require('../utils/database')
+const sequelize = require('../utils/database');
+const DownloadUrls = require('../models/downloadUrl');
+const S3services = require('../services/S3services');
 
 exports.getExpanses = async (req,res,next) =>{
     // req.user.getExpanse()
@@ -69,4 +71,39 @@ exports.delExpanse = async (req , res , next) =>{
         await t.rollback();
         console.log(err);
     }
+}
+
+
+exports.downloadExpanse = async(req,res)=>{
+    const expanses = await Expanse.findAll({
+        where:{
+            UserUserId : req.user.dataValues.userId
+        }
+    })
+    const stringifiedData = JSON.stringify(expanses);
+
+    const fileName = `expanse.txt${req.user.dataValues.userId}&${new Date()}`;
+
+    const fileUrl = await S3services.uploadToS3(stringifiedData,fileName);
+
+    await DownloadUrls.create({
+        url : fileUrl,
+        UserUserId : req.user.dataValues.userId
+    })
+    console.log(fileUrl)
+
+
+    res.status(200).json({fileUrl:fileUrl , success:true});
+
+}
+
+
+exports.getDownloadUrls = async(req,res) =>{
+    const urls = await DownloadUrls.findAll ({
+        where:{
+            UserUserId : req.user.dataValues.userId
+        }
+    })
+
+    res.status(200).json({urlLists : urls , success : true});
 }

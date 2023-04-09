@@ -1,0 +1,10 @@
+MVC ->
+     M - Model (db schema)
+     V - Views (json response)
+     C - Controller ( router >> do this)
+
+     -> Routes folder
+     -> Service folder -> Doing any network call should happen in serice folder
+        --> Db calls
+        --> api calls
+        --> s3 calls
