@@ -5,11 +5,22 @@ const DownloadUrls = require('../models/downloadUrl');
 const S3services = require('../services/S3services');
 const { QueryTypes } = require('sequelize');
 
+const EXPANSE_PER_PAGE = 10;
 exports.getExpanses = async (req,res,next) =>{
     // req.user.getExpanse()
+    const page = +req.query.page || 1;
     try{
-        const result = await Expanse.findAll({where:{UserUserId : req.user.dataValues.userId}});
-        res.status(200).json(result);
+        const totalItems = await Expanse.count({where:{UserUserId : req.user.dataValues.userId}});
+        const result = await Expanse.findAll({where:{UserUserId : req.user.dataValues.userId} , offset : (page-1) * EXPANSE_PER_PAGE , limit:EXPANSE_PER_PAGE});
+        res.status(200).json({
+            expanses : result,
+            currentPage : page,
+            hasNextPage : EXPANSE_PER_PAGE * page < totalItems,
+            nextPage : page + 1,
+            hasPreviousPage : page > 1,
+            previousPage : page - 1,
+            lastPage : Math.ceil(totalItems/EXPANSE_PER_PAGE)
+        });
     }
     catch(err){
         console.log(err)

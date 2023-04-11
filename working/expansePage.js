@@ -5,6 +5,7 @@ let premium = document.getElementById('prem');
 const leader = document.getElementById('leader');
 const showReport = document.getElementById('report');
 my_form.addEventListener('submit',save_expanse);
+const pagination = document.getElementById('pagination');
 
 showReport.onclick = ()=>{
     window.location.href ='../views/report.html'
@@ -90,10 +91,12 @@ function showExpanse(obj){
 }
 
 
-async function getAllExpanses(token){
+async function getAllExpanses(token,page){
     try{
-        let response = await axios.get('http://localhost:5000/expanses' , { headers :{"Authorization":token}});
-        response.data.forEach(entry => showExpanse(entry));
+        let response = await axios.get(`http://localhost:5000/expanses?page=${page}` , { headers :{"Authorization":token}});
+        const{expanses , ...pageInfo} = response.data;
+        expanses.forEach(entry => showExpanse(entry));
+        showPagination(pageInfo);
     }
     catch(err)
     {
@@ -134,11 +137,14 @@ function parseJwt (token) {
 }
 
 window.addEventListener("DOMContentLoaded" , ()=>{
+    const objUrlParams = new URLSearchParams(Window.location);
+    const page = objUrlParams.get('page') || 1;
+
     const token = localStorage.getItem('token');
     const decoded = parseJwt(token);
     console.log(decoded)
     IsPremium(decoded);
-    getAllExpanses(token);
+    getAllExpanses(token,page);
     
 })
 function save_expanse(e){
@@ -192,4 +198,45 @@ function showUserList(userlist){
     index++;
     tableBody.appendChild(rowValues);
   }
+}
+
+function showPagination({
+    currentPage, hasNextPage , nextPage , hasPreviousPage , previousPage , lastPage
+})
+{
+    pagination.innerHTML =''
+
+    if(hasPreviousPage){
+        const btn2 = document.createElement('button');
+        btn2.innerHTML = previousPage;
+        btn2.addEventListener('click',()=>getPaginated(previousPage));
+        pagination.appendChild(btn2);
+    }
+
+    const btn1 = document.createElement('button');
+    btn1.innerHTML = `<h3>${currentPage}</h3>`;
+    btn1.addEventListener('click',()=>getPaginated(currentPage));
+    pagination.appendChild(btn1);
+
+    if(hasNextPage){
+        const btn3 = document.createElement('button');
+        btn3.innerHTML = previousPage;
+        btn3.addEventListener('click',()=>getPaginated(nextPage));
+        pagination.appendChild(btn3);
+    }
+
+}
+
+async function getPaginated(page){
+    try{
+        const token = localStorage.getItem('token');
+        let response = await axios.get(`http://localhost:5000/expanses?page=${page}` , { headers :{"Authorization":token}});
+        const{expanses , ...pageInfo} = response.data;
+        outputTable.innerHTML = "";
+        expanses.forEach(entry => showExpanse(entry));
+        showPagination(pageInfo);
+    }
+    catch(err){
+        console.log(err);
+    }
 }
