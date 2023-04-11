@@ -6,6 +6,7 @@ const leader = document.getElementById('leader');
 const showReport = document.getElementById('report');
 my_form.addEventListener('submit',save_expanse);
 const pagination = document.getElementById('pagination');
+const numOfEntries = document.getElementById('noOfEntries');
 
 showReport.onclick = ()=>{
     window.location.href ='../views/report.html'
@@ -93,7 +94,12 @@ function showExpanse(obj){
 
 async function getAllExpanses(token,page){
     try{
-        let response = await axios.get(`http://localhost:5000/expanses?page=${page}` , { headers :{"Authorization":token}});
+        let entries = localStorage.getItem('numofentries');
+        if(!entries){
+            entries = 10;
+        }
+        entries = parseInt(entries);
+        let response = await axios.get(`http://localhost:5000/expanses?page=${page}&entries=${entries}` , { headers :{"Authorization":token}});
         const{expanses , ...pageInfo} = response.data;
         expanses.forEach(entry => showExpanse(entry));
         showPagination(pageInfo);
@@ -220,7 +226,7 @@ function showPagination({
 
     if(hasNextPage){
         const btn3 = document.createElement('button');
-        btn3.innerHTML = previousPage;
+        btn3.innerHTML = nextPage;
         btn3.addEventListener('click',()=>getPaginated(nextPage));
         pagination.appendChild(btn3);
     }
@@ -230,7 +236,12 @@ function showPagination({
 async function getPaginated(page){
     try{
         const token = localStorage.getItem('token');
-        let response = await axios.get(`http://localhost:5000/expanses?page=${page}` , { headers :{"Authorization":token}});
+        let entries = localStorage.getItem('numofentries');
+        if(!entries){
+            entries = 10;
+        }
+        entries = parseInt(entries);
+        let response = await axios.get(`http://localhost:5000/expanses?page=${page}&entries=${entries}` , { headers :{"Authorization":token}});
         const{expanses , ...pageInfo} = response.data;
         outputTable.innerHTML = "";
         expanses.forEach(entry => showExpanse(entry));
@@ -239,4 +250,13 @@ async function getPaginated(page){
     catch(err){
         console.log(err);
     }
+}
+
+
+document.getElementById('numofentriesbtn').onclick =(e)=>{
+    e.preventDefault()
+    const numOfEntries = document.getElementById('numofentries').value;
+    localStorage.setItem('numofentries',numOfEntries);
+    getAllExpanses();
+    console.log(localStorage.getItem('numofentries'))
 }
