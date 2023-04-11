@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../utils/database');
 
-const Expanse = sequelize.define('Expanse-list',{
+const Expanse = sequelize.define('expanselist',{
     id:{
         type: Sequelize.INTEGER,
         allowNull : false,

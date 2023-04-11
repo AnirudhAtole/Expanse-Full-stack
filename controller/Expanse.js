@@ -3,18 +3,18 @@ const User = require('../models/User');
 const sequelize = require('../utils/database');
 const DownloadUrls = require('../models/downloadUrl');
 const S3services = require('../services/S3services');
+const { QueryTypes } = require('sequelize');
 
 exports.getExpanses = async (req,res,next) =>{
     // req.user.getExpanse()
-    Expanse.findAll({
-        where:{
-            UserUserId : req.user.dataValues.userId
-        }
-    })
-    .then((result)=>{
-        res.json(result);
-    })
-    .catch(err => console.log(err));
+    try{
+        const result = await Expanse.findAll({where:{UserUserId : req.user.dataValues.userId}});
+        res.status(200).json(result);
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json()
+    }
 }
 
 exports.addExpanse = async (req,res,next) =>{
@@ -106,4 +106,33 @@ exports.getDownloadUrls = async(req,res) =>{
     })
 
     res.status(200).json({urlLists : urls , success : true});
+}
+
+exports.getTodayExpanse = async(req,res) =>{
+    const userId = req.user.userId
+    const result = await sequelize.query(`Select time(createdAt) as time ,category ,description as description , amount 
+    from expanse.expanselists
+    Where date(createdAt) = curdate() and UserUserId = ${userId};`,{ type: QueryTypes.SELECT })
+
+    res.json(result);
+}
+
+exports.getDailyExpanse = async(req,res) =>{
+    const userId = req.user.userId
+    const result = await sequelize.query(`Select date(createdAt) as date , sum(amount) as amount
+    from expanse.expanselists
+    Where month(createdAt) = month(curdate())and year(createdAt)= year(curdate()) and UserUserId = ${userId}
+    group by date(createdAt)`,{ type: QueryTypes.SELECT })
+
+    res.json(result);
+}
+
+exports.getMonthlyExpanse = async(req,res) =>{
+    const userId = req.user.userId
+    const result = await sequelize.query(`Select  month(createdAt) as month , sum(amount) as amount , year(createdAt) as year
+    from expanse.expanselists
+    Where UserUserId = ${userId}
+    group by month(createdAt) , UserUserId , year(createdAt);`,{ type: QueryTypes.SELECT })
+
+    res.json(result);
 }

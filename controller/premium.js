@@ -1,6 +1,4 @@
-const Expanse = require('../models/Expanse');
 const User = require('../models/User');
-const sequelize = require('../utils/database')
 
 exports.leaderBoard = async (req,res) =>{
     try{
@@ -16,3 +14,4 @@ exports.leaderBoard = async (req,res) =>{
         console.log(err);
     }
 }
+

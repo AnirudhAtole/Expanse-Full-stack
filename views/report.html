@@ -18,56 +18,17 @@
   </section>
 
   <div class="container py-5 text-center">
-    <H3> Daily Expenses</H3>
+    <H3 id="date-heading"> Todays Expenses</H3>
     <table class="table table-hover table-borderless table-dark" id="daily" >
       <thead>
         <tr>
             <th scope="col"> Time </th>
             <th scope="col"> Category </th>
             <th scope="col"> Description </th>
-            <th scope="col"> Income </th>
             <th scope="col"> Expense </th>
         </tr>
       </thead>
-      <tbody id="daily-entries">
-        <tr >
-            <th scope="row">9:00Am</th>
-            <td>Food</td>
-            <td>Dosa</td>
-            <td></td>
-            <td>50</td>
-        </tr>
-
-        <tr>
-            <th scope="row">10:00Am</th>
-            <td>PETROL</td>
-            <td>Car</td>
-            <td></td>
-            <td>500</td>
-        </tr>
-
-        <tr>
-            <th scope="row">10:30Am</th>
-            <td>Food</td>
-            <td>Dosa</td>
-            <td></td>
-            <td>50</td>
-        </tr>
-
-        <tr>
-            <th scope="row">11:00Am</th>
-            <td>Salary</td>
-            <td>Dosa</td>
-            <td>45000</td>
-            <td></td>
-        </tr>
-
-        <tr class="bg-info">
-            <th scope="row"></th>
-            <td colspan="2">total</td>
-            <td class="bg-primary">45000 Rs</td>
-            <td class="bg-primary">600 Rs</td>
-        </tr>
+      <tbody id="today-entries">
         
       </tbody>
     </table>
@@ -75,102 +36,33 @@
 
 
   <div class="container py-5 text-center">
-    <H3> Weekly Expenses</H3>
+    <H3> This month Expenses</H3>
     <table class="table table-hover table-borderless table-dark" id="daily" >
       <thead>
         <tr>
             <th scope="col"> Date </th>
             <th scope="col"> Day </th>
-            <th scope="col"> Income </th>
             <th scope="col"> Expense </th>
-            <th scope="col"> Savings </th>
         </tr>
       </thead>
-      <tbody id="weekly-entries">
 
-        <tr>
-            <th scope="row"> 01/03/2022</th>
-            <td> Saturday </td>
-            <td>10000</td>
-            <td>4000</td>
-            <td>6000</td>
-        </tr>
-
-        <tr>
-            <th scope="row"> 02/03/2022</th>
-            <td> Sunday </td>
-            <td>100</td>
-            <td>400</td>
-            <td class="bg-danger">-300</td>
-        </tr>
-
-        <tr>
-            <th scope="row"> 03/03/2022</th>
-            <td> Monday </td>
-            <td>10000</td>
-            <td>4000</td>
-            <td>6000</td>
-        </tr>
-
-        <tr>
-            <th scope="row"> 04/03/2022</th>
-            <td> Tuesday </td>
-            <td>10000</td>
-            <td>4000</td>
-            <td>6000</td>
-        </tr>
-
-        <tr>
-            <th scope="row"> 05/03/2022</th>
-            <td> Wednesday </td>
-            <td>10000</td>
-            <td>4000</td>
-            <td>6000</td>
-        </tr>
-
-        <tr>
-            <th scope="row"> 06/03/2022</th>
-            <td> Thursday </td>
-            <td>10000</td>
-            <td>4000</td>
-            <td>6000</td>
-        </tr>
-
-        <tr>
-            <th scope="row"> 07/03/2022</th>
-            <td> Friday </td>
-            <td>10000</td>
-            <td>4000</td>
-            <td>6000</td>
-        </tr>
-
-        <tr>
-            <th scope="row"></th>
-            <td colspan="2">total</td>
-            <td class="bg-primary">45000 Rs</td>
-            <td class="bg-primary">600 Rs</td>  
-        </tr>
+      <tbody id="currentMonth-entries">
         
       </tbody>
     </table>
   </div>
 
   <div class="container py-5 text-center">
-    <H3> Monthly Expenses</H3>
+    <H3> Yearly Expenses</H3>
     <table class="table table-hover table-borderless table-dark" id="daily" >
       <thead>
         <tr>
             <th scope="col"> Month </th>
-            <th scope="col"> Income </th>
             <th scope="col"> Expense </th>
-            <th scope="col"> Savings</th>
+            <th scope="col"> Year </th>
         </tr>
       </thead>
-      <tbody id="monthly-entries">
-        <th scope="row"> March </th>
-        <td>45000</td>
-        <td>27000</td>
-        <td>18000</td>
+      <tbody id="yearly-entries">
       </tbody>
     </table>
   </div>
