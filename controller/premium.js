@@ -8,9 +8,10 @@ exports.leaderBoard = async (req,res) =>{
                 order : [['totalExpanse' , 'DESC']]
             }
         )
-       res.json(userList)
+       res.status(200).json({success: true , userList : userList})
     }
     catch(err){
+        res.status(400).json({success:false})
         console.log(err);
     }
 }

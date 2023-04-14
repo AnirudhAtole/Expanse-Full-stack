@@ -14,7 +14,6 @@ showReport.onclick = ()=>{
 premium.onclick  = async function (e){
     const token = localStorage.getItem('token');
     const response = await axios.get('http://localhost:5000/premiumMembership' , {headers : {'Authorization' : token}});
-    console.log(response);
     var options = {
         "key" : response.data.key_id ,
         "order_id" : response.data.order.id,
@@ -112,8 +111,14 @@ async function getAllExpanses(token,page){
 
 async function delExpanse(id,li){
     try{
-       await axios.post(`http://localhost:5000/del-expanse/${id}`)
-       outputTable.removeChild(li);
+       const result = await axios.post(`http://localhost:5000/del-expanse/${id}`)
+       if(result.data.success){
+        outputTable.removeChild(li);
+       }
+       else{
+        alert('Unable to delete the expanse right now');
+       }
+   
     }
     catch(err){
         console.log(err);
@@ -123,9 +128,15 @@ async function delExpanse(id,li){
 async function saveExpanse(expanse){
     try{
         const token = localStorage.getItem('token');
-        let result = await axios.post('http://localhost:5000/add-expanse',expanse , { headers :{"Authorization":token}});
-       expanse.id = result.data.id;
-       showExpanse(expanse);
+        let result1 = await axios.post('http://localhost:5000/add-expanse',expanse , { headers :{"Authorization":token}});
+        console.log(result1)
+        if(result1.data.success){
+            expanse.id = result1.data.result.id;
+            showExpanse(expanse);
+        }
+        else{
+            alert('Unable to add expanse')
+        }
     }
     catch(err){
         console.log(err);
@@ -168,8 +179,15 @@ function save_expanse(e){
 
 leader.onclick = async function (e){
     e.preventDefault()
-    const userList = await axios.get(`http://localhost:5000/premium/leaderBoard`);
-    showUserList(userList.data)
+    const result = await axios.get(`http://localhost:5000/premium/leaderBoard`);
+    if(result.data.success){
+        console.log(result.data)
+        showUserList(result.data.userList);
+    }
+    else{
+        alert('Unable to get leaderBoard');
+    }
+    
 }
 
 function showUserList(userlist){
@@ -257,6 +275,8 @@ document.getElementById('numofentriesbtn').onclick =(e)=>{
     e.preventDefault()
     const numOfEntries = document.getElementById('numofentries').value;
     localStorage.setItem('numofentries',numOfEntries);
-    getAllExpanses();
+    const token = localStorage.getItem('token');
+    outputTable.innerHTML = ''
+    getAllExpanses(token,1);
     console.log(localStorage.getItem('numofentries'))
 }

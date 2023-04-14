@@ -20,11 +20,16 @@ downloadBtn.onclick = async function(e){
         e.preventDefault();
     const token = localStorage.getItem('token')
     const response =  await axios.get('http://localhost:5000/download/getexpanses' , { headers :{"Authorization":token}});
-
-    const a = document.createElement("a");
-    a.href = response.data.fileUrl;
-    a.download = 'myexpense.csv';
-    a.click()
+    if(response.data.success){
+        const a = document.createElement("a");
+        a.href = response.data.fileUrl;
+        a.download = 'myexpense.csv';
+        a.click()
+    }
+    else{
+        alert('Unable to download expanse')
+    }
+    
     }
     catch(err){
         console.log(err);
@@ -36,9 +41,12 @@ prevBtn.onclick = async function(e){
         e.preventDefault();
         const token = localStorage.getItem('token');
         const response =  await axios.get('http://localhost:5000/download/alldownloads' , { headers :{"Authorization":token}}); 
-
-        showDownloadList(response.data.urlLists)
-
+        if(response.data.success){
+            showDownloadList(response.data.urlLists)
+        }
+        else{
+            alert('Unable to get download lists');
+        }
     }
     catch(err){
         console.log(err);
@@ -71,47 +79,69 @@ function showDownloadList(downloadList){
 
 async function showDailyExpanses(){
     const token = localStorage.getItem('token')
-    const expanses = await axios.get('http://localhost:5000/expanse/todaysExpanse', { headers :{"Authorization":token}});
-    const todayExpanse = document.getElementById('today-entries');
+    const result = await axios.get('http://localhost:5000/expanse/todaysExpanse', { headers :{"Authorization":token}});
+    console.log(result)
+    if(result.data.success){
+        const expanses = result.data.result;
+        const todayExpanse = document.getElementById('today-entries');
 
-    let sumOfDaily = 0;
-    expanses.data.forEach(element => {
-        sumOfDaily += element.amount;
-        createDailyEntry( todayExpanse,element);
-    });
+        let sumOfDaily = 0;
+        expanses.forEach(element => {
+            sumOfDaily += element.amount;
+            createDailyEntry( todayExpanse,element);
+        });
 
-    const tr = document.createElement('tr');
-    tr.className = "bg-info"
-    tr.innerHTML = `<tr class="bg-info"> <th scope="row"></th> <td colspan="2"> Total </td> <td class="bg-primary">${sumOfDaily} Rs</td></tr>`;
-    todayExpanse.appendChild(tr);
+        const tr = document.createElement('tr');
+        tr.className = "bg-info"
+        tr.innerHTML = `<tr class="bg-info"> <th scope="row"></th> <td colspan="2"> Total </td> <td class="bg-primary">${sumOfDaily} Rs</td></tr>`;
+        todayExpanse.appendChild(tr);
+    }
+    else{
+        alert('Unable to show daily expanses try again')
+    }
+    
 }
 
 async function showCurrentMonthExpanse(){
     const token = localStorage.getItem('token')
-    const expanses = await axios.get('http://localhost:5000/expanse/currentMonthExpanse', { headers :{"Authorization":token}});
-    const currentMonthExpanse = document.getElementById('currentMonth-entries');
-    let sumOfMonth = 0;
-    expanses.data.forEach(element => {
-        sumOfMonth += parseInt(element.amount);
-        createCurrentMonthExpanse( currentMonthExpanse,element);
-    });
+    const result = await axios.get('http://localhost:5000/expanse/currentMonthExpanse', { headers :{"Authorization":token}});
+    if(result.data.success){
+        const currentMonthExpanse = document.getElementById('currentMonth-entries');
+        let sumOfMonth = 0;
+        const expanses = result.data.result;
+        expanses.forEach(element => {
+            sumOfMonth += parseInt(element.amount);
+            createCurrentMonthExpanse( currentMonthExpanse,element);
+        });
 
-    const tr = document.createElement('tr');
-    tr.className = "bg-info";
+        const tr = document.createElement('tr');
+        tr.className = "bg-info";
 
-    tr.innerHTML = `<tr class="bg-info"><th scope="row"></th><td colspan="1">total</td><td class="bg-primary">${sumOfMonth} Rs</td></tr>`
+        tr.innerHTML = `<tr class="bg-info"><th scope="row"></th><td colspan="1">total</td><td class="bg-primary">${sumOfMonth} Rs</td></tr>`
 
-    currentMonthExpanse.appendChild(tr);
+        currentMonthExpanse.appendChild(tr);
+    }
+    else{
+        alert('Unable to show Current month expanse');
+    }
+    
 
 }
 
 async function showYearlyExpanse(){
     const token = localStorage.getItem('token')
-    const expanses = await axios.get('http://localhost:5000/expanse/monthlyExpanse', { headers :{"Authorization":token}});
-    const yearlyExpanse = document.getElementById('yearly-entries');
-    expanses.data.forEach(element => {
+    const result = await axios.get('http://localhost:5000/expanse/monthlyExpanse', { headers :{"Authorization":token}});
+    if(result.data.success){
+        const expanses = result.data.result;
+        const yearlyExpanse = document.getElementById('yearly-entries');
+    expanses.forEach(element => {
         createYearlyExpanse( yearlyExpanse,element);
     });
+    }
+    else{
+        alert('Unable to show yearly expanse')
+    }
+    
 }
 
 function createDailyEntry(dailyTable , obj){

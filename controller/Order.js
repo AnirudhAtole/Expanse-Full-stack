@@ -1,6 +1,5 @@
 const RazorPay = require('razorpay')
 const Order = require('../models/orders');
-const sequelize = require('../utils/database');
 const UserController = require('../controller/User');
 
 exports.purchasePremium = (req,res) =>{
@@ -9,7 +8,7 @@ exports.purchasePremium = (req,res) =>{
             key_id: process.env.RAZORPAY_KEY_ID ,
             key_secret : process.env.RAZORPAY_KEY_SECRET
         })
-        const amount = 500;
+        const amount = 5000;
 
         rzp.orders.create({amount:amount , currency : "INR"} , (err,order) =>{
             if(err){
@@ -46,6 +45,7 @@ exports.updateTransaction = async (req , res) =>{
     }
     catch(err){
         // await t.rollback()
+        res.status(403).json({success:false});
         console.log(err);
     }
 }

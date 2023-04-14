@@ -32,18 +32,20 @@ exports.addUser = async (req,res) =>{
             }
             catch(err){
                 await t.rollback();
+                res.status(403).json({success:false , message:"Unable to create user"});
                 console.log(err);
             }
             }
         }
     catch(err){
+        res.status(403).json({success : false , message : "Unable to create user"})
         console.log(err);
     }
 
 }
 
 function generateToken(id,isPremium){
-    return jwt.sign({userId : id , isPremium:isPremium} ,'bangaram1002Kannalu100204pandaGuddumuduu')
+    return jwt.sign({userId : id , isPremium:isPremium} , process.env.JWT_SECRET_KEY)
 }
 
 exports.checkSignIn = async (req,res) =>{
@@ -57,8 +59,8 @@ exports.checkSignIn = async (req,res) =>{
             }
         }
             );
-        if(check === null){
-            res.status(404).json({success:false , message:"response 404 (User not found)"});
+        if(!check.length){
+            res.status(200).json({success:false , message:"response 404 (User not found)"});
         }
         else{
             try{
@@ -72,21 +74,23 @@ exports.checkSignIn = async (req,res) =>{
                 if(result.length){
                     Bcrypt.compare(userPassword , result[0].userPassword ,(err ,result)=>{
                         if(result){
-                            res.json({success:true,message:"User signed in" , token:generateToken(id,isPremium)});
+                            res.status(200).json({success:true,message:"User signed in" , token:generateToken(id,isPremium)});
                         }
                         else{
-                            res.json({success:false , message:"response 401 (User not authorized)"});
+                            res.status(401).json({success:false , message:"response 401 (User not authorized)"});
                         }
                     })
                    
                 }
             }
             catch(err){
+                res.status(403).json({success : false , message : "Unable to find user email"})
                 console.log(err);
             }
         }
     }
     catch(err){
+        res.status(403).json({success : false , message : "Unable to find user email"})
         console.log(err);
     }
 }

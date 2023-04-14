@@ -36,7 +36,7 @@ exports.forgotPassword = async(req,res) =>{
                 const transEmailApi = new sib.TransactionalEmailsApi();
 
                 const sender = {
-                    email : 'anirudhatole@gmail.com'
+                    email : process.env.EMAIL
                 }
 
                 const receiver = [
@@ -52,14 +52,15 @@ exports.forgotPassword = async(req,res) =>{
                     htmlContent : `<a href="http://localhost:5000/password/resetpassword/${uuid}">Reset password</a>`
                 })
                 await t.commit();
-                res.json({sucess:true , messageId : result})
+                res.status(200).json({sucess:true , messageId : result})
             }
             else{
                 await t.rollback();
-                res.json({sucess:false , message:'No user present with this email'})
+                res.status(403).json({sucess:false , message:'No user present with this email'})
             }
         }
         catch(err){
+            res.status(403).json({success:false , message : 'Something went wrong'})
             console.log(err)
         }
     
@@ -198,6 +199,7 @@ exports.updatePassword = async(req,res) =>{
     }
     catch(err){
         await t.rollback();
+        res.status(403).json({success:false , message:'Something went wrong'});
         console.log(err);
     }
 }
