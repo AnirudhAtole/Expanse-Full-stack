@@ -31,17 +31,17 @@
                   <form id="my-form" class="text-center">
 
                     <div class="form-outline mb-4">
-                      <input type="number" id="expanse-amount" class="form-control"/>
+                      <input type="number" id="expanse-amount" class="form-control" min="0" required/>
                       <label class="form-label" for="expanse-amount">Expanse amount</label>
                     </div>
 
                     <div class="form-outline mb-4">
-                      <input type="text" id="desc" class="form-control">
+                      <input type="text" id="desc" class="form-control" required/>
                       <label class="form-label" for="desc">Description</label>
                     </div>
   
                     <div class="form-outline mb-4">
-                        <select class="form-control" id="category">
+                        <select class="form-control" id="category" >
                             <option value="Food">Food</option>
                             <option value="Petrol">Petrol</option>
                             <option value="Salary">Salary</option>
@@ -64,8 +64,11 @@
   </section>
 
   <div class="container py-3 text-right"> 
-    <input type="number" placeholder="enter number of entries you want" id="numofentries"> 
-    <button class="btn" id="numofentriesbtn">change entries</button>
+    <!-- <input type="number" placeholder="enter number of entries you want" min="1" id="numofentries"> 
+    <button class="btn" id="numofentriesbtn">change entries</button> -->
+        <label for="formControlRange">Numbers of entries</label>
+        <input type="range" class="form-control-range" id="formControlRange" min="5" max="50" value="5" step="5">
+        <span id="showEntries">5</span>
   </div>
   
 

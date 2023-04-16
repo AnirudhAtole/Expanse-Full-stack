@@ -52,7 +52,7 @@ exports.forgotPassword = async(req,res) =>{
                     htmlContent : `<a href="http://localhost:5000/password/resetpassword/${uuid}">Reset password</a>`
                 })
                 await t.commit();
-                res.status(200).json({sucess:true , messageId : result})
+                res.status(200).json({sucess:true , messageId : "Email sent succesfully "})
             }
             else{
                 await t.rollback();
@@ -104,20 +104,16 @@ exports.resetPassword = async (req,res) => {
                             </div>
             
                             <form id="my-form" class="text-center">
-
                                 <div class="form-outline mb-4">
                                 <input type="password" id="pass1" class="form-control"
                                     placeholder="Enter new password" />
                                 <label class="form-label" for="email">Enter new Password</label>
                                 </div>
-
                                 <div class="form-outline mb-4">
                                     <input type="password" id="pass2" class="form-control"
                                     placeholder="Confirm Password" />
                                     <label class="form-label" for="email">Enter password again</label>
                                 </div>
-
-
                                 <div class="row">
                                 <div class="col-sm-12 text-center pt-1 mb-5 pb-1">
                                     <button class="btn btn-info btn-block fa-lg gradient-custom-2 mb-3" type="submit">Confirm</button>
@@ -137,12 +133,10 @@ exports.resetPassword = async (req,res) => {
             <script>
                 const form = document.getElementById("my-form");
                 form.addEventListener("submit",formSubmit);
-
                 async function formSubmit(e){
                     e.preventDefault();
                     const pass1 = document.getElementById('pass1').value;
                     const pass2 = document.getElementById('pass2').value;
-
                     if(pass1 === pass2){
                     const result = await axios.post("http://localhost:5000/password/updatePassword/${id}" ,{password:pass1});
                     if(result.data.success){

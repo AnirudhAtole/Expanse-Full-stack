@@ -1,6 +1,6 @@
-let sign = document.getElementById('signIn');
+let sign = document.getElementById('my-form');
 
-sign.addEventListener('click',(e) =>{
+sign.addEventListener('submit',(e) =>{
     e.preventDefault()
     user ={}
     user.userEmail = document.getElementById('signemail').value;

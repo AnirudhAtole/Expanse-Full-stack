@@ -10,9 +10,13 @@ exports.addUser = async (req,res) =>{
         const userEmail = req.body.userEmail;
         const userPassword = req.body.userPassword;
     
-        let result = await User.findByPk(userEmail);
+        let result = await User.findOne({
+            where:{
+                userEmail : userEmail
+            }
+        });
         if(result){
-            res.status(400).json({success:false , message:"UserEmail already exists"});
+            res.status(200).json({success:false , message:"UserEmail already exists"});
         }
         else{
             try{
@@ -74,10 +78,11 @@ exports.checkSignIn = async (req,res) =>{
                 if(result.length){
                     Bcrypt.compare(userPassword , result[0].userPassword ,(err ,result)=>{
                         if(result){
+                            console.log("IM IN")
                             res.status(200).json({success:true,message:"User signed in" , token:generateToken(id,isPremium)});
                         }
                         else{
-                            res.status(401).json({success:false , message:"response 401 (User not authorized)"});
+                            res.status(200).json({success:false , message:"User not authorized"});
                         }
                     })
                    

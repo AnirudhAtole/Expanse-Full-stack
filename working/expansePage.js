@@ -6,7 +6,6 @@ const leader = document.getElementById('leader');
 const showReport = document.getElementById('report');
 my_form.addEventListener('submit',save_expanse);
 const pagination = document.getElementById('pagination');
-const numOfEntries = document.getElementById('noOfEntries');
 
 showReport.onclick = ()=>{
     window.location.href ='../views/report.html'
@@ -95,7 +94,7 @@ async function getAllExpanses(token,page){
     try{
         let entries = localStorage.getItem('numofentries');
         if(!entries){
-            entries = 10;
+            entries = 5;
         }
         entries = parseInt(entries);
         let response = await axios.get(`http://localhost:5000/expanses?page=${page}&entries=${entries}` , { headers :{"Authorization":token}});
@@ -157,6 +156,13 @@ window.addEventListener("DOMContentLoaded" , ()=>{
     const objUrlParams = new URLSearchParams(Window.location);
     const page = objUrlParams.get('page') || 1;
 
+    const entries = localStorage.getItem('numofentries');
+
+    if(entries){
+        document.getElementById('formControlRange').value = entries;
+        document.getElementById('showEntries').innerHTML = entries;
+    }
+
     const token = localStorage.getItem('token');
     const decoded = parseJwt(token);
     console.log(decoded)
@@ -174,7 +180,6 @@ function save_expanse(e){
     saveExpanse(expanse);
     document.getElementById('expanse-amount').value = "";
     document.getElementById('desc').value = "";
-    document.getElementById('category').value = "";
 }
 
 leader.onclick = async function (e){
@@ -271,9 +276,10 @@ async function getPaginated(page){
 }
 
 
-document.getElementById('numofentriesbtn').onclick =(e)=>{
+document.getElementById('formControlRange').oninput =(e)=>{
     e.preventDefault()
-    const numOfEntries = document.getElementById('numofentries').value;
+    const numOfEntries = document.getElementById('formControlRange').value;
+    document.getElementById('showEntries').innerHTML = numOfEntries;
     localStorage.setItem('numofentries',numOfEntries);
     const token = localStorage.getItem('token');
     outputTable.innerHTML = ''
