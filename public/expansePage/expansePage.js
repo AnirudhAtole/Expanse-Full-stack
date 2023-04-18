@@ -8,7 +8,7 @@ my_form.addEventListener('submit',save_expanse);
 const pagination = document.getElementById('pagination');
 
 showReport.onclick = ()=>{
-    window.location.href ='../views/report.html'
+    window.location.href ='../report/report.html'; 
 }
 premium.onclick  = async function (e){
     const token = localStorage.getItem('token');

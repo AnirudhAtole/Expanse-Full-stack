@@ -14,7 +14,7 @@ async function SignIn(user){
         if(result.data.success){
             localStorage.setItem('token',result.data.token)
             alert(result.data.message);
-            window.location.href = '../views/expansePage.html';
+            window.location.href = '../expansePage/expansePage.html';
         }
         else{
             alert(result.data.message);
