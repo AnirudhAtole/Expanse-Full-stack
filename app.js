@@ -1,7 +1,7 @@
 require('dotenv').config();
 let express = require('express');
 const bodyParser = require('body-parser');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
@@ -40,7 +40,7 @@ User.hasMany(downloadUrl);
 downloadUrl.belongsTo(User);
 
 app.use(morgan('combined',{stream:accessLog}));
-app.use(helmet());
+// app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(UserRoutes);
@@ -49,6 +49,9 @@ app.use(OrderRoutes);
 app.use(premiumRoutes);
 app.use(passwordRoutes);
 
+app.use((req,res) =>{
+    res.sendFile(path.join(__dirname , `public/${req.url}`));
+})
 
 
 sequelize.sync()
