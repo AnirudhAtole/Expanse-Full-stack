@@ -49,7 +49,7 @@ exports.forgotPassword = async(req,res) =>{
                     sender,
                     to :receiver,
                     subject : 'Regarding password failure',
-                    htmlContent : `<a href="http://localhost:5000/password/resetpassword/${uuid}">Reset password</a>`
+                    htmlContent : `<a href="http://13.53.43.146:5000/password/resetpassword/${uuid}">Reset password</a>`
                 })
                 await t.commit();
                 res.status(200).json({sucess:true , messageId : "Email sent succesfully "})
@@ -85,6 +85,7 @@ exports.resetPassword = async (req,res) => {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Forgot Password</title>
+            <meta http-equiv="Content-Security-policy" content="img-src 'self'  https://img.freepik.com/premium-vector/password-reset-icon-flat-vector-design_116137-4571.jpg?w=2000 'unsafe-inline'; script-src 'self' <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>; "/>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
             </head>
             <body>
@@ -138,7 +139,7 @@ exports.resetPassword = async (req,res) => {
                     const pass1 = document.getElementById('pass1').value;
                     const pass2 = document.getElementById('pass2').value;
                     if(pass1 === pass2){
-                    const result = await axios.post("http://localhost:5000/password/updatePassword/${id}" ,{password:pass1});
+                    const result = await axios.post("http://13.53.43.146:5000/password/updatePassword/${id}" ,{password:pass1});
                     if(result.data.success){
                         alert(result.data.message);
                     }

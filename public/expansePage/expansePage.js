@@ -12,13 +12,13 @@ showReport.onclick = ()=>{
 }
 premium.onclick  = async function (e){
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://localhost:5000/premiumMembership' , {headers : {'Authorization' : token}});
+    const response = await axios.get('http://13.53.43.146:5000/premiumMembership' , {headers : {'Authorization' : token}});
     var options = {
         "key" : response.data.key_id ,
         "order_id" : response.data.order.id,
 
         "handler" : async function (response){
-            const result = await axios.post('http://localhost:5000/updateTransaction' , {
+            const result = await axios.post('http://13.53.43.146:5000/updateTransaction' , {
                 order_id : options.order_id,
                 payment_id : response.razorpay_payment_id,   
             }, {headers : {'Authorization' : token}})
@@ -97,7 +97,7 @@ async function getAllExpanses(token,page){
             entries = 5;
         }
         entries = parseInt(entries);
-        let response = await axios.get(`http://localhost:5000/expanses?page=${page}&entries=${entries}` , { headers :{"Authorization":token}});
+        let response = await axios.get(`http://13.53.43.146:5000/expanses?page=${page}&entries=${entries}` , { headers :{"Authorization":token}});
         const{expanses , ...pageInfo} = response.data;
         expanses.forEach(entry => showExpanse(entry));
         showPagination(pageInfo);
@@ -110,7 +110,7 @@ async function getAllExpanses(token,page){
 
 async function delExpanse(id,li){
     try{
-       const result = await axios.post(`http://localhost:5000/del-expanse/${id}`)
+       const result = await axios.post(`http://13.53.43.146:5000/del-expanse/${id}`)
        if(result.data.success){
         outputTable.removeChild(li);
        }
@@ -127,7 +127,7 @@ async function delExpanse(id,li){
 async function saveExpanse(expanse){
     try{
         const token = localStorage.getItem('token');
-        let result1 = await axios.post('http://localhost:5000/add-expanse',expanse , { headers :{"Authorization":token}});
+        let result1 = await axios.post('http://13.53.43.146:5000/add-expanse',expanse , { headers :{"Authorization":token}});
         console.log(result1)
         if(result1.data.success){
             expanse.id = result1.data.result.id;
@@ -184,7 +184,7 @@ function save_expanse(e){
 
 leader.onclick = async function (e){
     e.preventDefault()
-    const result = await axios.get(`http://localhost:5000/premium/leaderBoard`);
+    const result = await axios.get(`http://13.53.43.146:5000/premium/leaderBoard`);
     if(result.data.success){
         console.log(result.data)
         showUserList(result.data.userList);
@@ -264,7 +264,7 @@ async function getPaginated(page){
             entries = 10;
         }
         entries = parseInt(entries);
-        let response = await axios.get(`http://localhost:5000/expanses?page=${page}&entries=${entries}` , { headers :{"Authorization":token}});
+        let response = await axios.get(`http://13.53.43.146:5000/expanses?page=${page}&entries=${entries}` , { headers :{"Authorization":token}});
         const{expanses , ...pageInfo} = response.data;
         outputTable.innerHTML = "";
         expanses.forEach(entry => showExpanse(entry));
