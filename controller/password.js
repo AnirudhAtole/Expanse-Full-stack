@@ -49,7 +49,7 @@ exports.forgotPassword = async(req,res) =>{
                     sender,
                     to :receiver,
                     subject : 'Regarding password failure',
-                    htmlContent : `<a href="http://13.53.43.146:5000/password/resetpassword/${uuid}">Reset password</a>`
+                    htmlContent : `<a href="http://16.16.159.236:5000/password/resetpassword/${uuid}">Reset password</a>`
                 })
                 await t.commit();
                 res.status(200).json({sucess:true , messageId : "Email sent succesfully "})
@@ -139,7 +139,7 @@ exports.resetPassword = async (req,res) => {
                     const pass1 = document.getElementById('pass1').value;
                     const pass2 = document.getElementById('pass2').value;
                     if(pass1 === pass2){
-                    const result = await axios.post("http://13.53.43.146:5000/password/updatePassword/${id}" ,{password:pass1});
+                    const result = await axios.post("http://16.16.159.236:5000/password/updatePassword/${id}" ,{password:pass1});
                     if(result.data.success){
                         alert(result.data.message);
                     }

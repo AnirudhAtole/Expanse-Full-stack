@@ -10,7 +10,7 @@ sign.addEventListener('submit',(e) =>{
 
 async function SignIn(user){
     try{
-        let result = await axios.post('http://13.53.43.146:5000/signIn',user);
+        let result = await axios.post('http://16.16.159.236:5000/signIn',user);
         if(result.data.success){
             localStorage.setItem('token',result.data.token)
             alert(result.data.message);
