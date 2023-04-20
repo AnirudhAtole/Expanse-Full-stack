@@ -2,10 +2,10 @@ let myForm = document.getElementById('my-form');
 
 async function saveUser(user){
     try{
-        let result = await axios.post('http://localhost:5000/add-User',user);
+        let result = await axios.post('http://16.16.159.236:5000/add-User',user);
         if(result.data.success){
             alert(result.data.message)
-            window.location.href = '../views/login.html';
+            window.location.href = '../login/login.html';
         }
         else{
             alert(result.data.message)

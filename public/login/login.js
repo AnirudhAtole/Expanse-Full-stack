@@ -10,11 +10,11 @@ sign.addEventListener('submit',(e) =>{
 
 async function SignIn(user){
     try{
-        let result = await axios.post('http://localhost:5000/signIn',user);
+        let result = await axios.post('http://16.16.159.236:5000/signIn',user);
         if(result.data.success){
             localStorage.setItem('token',result.data.token)
             alert(result.data.message);
-            window.location.href = '../views/expansePage.html';
+            window.location.href = '../expansePage/expansePage.html';
         }
         else{
             alert(result.data.message);
