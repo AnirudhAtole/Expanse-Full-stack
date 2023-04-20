@@ -49,7 +49,9 @@ app.use(OrderRoutes);
 app.use(premiumRoutes);
 app.use(passwordRoutes);
 
-
+app.use((req,res) =>{
+    res.sendFile(path.join(__dirname , `public/${req.url}`));
+})
 
 sequelize.sync()
 .then(() =>{
