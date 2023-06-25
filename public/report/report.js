@@ -19,7 +19,7 @@ downloadBtn.onclick = async function(e){
     try{
         e.preventDefault();
     const token = localStorage.getItem('token')
-    const response =  await axios.get('http://16.16.159.236:5000/download/getexpanses' , { headers :{"Authorization":token}});
+    const response =  await axios.get('http://localhost:5000/download/getexpanses' , { headers :{"Authorization":token}});
     if(response.data.success){
         const a = document.createElement("a");
         a.href = response.data.fileUrl;
@@ -40,7 +40,7 @@ prevBtn.onclick = async function(e){
     try{
         e.preventDefault();
         const token = localStorage.getItem('token');
-        const response =  await axios.get('http://16.16.159.236:5000/download/alldownloads' , { headers :{"Authorization":token}}); 
+        const response =  await axios.get('http://localhost:5000/download/alldownloads' , { headers :{"Authorization":token}}); 
         if(response.data.success){
             showDownloadList(response.data.urlLists)
         }
@@ -79,7 +79,7 @@ function showDownloadList(downloadList){
 
 async function showDailyExpanses(){
     const token = localStorage.getItem('token')
-    const result = await axios.get('http://16.16.159.236:5000/expanse/todaysExpanse', { headers :{"Authorization":token}});
+    const result = await axios.get('http://localhost:5000/expanse/todaysExpanse', { headers :{"Authorization":token}});
     console.log(result)
     if(result.data.success){
         const expanses = result.data.result;
@@ -104,7 +104,7 @@ async function showDailyExpanses(){
 
 async function showCurrentMonthExpanse(){
     const token = localStorage.getItem('token')
-    const result = await axios.get('http://16.16.159.236:5000/expanse/currentMonthExpanse', { headers :{"Authorization":token}});
+    const result = await axios.get('http://localhost:5000/expanse/currentMonthExpanse', { headers :{"Authorization":token}});
     if(result.data.success){
         const currentMonthExpanse = document.getElementById('currentMonth-entries');
         let sumOfMonth = 0;
@@ -130,7 +130,7 @@ async function showCurrentMonthExpanse(){
 
 async function showYearlyExpanse(){
     const token = localStorage.getItem('token')
-    const result = await axios.get('http://16.16.159.236:5000/expanse/monthlyExpanse', { headers :{"Authorization":token}});
+    const result = await axios.get('http://localhost:5000/expanse/monthlyExpanse', { headers :{"Authorization":token}});
     if(result.data.success){
         const expanses = result.data.result;
         const yearlyExpanse = document.getElementById('yearly-entries');

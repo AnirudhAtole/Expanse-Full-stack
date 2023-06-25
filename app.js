@@ -1,7 +1,7 @@
 require('dotenv').config();
 let express = require('express');
 const bodyParser = require('body-parser');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
@@ -40,7 +40,7 @@ User.hasMany(downloadUrl);
 downloadUrl.belongsTo(User);
 
 app.use(morgan('combined',{stream:accessLog}));
-app.use(helmet());
+// app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(UserRoutes);
