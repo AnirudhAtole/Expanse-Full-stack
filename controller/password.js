@@ -1,33 +1,26 @@
 const sib = require('sib-api-v3-sdk');
-const Uuid = require('uuid');
+
 const ForgotPasswordRequest = require('../models/ForgotPassRequests');
 const User = require('../models/User')
 const Bcrypt = require('bcrypt');
-const sequelize = require('../utils/database');
+
 
 exports.forgotPassword = async(req,res) =>{
-    const t = await sequelize.transaction();
     try{
         const email = req.body.email;
         const user = await User.findOne({
-        where:{
             userEmail : email
-        }
-    }
-        
-        )
+    })
         if(user){
-                //creating uuid and forgotpasswordreq
-                const uuid = Uuid.v4();
-                console.log(uuid)
-                await ForgotPasswordRequest.create({
-                    id : uuid,
+            console.log(user)
+                const frgtPassRequest =  await ForgotPasswordRequest.create({
                     isActive : true,
-                    UserUserId : user.dataValues.userId
-                },{
-                    transaction :t}
+                    UserUserId : user._id.toString()
+                }
                     )
-                
+
+                console.log(frgtPassRequest)
+
                 //sending mail
                 const client = sib.ApiClient.instance;
                 const apiKey = client.authentications['api-key']
@@ -49,13 +42,11 @@ exports.forgotPassword = async(req,res) =>{
                     sender,
                     to :receiver,
                     subject : 'Regarding password failure',
-                    htmlContent : `<a href="http://localhost:5000/password/resetpassword/${uuid}">Reset password</a>`
+                    htmlContent : `<a href="http://localhost:5000/password/resetpassword/${frgtPassRequest._id.toString()}">Reset password</a>`
                 })
-                await t.commit();
                 res.status(200).json({sucess:true , messageId : "Email sent succesfully "})
             }
             else{
-                await t.rollback();
                 res.status(403).json({sucess:false , message:'No user present with this email'})
             }
         }
@@ -70,10 +61,8 @@ exports.resetPassword = async (req,res) => {
     const id = req.params.uuid;
     const validReq = await ForgotPasswordRequest.findOne(
         {
-            where:{
-                id:id,
+                _id:id,
                 isActive : true
-            }
         }
     )
     if(validReq){
@@ -165,15 +154,12 @@ exports.updatePassword = async(req,res) =>{
         const newPassword = req.body.password;
         const resetId = req.params.uuid;
         const frgtPassReq = await ForgotPasswordRequest.findOne({
-            where:{
-                id:resetId
-            }
+                _id:resetId
         })
-        await frgtPassReq.update({isActive:false}, {transaction:t});
+        frgtPassReq.isActive = false;
+        await frgtPassReq.save();
         const user = await User.findOne({
-            where:{
                 UserId : frgtPassReq.UserUserId
-            }
         })
 
         if(user){
@@ -182,17 +168,15 @@ exports.updatePassword = async(req,res) =>{
                     console.log(err);
                     throw new Error(err);
                 }
-                user.update({
-                    userPassword : hash
-                },{transaction:t}).then(async()=>{
+                user.userPassword = hash;
+                user.save()
+                .then(async()=>{
                     res.status(201).json({success:true , message:'password updated succesfully'});
-                    await t.commit()
                 })
             })
         }
     }
     catch(err){
-        await t.rollback();
         res.status(403).json({success:false , message:'Something went wrong'});
         console.log(err);
     }

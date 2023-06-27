@@ -4,11 +4,11 @@ const User = require('../models/User');
 exports.authenticate = async (req,res, next) =>{
     try{
         const token = req.header("Authorization");
+        console.log(token)
         const Id = jwt.verify(token,process.env.JWT_SECRET_KEY)
-        console.log(Id)
-        console.log(Id.userId)
-        const userId = await User.findByPk(Id.userId);
+        const userId = await User.findById(Id.userId);
         req.user =  userId;
+        console.log(userId)
         next();
     }
     catch(err){

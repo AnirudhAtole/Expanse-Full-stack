@@ -1,17 +1,16 @@
 const Expanse = require('../models/Expanse');
 const User = require('../models/User');
-const sequelize = require('../utils/database');
 const DownloadUrls = require('../models/downloadUrl');
 const S3services = require('../services/S3services');
-const { QueryTypes } = require('sequelize');
 
 exports.getExpanses = async (req,res,next) =>{
     // req.user.getExpanse()
     const page = +req.query.page || 1;
     const EXPANSE_PER_PAGE = +req.query.entries;
     try{
-        const totalItems = await Expanse.count({where:{UserUserId : req.user.dataValues.userId}});
-        const result = await Expanse.findAll({where:{UserUserId : req.user.dataValues.userId} , offset : (page-1) * EXPANSE_PER_PAGE , limit:EXPANSE_PER_PAGE});
+        const totalItems = await Expanse.count({UserUserId : req.user._id.toString()});
+        const result = await Expanse.find({UserUserId : req.user._id.toString()}).skip((page-1) * EXPANSE_PER_PAGE).limit(EXPANSE_PER_PAGE);
+        console.log(result);
         res.status(200).json({
             expanses : result,
             currentPage : page,
@@ -29,9 +28,8 @@ exports.getExpanses = async (req,res,next) =>{
 }
 
 exports.addExpanse = async (req,res,next) =>{
-    const t = await sequelize.transaction();
     try{
-    const amount = req.body.amount;
+    const amount = parseInt(req.body.amount);
     const description = req.body.description;
     const category = req.body.category;
     const promise1 = Expanse.create(
@@ -39,46 +37,39 @@ exports.addExpanse = async (req,res,next) =>{
             amount:amount,
             description:description,
             category:category,
-            UserUserId : req.user.dataValues.userId
-        },
-        {
-            transaction:t
+            UserUserId : req.user._id.toString()
         }
      )
+    console.log(req.user)
+    req.user.totalExpanse = req.user.totalExpanse + amount;
 
-    const promise2 = User.increment('totalExpanse' , {by : amount , where :{ userId : req.user.dataValues.userId}, transaction:t})
+    const promise2 = req.user.save();
 
     const result = await Promise.all([promise1,promise2])
-    await t.commit()
+    console.log(result);
     res.status(200).json({success:true , result:result});
     }
     catch(err){
         console.log(err)
         res.status(400).json({success:false})
-        await t.rollback();
     }
 }
 
 exports.delExpanse = async (req , res , next) =>{
-    const t = await sequelize.transaction();
     try{
+    
     const expanseId = req.params.id;
-    const expanse = await Expanse.findByPk(expanseId)
-    const amount = expanse.dataValues.amount;
-    const userId = expanse.dataValues.UserUserId;
-    const promise1 =  User.increment('totalExpanse' , {by : -amount , where :{ userId : userId} , transaction:t});
-    const promise2 = Expanse.destroy({
-        where:{
-            id:expanseId
-        },
-        transaction:t
-    });
+    const expanse = await Expanse.findById(expanseId)
+    console.log(`this is expanse as ${expanse}`)
+    const amount = parseInt(expanse.amount);
+    const user  = await User.findById(expanse.UserUserId.toString());
+    user.totalExpanse = user.totalExpanse - amount;
+    const promise1 = user.save();
+    const promise2 = Expanse.findByIdAndRemove(expanseId);
     await Promise.all([promise1,promise2])
-    await t.commit();
     res.status(200).json({success:true});
     }
     catch(err){
-        await t.rollback();
         res.status(400).json({success:false});
         console.log(err);
     }
@@ -87,10 +78,8 @@ exports.delExpanse = async (req , res , next) =>{
 
 exports.downloadExpanse = async(req,res)=>{
     try{
-        const expanses = await Expanse.findAll({
-            where:{
-                UserUserId : req.user.dataValues.userId
-            }
+        const expanses = await Expanse.find({
+                UserUserId : req.user._id.toString()
         });
         const stringifiedData = JSON.stringify(expanses);
     
@@ -115,10 +104,8 @@ exports.downloadExpanse = async(req,res)=>{
 
 exports.getDownloadUrls = async(req,res) =>{
     try{
-        const urls = await DownloadUrls.findAll ({
-            where:{
+        const urls = await DownloadUrls.find({
                 UserUserId : req.user.dataValues.userId
-            }
         })
         res.status(200).json({urlLists : urls , success : true});
     }
@@ -130,9 +117,9 @@ exports.getDownloadUrls = async(req,res) =>{
 exports.getTodayExpanse = async(req,res) =>{
     try{
         const userId = req.user.userId
-        const result = await sequelize.query(`Select time(createdAt) as time ,category ,description as description , amount 
-        from expanse.expanselists
-        Where date(createdAt) = curdate() and UserUserId = ${userId};`,{ type: QueryTypes.SELECT });
+        // const result = await sequelize.query(`Select time(createdAt) as time ,category ,description as description , amount 
+        // from expanse.expanselists
+        // Where date(createdAt) = curdate() and UserUserId = ${userId};`,{ type: QueryTypes.SELECT });
         res.status(200).json({success:true , result:result});
     }
     catch(err){

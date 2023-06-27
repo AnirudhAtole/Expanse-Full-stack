@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
+const mongoose = require('mongoose');
+
 
 const accessLog = fs.createWriteStream(path.join(__dirname,'accessLog.log') , {flags:'a'});
 
@@ -17,27 +19,6 @@ const OrderRoutes = require('./routes/Orders');
 const premiumRoutes = require('./routes/premium');
 const passwordRoutes = require('./routes/password');
 
-
-const sequelize = require('./utils/database');
-
-const User = require('./models/User');
-const expanse = require('./models/Expanse');
-const Order = require('./models/orders');
-const frgtPassReq = require('./models/ForgotPassRequests');
-const downloadUrl = require('./models/downloadUrl');
-
-
-User.hasMany(expanse);
-expanse.belongsTo(User);
-
-User.hasMany(Order);
-Order.belongsTo(User);
-
-User.hasMany(frgtPassReq);
-frgtPassReq.belongsTo(User);
-
-User.hasMany(downloadUrl);
-downloadUrl.belongsTo(User);
 
 app.use(morgan('combined',{stream:accessLog}));
 // app.use(helmet());
@@ -53,8 +34,9 @@ app.use((req,res) =>{
     res.sendFile(path.join(__dirname , `public/${req.url}`));
 })
 
-sequelize.sync()
-.then(() =>{
-    app.listen(process.env.PORT || 5000);
+mongoose
+.connect(`mongodb+srv://Anirudh:${process.env.PASSWORD}@expanse.i3qgdnl.mongodb.net/shop?retryWrites=true&w=majority`)
+.then(result =>{
+    console.log("connected");
+    app.listen(5000);
 })
-.catch(err => console.log(err));

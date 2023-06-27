@@ -1,19 +1,15 @@
 const User = require('../models/User');
 const Bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const sequelize = require('../utils/database')
 
 exports.addUser = async (req,res) =>{
-    const t = await sequelize.transaction();
     try{
         const userName = req.body.userName;
         const userEmail = req.body.userEmail;
         const userPassword = req.body.userPassword;
     
         let result = await User.findOne({
-            where:{
                 userEmail : userEmail
-            }
         });
         if(result){
             res.status(200).json({success:false , message:"UserEmail already exists"});
@@ -26,16 +22,11 @@ exports.addUser = async (req,res) =>{
                         userName:userName,
                         userEmail:userEmail,
                         userPassword:hash
-                    },
-                    {
-                        transaction:t
                     })
-                    await t.commit();
                     res.status(200).json({success:true , message:"User created succesfully"});
                 })
             }
             catch(err){
-                await t.rollback();
                 res.status(403).json({success:false , message:"Unable to create user"});
                 console.log(err);
             }
@@ -57,26 +48,22 @@ exports.checkSignIn = async (req,res) =>{
     const userPassword = req.body.userPassword;
 
     try{
-        let check = await User.findAll({
-            where:{
+        let check = await User.findOne({
                 userEmail:userEmail
-            }
-        }
-            );
-        if(!check.length){
+        });
+        console.log(check)
+        if(!check){
             res.status(200).json({success:false , message:"response 404 (User not found)"});
         }
         else{
             try{
-                let result = await User.findAll({
-                    where:{
+                let result = await User.findOne({
                         userEmail:userEmail,
-                    }
-                })
-                const id =result[0].userId
-                const isPremium = result[0].isPremium;
-                if(result.length){
-                    Bcrypt.compare(userPassword , result[0].userPassword ,(err ,result)=>{
+                     })
+                const id = result._id.toString()
+                const isPremium = result.isPremium;
+                if(result){
+                    Bcrypt.compare(userPassword , result.userPassword ,(err ,result)=>{
                         if(result){
                             console.log("IM IN")
                             res.status(200).json({success:true,message:"User signed in" , token:generateToken(id,isPremium)});

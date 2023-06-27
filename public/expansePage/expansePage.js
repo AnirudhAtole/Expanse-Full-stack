@@ -58,6 +58,7 @@ function IsPremium(decoded){
 
 
 function showExpanse(obj){
+    console.log(obj)
     let row = document.createElement('tr');
     const entry = {
         category : obj.category,
@@ -84,7 +85,7 @@ function showExpanse(obj){
     row.appendChild(delbtnRow);
 
     outputTable.appendChild(row);
-    let id = obj.id;
+    let id = obj._id;
 
     del_button.onclick =()=> delExpanse(id,row);
 }
@@ -110,7 +111,8 @@ async function getAllExpanses(token,page){
 
 async function delExpanse(id,li){
     try{
-       const result = await axios.post(`http://localhost:5000/del-expanse/${id}`)
+        const token = localStorage.getItem('token');
+        let result = await axios.post(`http://localhost:5000/del-expanse/${id}`, { headers :{"Authorization":token}});
        if(result.data.success){
         outputTable.removeChild(li);
        }
@@ -130,7 +132,7 @@ async function saveExpanse(expanse){
         let result1 = await axios.post('http://localhost:5000/add-expanse',expanse , { headers :{"Authorization":token}});
         console.log(result1)
         if(result1.data.success){
-            expanse.id = result1.data.result.id;
+            expanse.id = result1.data.result._id;
             showExpanse(expanse);
         }
         else{
