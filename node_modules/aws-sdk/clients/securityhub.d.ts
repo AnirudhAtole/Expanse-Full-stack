@@ -28,6 +28,14 @@ declare class SecurityHub extends Service {
    */
   acceptInvitation(callback?: (err: AWSError, data: SecurityHub.Types.AcceptInvitationResponse) => void): Request<SecurityHub.Types.AcceptInvitationResponse, AWSError>;
   /**
+   *  Deletes one or more automation rules. 
+   */
+  batchDeleteAutomationRules(params: SecurityHub.Types.BatchDeleteAutomationRulesRequest, callback?: (err: AWSError, data: SecurityHub.Types.BatchDeleteAutomationRulesResponse) => void): Request<SecurityHub.Types.BatchDeleteAutomationRulesResponse, AWSError>;
+  /**
+   *  Deletes one or more automation rules. 
+   */
+  batchDeleteAutomationRules(callback?: (err: AWSError, data: SecurityHub.Types.BatchDeleteAutomationRulesResponse) => void): Request<SecurityHub.Types.BatchDeleteAutomationRulesResponse, AWSError>;
+  /**
    * Disables the standards specified by the provided StandardsSubscriptionArns. For more information, see Security Standards section of the Security Hub User Guide.
    */
   batchDisableStandards(params: SecurityHub.Types.BatchDisableStandardsRequest, callback?: (err: AWSError, data: SecurityHub.Types.BatchDisableStandardsResponse) => void): Request<SecurityHub.Types.BatchDisableStandardsResponse, AWSError>;
@@ -43,6 +51,14 @@ declare class SecurityHub extends Service {
    * Enables the standards specified by the provided StandardsArn. To obtain the ARN for a standard, use the DescribeStandards operation. For more information, see the Security Standards section of the Security Hub User Guide.
    */
   batchEnableStandards(callback?: (err: AWSError, data: SecurityHub.Types.BatchEnableStandardsResponse) => void): Request<SecurityHub.Types.BatchEnableStandardsResponse, AWSError>;
+  /**
+   *  Retrieves a list of details for automation rules based on rule Amazon Resource Names (ARNs). 
+   */
+  batchGetAutomationRules(params: SecurityHub.Types.BatchGetAutomationRulesRequest, callback?: (err: AWSError, data: SecurityHub.Types.BatchGetAutomationRulesResponse) => void): Request<SecurityHub.Types.BatchGetAutomationRulesResponse, AWSError>;
+  /**
+   *  Retrieves a list of details for automation rules based on rule Amazon Resource Names (ARNs). 
+   */
+  batchGetAutomationRules(callback?: (err: AWSError, data: SecurityHub.Types.BatchGetAutomationRulesResponse) => void): Request<SecurityHub.Types.BatchGetAutomationRulesResponse, AWSError>;
   /**
    *  Provides details about a batch of security controls for the current Amazon Web Services account and Amazon Web Services Region. 
    */
@@ -68,6 +84,14 @@ declare class SecurityHub extends Service {
    */
   batchImportFindings(callback?: (err: AWSError, data: SecurityHub.Types.BatchImportFindingsResponse) => void): Request<SecurityHub.Types.BatchImportFindingsResponse, AWSError>;
   /**
+   *  Updates one or more automation rules based on rule Amazon Resource Names (ARNs) and input parameters. 
+   */
+  batchUpdateAutomationRules(params: SecurityHub.Types.BatchUpdateAutomationRulesRequest, callback?: (err: AWSError, data: SecurityHub.Types.BatchUpdateAutomationRulesResponse) => void): Request<SecurityHub.Types.BatchUpdateAutomationRulesResponse, AWSError>;
+  /**
+   *  Updates one or more automation rules based on rule Amazon Resource Names (ARNs) and input parameters. 
+   */
+  batchUpdateAutomationRules(callback?: (err: AWSError, data: SecurityHub.Types.BatchUpdateAutomationRulesResponse) => void): Request<SecurityHub.Types.BatchUpdateAutomationRulesResponse, AWSError>;
+  /**
    * Used by Security Hub customers to update information about their investigation into a finding. Requested by administrator accounts or member accounts. Administrator accounts can update findings for their account and their member accounts. Member accounts can update findings for their account. Updates from BatchUpdateFindings do not affect the value of UpdatedAt for a finding. Administrator and member accounts can use BatchUpdateFindings to update the following finding fields and objects.    Confidence     Criticality     Note     RelatedFindings     Severity     Types     UserDefinedFields     VerificationState     Workflow    You can configure IAM policies to restrict access to fields and field values. For example, you might not want member accounts to be able to suppress findings or change the finding severity. See Configuring access to BatchUpdateFindings in the Security Hub User Guide.
    */
   batchUpdateFindings(params: SecurityHub.Types.BatchUpdateFindingsRequest, callback?: (err: AWSError, data: SecurityHub.Types.BatchUpdateFindingsResponse) => void): Request<SecurityHub.Types.BatchUpdateFindingsResponse, AWSError>;
@@ -91,6 +115,14 @@ declare class SecurityHub extends Service {
    * Creates a custom action target in Security Hub. You can use custom actions on findings and insights in Security Hub to trigger target actions in Amazon CloudWatch Events.
    */
   createActionTarget(callback?: (err: AWSError, data: SecurityHub.Types.CreateActionTargetResponse) => void): Request<SecurityHub.Types.CreateActionTargetResponse, AWSError>;
+  /**
+   *  Creates an automation rule based on input parameters. 
+   */
+  createAutomationRule(params: SecurityHub.Types.CreateAutomationRuleRequest, callback?: (err: AWSError, data: SecurityHub.Types.CreateAutomationRuleResponse) => void): Request<SecurityHub.Types.CreateAutomationRuleResponse, AWSError>;
+  /**
+   *  Creates an automation rule based on input parameters. 
+   */
+  createAutomationRule(callback?: (err: AWSError, data: SecurityHub.Types.CreateAutomationRuleResponse) => void): Request<SecurityHub.Types.CreateAutomationRuleResponse, AWSError>;
   /**
    * Used to enable finding aggregation. Must be called from the aggregation Region. For more details about cross-Region replication, see Configuring finding aggregation in the Security Hub User Guide. 
    */
@@ -308,6 +340,14 @@ declare class SecurityHub extends Service {
    */
   getFindingAggregator(callback?: (err: AWSError, data: SecurityHub.Types.GetFindingAggregatorResponse) => void): Request<SecurityHub.Types.GetFindingAggregatorResponse, AWSError>;
   /**
+   *  Returns history for a Security Hub finding in the last 90 days. The history includes changes made to any fields in the Amazon Web Services Security Finding Format (ASFF). 
+   */
+  getFindingHistory(params: SecurityHub.Types.GetFindingHistoryRequest, callback?: (err: AWSError, data: SecurityHub.Types.GetFindingHistoryResponse) => void): Request<SecurityHub.Types.GetFindingHistoryResponse, AWSError>;
+  /**
+   *  Returns history for a Security Hub finding in the last 90 days. The history includes changes made to any fields in the Amazon Web Services Security Finding Format (ASFF). 
+   */
+  getFindingHistory(callback?: (err: AWSError, data: SecurityHub.Types.GetFindingHistoryResponse) => void): Request<SecurityHub.Types.GetFindingHistoryResponse, AWSError>;
+  /**
    * Returns a list of findings that match the specified criteria. If finding aggregation is enabled, then when you call GetFindings from the aggregation Region, the results include all of the matching findings from both the aggregation Region and the linked Regions.
    */
   getFindings(params: SecurityHub.Types.GetFindingsRequest, callback?: (err: AWSError, data: SecurityHub.Types.GetFindingsResponse) => void): Request<SecurityHub.Types.GetFindingsResponse, AWSError>;
@@ -363,6 +403,14 @@ declare class SecurityHub extends Service {
    * Invites other Amazon Web Services accounts to become member accounts for the Security Hub administrator account that the invitation is sent from. This operation is only used to invite accounts that do not belong to an organization. Organization accounts do not receive invitations. Before you can use this action to invite a member, you must first use the CreateMembers action to create the member account in Security Hub. When the account owner enables Security Hub and accepts the invitation to become a member account, the administrator account can view the findings generated from the member account.
    */
   inviteMembers(callback?: (err: AWSError, data: SecurityHub.Types.InviteMembersResponse) => void): Request<SecurityHub.Types.InviteMembersResponse, AWSError>;
+  /**
+   *  A list of automation rules and their metadata for the calling account. 
+   */
+  listAutomationRules(params: SecurityHub.Types.ListAutomationRulesRequest, callback?: (err: AWSError, data: SecurityHub.Types.ListAutomationRulesResponse) => void): Request<SecurityHub.Types.ListAutomationRulesResponse, AWSError>;
+  /**
+   *  A list of automation rules and their metadata for the calling account. 
+   */
+  listAutomationRules(callback?: (err: AWSError, data: SecurityHub.Types.ListAutomationRulesResponse) => void): Request<SecurityHub.Types.ListAutomationRulesResponse, AWSError>;
   /**
    * Lists all findings-generating solutions (products) that you are subscribed to receive findings from in Security Hub.
    */
@@ -560,6 +608,7 @@ declare namespace SecurityHub {
      */
     PortProbeAction?: PortProbeAction;
   }
+  export type ActionList = AutomationRulesAction[];
   export interface ActionLocalIpDetails {
     /**
      * The IP address.
@@ -694,6 +743,275 @@ declare namespace SecurityHub {
   }
   export type AssociationStatus = "ENABLED"|"DISABLED"|string;
   export type AutoEnableStandards = "NONE"|"DEFAULT"|string;
+  export interface AutomationRulesAction {
+    /**
+     *  Specifies that the rule action should update the Types finding field. The Types finding field provides one or more finding types in the format of namespace/category/classifier that classify a finding. For more information, see Types taxonomy for ASFF in the Security Hub User Guide. 
+     */
+    Type?: AutomationRulesActionType;
+    /**
+     *  Specifies that the automation rule action is an update to a finding field. 
+     */
+    FindingFieldsUpdate?: AutomationRulesFindingFieldsUpdate;
+  }
+  export type AutomationRulesActionType = "FINDING_FIELDS_UPDATE"|string;
+  export type AutomationRulesArnsList = NonEmptyString[];
+  export interface AutomationRulesConfig {
+    /**
+     *  The Amazon Resource Name (ARN) of a rule. 
+     */
+    RuleArn?: NonEmptyString;
+    /**
+     *  Whether the rule is active after it is created. If this parameter is equal to &gt;ENABLED, Security Hub will apply the rule to findings and finding updates after the rule is created. 
+     */
+    RuleStatus?: RuleStatus;
+    /**
+     *  An integer ranging from 1 to 1000 that represents the order in which the rule action is applied to findings. Security Hub applies rules with lower values for this parameter first. 
+     */
+    RuleOrder?: RuleOrderValue;
+    /**
+     *  The name of the rule. 
+     */
+    RuleName?: NonEmptyString;
+    /**
+     *  A description of the rule. 
+     */
+    Description?: NonEmptyString;
+    /**
+     * Specifies whether a rule is the last to be applied with respect to a finding that matches the rule criteria. This is useful when a finding matches the criteria for multiple rules, and each rule has different actions. If the value of this field is set to true for a rule, Security Hub applies the rule action to a finding that matches the rule criteria and won't evaluate other rules for the finding.&#x2028; The default value of this field is false. 
+     */
+    IsTerminal?: Boolean;
+    /**
+     *  A set of Amazon Web Services Security Finding Format finding field attributes and corresponding expected values that Security Hub uses to filter findings. If a finding matches the conditions specified in this parameter, Security Hub applies the rule action to the finding. 
+     */
+    Criteria?: AutomationRulesFindingFilters;
+    /**
+     *  One or more actions to update finding fields if a finding matches the defined criteria of the rule. 
+     */
+    Actions?: ActionList;
+    /**
+     *  A timestamp that indicates when the rule was created.  Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces. For example, 2020-03-22T13:22:13.933Z.
+     */
+    CreatedAt?: Timestamp;
+    /**
+     *  A timestamp that indicates when the rule was most recently updated.  Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces. For example, 2020-03-22T13:22:13.933Z.
+     */
+    UpdatedAt?: Timestamp;
+    /**
+     *  The principal that created a rule. 
+     */
+    CreatedBy?: NonEmptyString;
+  }
+  export type AutomationRulesConfigList = AutomationRulesConfig[];
+  export interface AutomationRulesFindingFieldsUpdate {
+    Note?: NoteUpdate;
+    Severity?: SeverityUpdate;
+    /**
+     *  The rule action will update the VerificationState field of a finding. 
+     */
+    VerificationState?: VerificationState;
+    /**
+     *  The rule action will update the Confidence field of a finding. 
+     */
+    Confidence?: RatioScale;
+    /**
+     *  The rule action will update the Criticality field of a finding. 
+     */
+    Criticality?: RatioScale;
+    /**
+     *  The rule action will update the Types field of a finding. 
+     */
+    Types?: TypeList;
+    /**
+     *  The rule action will update the UserDefinedFields field of a finding. 
+     */
+    UserDefinedFields?: FieldMap;
+    Workflow?: WorkflowUpdate;
+    /**
+     *  A list of findings that are related to a finding. 
+     */
+    RelatedFindings?: RelatedFindingList;
+  }
+  export interface AutomationRulesFindingFilters {
+    /**
+     *  The Amazon Resource Name (ARN) for a third-party product that generated a finding in Security Hub. 
+     */
+    ProductArn?: StringFilterList;
+    /**
+     *  The Amazon Web Services account ID in which a finding was generated. 
+     */
+    AwsAccountId?: StringFilterList;
+    /**
+     *  The product-specific identifier for a finding. 
+     */
+    Id?: StringFilterList;
+    /**
+     *  The identifier for the solution-specific component that generated a finding. 
+     */
+    GeneratorId?: StringFilterList;
+    /**
+     *  One or more finding types in the format of namespace/category/classifier that classify a finding. For a list of namespaces, classifiers, and categories, see Types taxonomy for ASFF in the Security Hub User Guide. 
+     */
+    Type?: StringFilterList;
+    /**
+     *  A timestamp that indicates when the potential security issue captured by a finding was first observed by the security findings product.  Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces. For example, 2020-03-22T13:22:13.933Z.
+     */
+    FirstObservedAt?: DateFilterList;
+    /**
+     *  A timestamp that indicates when the potential security issue captured by a finding was most recently observed by the security findings product.  Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces. For example, 2020-03-22T13:22:13.933Z.
+     */
+    LastObservedAt?: DateFilterList;
+    /**
+     *  A timestamp that indicates when this finding record was created.  Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces. For example, 2020-03-22T13:22:13.933Z.
+     */
+    CreatedAt?: DateFilterList;
+    /**
+     *  A timestamp that indicates when the finding record was most recently updated.  Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces. For example, 2020-03-22T13:22:13.933Z.
+     */
+    UpdatedAt?: DateFilterList;
+    /**
+     * The likelihood that a finding accurately identifies the behavior or issue that it was intended to identify. Confidence is scored on a 0–100 basis using a ratio scale. A value of 0 means 0 percent confidence, and a value of 100 means 100 percent confidence. For example, a data exfiltration detection based on a statistical deviation of network traffic has low confidence because an actual exfiltration hasn't been verified. For more information, see Confidence in the Security Hub User Guide. 
+     */
+    Confidence?: NumberFilterList;
+    /**
+     *  The level of importance that is assigned to the resources that are associated with a finding. Criticality is scored on a 0–100 basis, using a ratio scale that supports only full integers. A score of 0 means that the underlying resources have no criticality, and a score of 100 is reserved for the most critical resources. For more information, see Criticality in the Security Hub User Guide.
+     */
+    Criticality?: NumberFilterList;
+    /**
+     *  A finding's title. 
+     */
+    Title?: StringFilterList;
+    /**
+     *  A finding's description. 
+     */
+    Description?: StringFilterList;
+    /**
+     *  Provides a URL that links to a page about the current finding in the finding product. 
+     */
+    SourceUrl?: StringFilterList;
+    /**
+     *  Provides the name of the product that generated the finding. For control-based findings, the product name is Security Hub. 
+     */
+    ProductName?: StringFilterList;
+    /**
+     *  The name of the company for the product that generated the finding. For control-based findings, the company is Amazon Web Services. 
+     */
+    CompanyName?: StringFilterList;
+    /**
+     *  The severity value of the finding. 
+     */
+    SeverityLabel?: StringFilterList;
+    /**
+     *  The type of resource that the finding pertains to. 
+     */
+    ResourceType?: StringFilterList;
+    /**
+     *  The identifier for the given resource type. For Amazon Web Services resources that are identified by Amazon Resource Names (ARNs), this is the ARN. For Amazon Web Services resources that lack ARNs, this is the identifier as defined by the Amazon Web Service that created the resource. For non-Amazon Web Services resources, this is a unique identifier that is associated with the resource. 
+     */
+    ResourceId?: StringFilterList;
+    /**
+     *  The partition in which the resource that the finding pertains to is located. A partition is a group of Amazon Web Services Regions. Each Amazon Web Services account is scoped to one partition. 
+     */
+    ResourcePartition?: StringFilterList;
+    /**
+     *  The Amazon Web Services Region where the resource that a finding pertains to is located. 
+     */
+    ResourceRegion?: StringFilterList;
+    /**
+     *  A list of Amazon Web Services tags associated with a resource at the time the finding was processed. 
+     */
+    ResourceTags?: MapFilterList;
+    /**
+     *  Custom fields and values about the resource that a finding pertains to. 
+     */
+    ResourceDetailsOther?: MapFilterList;
+    /**
+     *  The result of a security check. This field is only used for findings generated from controls. 
+     */
+    ComplianceStatus?: StringFilterList;
+    /**
+     *  The security control ID for which a finding was generated. Security control IDs are the same across standards.
+     */
+    ComplianceSecurityControlId?: StringFilterList;
+    /**
+     * The unique identifier of a standard in which a control is enabled. This field consists of the resource portion of the Amazon Resource Name (ARN) returned for a standard in the DescribeStandards API response.
+     */
+    ComplianceAssociatedStandardsId?: StringFilterList;
+    /**
+     *  Provides the veracity of a finding. 
+     */
+    VerificationState?: StringFilterList;
+    /**
+     *  Provides information about the status of the investigation into a finding. 
+     */
+    WorkflowStatus?: StringFilterList;
+    /**
+     *  Provides the current state of a finding. 
+     */
+    RecordState?: StringFilterList;
+    /**
+     *  The ARN for the product that generated a related finding. 
+     */
+    RelatedFindingsProductArn?: StringFilterList;
+    /**
+     *  The product-generated identifier for a related finding. 
+     */
+    RelatedFindingsId?: StringFilterList;
+    /**
+     *  The text of a user-defined note that's added to a finding. 
+     */
+    NoteText?: StringFilterList;
+    /**
+     *  The timestamp of when the note was updated. Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces. For example, 2020-03-22T13:22:13.933Z. 
+     */
+    NoteUpdatedAt?: DateFilterList;
+    /**
+     *  The principal that created a note. 
+     */
+    NoteUpdatedBy?: StringFilterList;
+    /**
+     *  A list of user-defined name and value string pairs added to a finding. 
+     */
+    UserDefinedFields?: MapFilterList;
+  }
+  export interface AutomationRulesMetadata {
+    /**
+     *  The Amazon Resource Name (ARN) for the rule. 
+     */
+    RuleArn?: NonEmptyString;
+    /**
+     *  Whether the rule is active after it is created. If this parameter is equal to ENABLED, Security Hub will apply the rule to findings and finding updates after the rule is created. To change the value of this parameter after creating a rule, use BatchUpdateAutomationRules. 
+     */
+    RuleStatus?: RuleStatus;
+    /**
+     * An integer ranging from 1 to 1000 that represents the order in which the rule action is applied to findings. Security Hub applies rules with lower values for this parameter first. 
+     */
+    RuleOrder?: RuleOrderValue;
+    /**
+     *  The name of the rule. 
+     */
+    RuleName?: NonEmptyString;
+    /**
+     *  A description of the rule. 
+     */
+    Description?: NonEmptyString;
+    /**
+     *  Specifies whether a rule is the last to be applied with respect to a finding that matches the rule criteria. This is useful when a finding matches the criteria for multiple rules, and each rule has different actions. If the value of this field is set to true for a rule, Security Hub applies the rule action to a finding that matches the rule criteria and won't evaluate other rules for the finding.&#x2028; The default value of this field is false. 
+     */
+    IsTerminal?: Boolean;
+    /**
+     *  A timestamp that indicates when the rule was created.  Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces. For example, 2020-03-22T13:22:13.933Z.
+     */
+    CreatedAt?: Timestamp;
+    /**
+     *  A timestamp that indicates when the rule was most recently updated.  Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces. For example, 2020-03-22T13:22:13.933Z.
+     */
+    UpdatedAt?: Timestamp;
+    /**
+     *  The principal that created a rule. 
+     */
+    CreatedBy?: NonEmptyString;
+  }
+  export type AutomationRulesMetadataList = AutomationRulesMetadata[];
   export interface AvailabilityZone {
     /**
      * The name of the Availability Zone.
@@ -705,6 +1023,189 @@ declare namespace SecurityHub {
     SubnetId?: NonEmptyString;
   }
   export type AvailabilityZones = AvailabilityZone[];
+  export interface AwsAmazonMqBrokerDetails {
+    /**
+     *  The authentication strategy used to secure the broker. The default is SIMPLE. 
+     */
+    AuthenticationStrategy?: NonEmptyString;
+    /**
+     *  Whether automatically upgrade new minor versions for brokers, as new versions are released and supported by Amazon MQ. Automatic upgrades occur during the scheduled maintenance window of the broker or after a manual broker reboot. 
+     */
+    AutoMinorVersionUpgrade?: Boolean;
+    /**
+     *  The Amazon Resource Name (ARN) of the broker. 
+     */
+    BrokerArn?: NonEmptyString;
+    /**
+     * The broker's name. 
+     */
+    BrokerName?: NonEmptyString;
+    /**
+     *  The broker's deployment mode. 
+     */
+    DeploymentMode?: NonEmptyString;
+    /**
+     *  Encryption options for the broker. Doesn’t apply to RabbitMQ brokers. 
+     */
+    EncryptionOptions?: AwsAmazonMqBrokerEncryptionOptionsDetails;
+    /**
+     *  The type of broker engine. 
+     */
+    EngineType?: NonEmptyString;
+    /**
+     *  The version of the broker engine. 
+     */
+    EngineVersion?: NonEmptyString;
+    /**
+     *  The broker's instance type. 
+     */
+    HostInstanceType?: NonEmptyString;
+    /**
+     *  The unique ID that Amazon MQ generates for the broker. 
+     */
+    BrokerId?: NonEmptyString;
+    /**
+     *  The metadata of the Lightweight Directory Access Protocol (LDAP) server used to authenticate and authorize connections to the broker. This is an optional failover server. 
+     */
+    LdapServerMetadata?: AwsAmazonMqBrokerLdapServerMetadataDetails;
+    /**
+     *  Turns on Amazon CloudWatch logging for brokers. 
+     */
+    Logs?: AwsAmazonMqBrokerLogsDetails;
+    /**
+     *  The scheduled time period (UTC) during which Amazon MQ begins to apply pending updates or patches to the broker. 
+     */
+    MaintenanceWindowStartTime?: AwsAmazonMqBrokerMaintenanceWindowStartTimeDetails;
+    /**
+     *  Permits connections from applications outside of the VPC that hosts the broker's subnets. 
+     */
+    PubliclyAccessible?: Boolean;
+    /**
+     *  The list of rules (one minimum, 125 maximum) that authorize connections to brokers. 
+     */
+    SecurityGroups?: StringList;
+    /**
+     *  The broker's storage type. 
+     */
+    StorageType?: NonEmptyString;
+    /**
+     *  The list of groups that define which subnets and IP ranges the broker can use from different Availability Zones. 
+     */
+    SubnetIds?: StringList;
+    /**
+     *  The list of all broker usernames for the specified broker. Doesn't apply to RabbitMQ brokers. 
+     */
+    Users?: AwsAmazonMqBrokerUsersList;
+  }
+  export interface AwsAmazonMqBrokerEncryptionOptionsDetails {
+    /**
+     *  The KMS key that’s used to encrypt your data at rest. If not provided, Amazon MQ will use a default KMS key to encrypt your data. 
+     */
+    KmsKeyId?: NonEmptyString;
+    /**
+     *  Specifies that an KMS key should be used for at-rest encryption. Set to true by default if no value is provided (for example, for RabbitMQ brokers). 
+     */
+    UseAwsOwnedKey?: Boolean;
+  }
+  export interface AwsAmazonMqBrokerLdapServerMetadataDetails {
+    /**
+     *  Specifies the location of the LDAP server, such as Amazon Web Services Directory Service for Microsoft Active Directory. 
+     */
+    Hosts?: StringList;
+    /**
+     *  The distinguished name of the node in the directory information tree (DIT) to search for roles or groups. 
+     */
+    RoleBase?: NonEmptyString;
+    /**
+     *  The group name attribute in a role entry whose value is the name of that role. 
+     */
+    RoleName?: NonEmptyString;
+    /**
+     *  The LDAP search filter used to find roles within the roleBase. 
+     */
+    RoleSearchMatching?: NonEmptyString;
+    /**
+     *  The directory search scope for the role. If set to true, the scope is to search the entire subtree. 
+     */
+    RoleSearchSubtree?: Boolean;
+    /**
+     *  A username for the service account, which is an account in your LDAP server that has access to initiate a connection. 
+     */
+    ServiceAccountUsername?: NonEmptyString;
+    /**
+     *  Selects a particular subtree of the directory information tree (DIT) to search for user entries. 
+     */
+    UserBase?: NonEmptyString;
+    /**
+     *  The name of the LDAP attribute in the user's directory entry for the user's group membership. 
+     */
+    UserRoleName?: NonEmptyString;
+    /**
+     *  The LDAP search filter used to find users within the userBase. 
+     */
+    UserSearchMatching?: NonEmptyString;
+    /**
+     *  The directory search scope for the user. If set to true, the scope is to search the entire subtree. 
+     */
+    UserSearchSubtree?: Boolean;
+  }
+  export interface AwsAmazonMqBrokerLogsDetails {
+    /**
+     *  Activates audit logging. Every user management action made using JMX or the ActiveMQ Web Console is logged. Doesn't apply to RabbitMQ brokers. 
+     */
+    Audit?: Boolean;
+    /**
+     *  Activates general logging. 
+     */
+    General?: Boolean;
+    /**
+     *  The location of the CloudWatch Logs log group where audit logs are sent. 
+     */
+    AuditLogGroup?: NonEmptyString;
+    /**
+     *  The location of the CloudWatch Logs log group where general logs are sent. 
+     */
+    GeneralLogGroup?: NonEmptyString;
+    /**
+     *  The list of information about logs that are to be turned on for the specified broker. 
+     */
+    Pending?: AwsAmazonMqBrokerLogsPendingDetails;
+  }
+  export interface AwsAmazonMqBrokerLogsPendingDetails {
+    /**
+     *  Activates audit logging. Every user management action made using JMX or the ActiveMQ Web Console is logged. Doesn't apply to RabbitMQ brokers. 
+     */
+    Audit?: Boolean;
+    /**
+     *  Activates general logging. 
+     */
+    General?: Boolean;
+  }
+  export interface AwsAmazonMqBrokerMaintenanceWindowStartTimeDetails {
+    /**
+     *  The day of the week on which the maintenance window falls. 
+     */
+    DayOfWeek?: NonEmptyString;
+    /**
+     *  The time, in 24-hour format, on which the maintenance window falls. 
+     */
+    TimeOfDay?: NonEmptyString;
+    /**
+     *  The time zone in either the Country/City format or the UTC offset format. UTC is the default format. 
+     */
+    TimeZone?: NonEmptyString;
+  }
+  export interface AwsAmazonMqBrokerUsersDetails {
+    /**
+     *  The type of change pending for the broker user. 
+     */
+    PendingChange?: NonEmptyString;
+    /**
+     *  The username of the broker user. 
+     */
+    Username?: NonEmptyString;
+  }
+  export type AwsAmazonMqBrokerUsersList = AwsAmazonMqBrokerUsersDetails[];
   export interface AwsApiCallAction {
     /**
      * The name of the API method that was issued.
@@ -1051,6 +1552,139 @@ declare namespace SecurityHub {
      * Indicates whether the stage is managed by API Gateway.
      */
     ApiGatewayManaged?: Boolean;
+  }
+  export interface AwsAppSyncGraphQlApiAdditionalAuthenticationProvidersDetails {
+    /**
+     *  The type of security configuration for your GraphQL API: API key, Identity and Access Management (IAM), OpenID Connect (OIDC), Amazon Cognito user pools, or Lambda. 
+     */
+    AuthenticationType?: NonEmptyString;
+    /**
+     *  The configuration for Lambda function authorization. 
+     */
+    LambdaAuthorizerConfig?: AwsAppSyncGraphQlApiLambdaAuthorizerConfigDetails;
+    /**
+     *  The OpenID Connect configuration. 
+     */
+    OpenIdConnectConfig?: AwsAppSyncGraphQlApiOpenIdConnectConfigDetails;
+    /**
+     *  The Amazon Cognito user pools configuration. 
+     */
+    UserPoolConfig?: AwsAppSyncGraphQlApiUserPoolConfigDetails;
+  }
+  export type AwsAppSyncGraphQlApiAdditionalAuthenticationProvidersList = AwsAppSyncGraphQlApiAdditionalAuthenticationProvidersDetails[];
+  export interface AwsAppSyncGraphQlApiDetails {
+    /**
+     *  The unique identifier for the API. 
+     */
+    ApiId?: NonEmptyString;
+    /**
+     * The unique identifier for the API.
+     */
+    Id?: NonEmptyString;
+    /**
+     *  Specifies the authorization configuration for using an OpenID Connect compliant service with an AppSync GraphQL API endpoint. 
+     */
+    OpenIdConnectConfig?: AwsAppSyncGraphQlApiOpenIdConnectConfigDetails;
+    /**
+     *  The API name. 
+     */
+    Name?: NonEmptyString;
+    /**
+     *  Specifies the configuration for Lambda function authorization. 
+     */
+    LambdaAuthorizerConfig?: AwsAppSyncGraphQlApiLambdaAuthorizerConfigDetails;
+    /**
+     *  Indicates whether to use X-Ray tracing for the GraphQL API. 
+     */
+    XrayEnabled?: Boolean;
+    /**
+     *  The Amazon Resource Name (ARN) of the API. 
+     */
+    Arn?: NonEmptyString;
+    /**
+     *  The Amazon Cognito user pools configuration. 
+     */
+    UserPoolConfig?: AwsAppSyncGraphQlApiUserPoolConfigDetails;
+    /**
+     *  The type of security configuration for your GraphQL API: API key, Identity and Access Management (IAM), OpenID Connect (OIDC), Amazon Cognito user pools, or Lambda. 
+     */
+    AuthenticationType?: NonEmptyString;
+    /**
+     *  The Amazon CloudWatch Logs configuration. 
+     */
+    LogConfig?: AwsAppSyncGraphQlApiLogConfigDetails;
+    /**
+     *  A list of additional authentication providers for the GraphQL API. 
+     */
+    AdditionalAuthenticationProviders?: AwsAppSyncGraphQlApiAdditionalAuthenticationProvidersList;
+    /**
+     *  The Amazon Resource Name (ARN) of the WAF web access control list (web ACL) associated with this GraphQL API, if one exists. 
+     */
+    WafWebAclArn?: NonEmptyString;
+  }
+  export interface AwsAppSyncGraphQlApiLambdaAuthorizerConfigDetails {
+    /**
+     *  The number of seconds a response should be cached for. The default is 5 minutes (300 seconds). 
+     */
+    AuthorizerResultTtlInSeconds?: Integer;
+    /**
+     *  The Amazon Resource Name (ARN) of the Lambda function to be called for authorization. This can be a standard Lambda ARN, a version ARN (.../v3), or an alias ARN. 
+     */
+    AuthorizerUri?: NonEmptyString;
+    /**
+     *  A regular expression for validation of tokens before the Lambda function is called. 
+     */
+    IdentityValidationExpression?: NonEmptyString;
+  }
+  export interface AwsAppSyncGraphQlApiLogConfigDetails {
+    /**
+     *  The Amazon Resource Name (ARN) of the service role that AppSync assumes to publish to CloudWatch Logs in your account. 
+     */
+    CloudWatchLogsRoleArn?: NonEmptyString;
+    /**
+     *  Set to TRUE to exclude sections that contain information such as headers, context, and evaluated mapping templates, regardless of logging level. 
+     */
+    ExcludeVerboseContent?: Boolean;
+    /**
+     *  The field logging level. 
+     */
+    FieldLogLevel?: NonEmptyString;
+  }
+  export interface AwsAppSyncGraphQlApiOpenIdConnectConfigDetails {
+    /**
+     *  The number of milliseconds that a token is valid after being authenticated. 
+     */
+    AuthTtL?: Long;
+    /**
+     *  The client identifier of the relying party at the OpenID identity provider. This identifier is typically obtained when the relying party is registered with the OpenID identity provider. You can specify a regular expression so that AppSync can validate against multiple client identifiers at a time. 
+     */
+    ClientId?: NonEmptyString;
+    /**
+     *  The number of milliseconds that a token is valid after it's issued to a user. 
+     */
+    IatTtL?: Long;
+    /**
+     *  The issuer for the OIDC configuration. The issuer returned by discovery must exactly match the value of iss in the ID token. 
+     */
+    Issuer?: NonEmptyString;
+  }
+  export interface AwsAppSyncGraphQlApiUserPoolConfigDetails {
+    /**
+     *  A regular expression for validating the incoming Amazon Cognito user pools app client ID. If this value isn't set, no filtering is applied. 
+     */
+    AppIdClientRegex?: NonEmptyString;
+    /**
+     *  The Amazon Web Services Region in which the user pool was created. 
+     */
+    AwsRegion?: NonEmptyString;
+    /**
+     *  The action that you want your GraphQL API to take when a request that uses Amazon Cognito user pools authentication doesn't match the Amazon Cognito user pools configuration. 
+     */
+    DefaultAction?: NonEmptyString;
+    /**
+     *  The user pool ID. 
+     */
+    UserPoolId?: NonEmptyString;
   }
   export type AwsAutoScalingAutoScalingGroupAvailabilityZonesList = AwsAutoScalingAutoScalingGroupAvailabilityZonesListDetails[];
   export interface AwsAutoScalingAutoScalingGroupAvailabilityZonesListDetails {
@@ -6119,6 +6753,141 @@ declare namespace SecurityHub {
      */
     LoadBalancerAttributes?: AwsElbv2LoadBalancerAttributes;
   }
+  export interface AwsEventSchemasRegistryDetails {
+    /**
+     *  A description of the registry to be created. 
+     */
+    Description?: NonEmptyString;
+    /**
+     *  The Amazon Resource Name (ARN) of the registry. 
+     */
+    RegistryArn?: NonEmptyString;
+    /**
+     *  The name of the schema registry. 
+     */
+    RegistryName?: NonEmptyString;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesCloudTrailDetails {
+    /**
+     *  Specifies whether CloudTrail is activated as a data source for the detector. 
+     */
+    Status?: NonEmptyString;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesDetails {
+    /**
+     *  An object that contains information on the status of CloudTrail as a data source for the detector. 
+     */
+    CloudTrail?: AwsGuardDutyDetectorDataSourcesCloudTrailDetails;
+    /**
+     *  An object that contains information on the status of DNS logs as a data source for the detector. 
+     */
+    DnsLogs?: AwsGuardDutyDetectorDataSourcesDnsLogsDetails;
+    /**
+     *  An object that contains information on the status of VPC Flow Logs as a data source for the detector. 
+     */
+    FlowLogs?: AwsGuardDutyDetectorDataSourcesFlowLogsDetails;
+    /**
+     *  An object that contains information on the status of Kubernetes data sources for the detector. 
+     */
+    Kubernetes?: AwsGuardDutyDetectorDataSourcesKubernetesDetails;
+    /**
+     *  An object that contains information on the status of Malware Protection as a data source for the detector. 
+     */
+    MalwareProtection?: AwsGuardDutyDetectorDataSourcesMalwareProtectionDetails;
+    /**
+     *  An object that contains information on the status of S3 Data event logs as a data source for the detector. 
+     */
+    S3Logs?: AwsGuardDutyDetectorDataSourcesS3LogsDetails;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesDnsLogsDetails {
+    /**
+     *  Describes whether DNS logs is enabled as a data source for the detector. 
+     */
+    Status?: NonEmptyString;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesFlowLogsDetails {
+    /**
+     *  Describes whether VPC Flow Logs are activated as a data source for the detector. 
+     */
+    Status?: NonEmptyString;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesKubernetesAuditLogsDetails {
+    /**
+     *  Describes whether Kubernetes audit logs are activated as a data source for the detector. 
+     */
+    Status?: NonEmptyString;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesKubernetesDetails {
+    /**
+     *  Describes whether Kubernetes audit logs are activated as a data source for the detector. 
+     */
+    AuditLogs?: AwsGuardDutyDetectorDataSourcesKubernetesAuditLogsDetails;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesMalwareProtectionDetails {
+    /**
+     *  Describes the configuration of Malware Protection for EC2 instances with findings. 
+     */
+    ScanEc2InstanceWithFindings?: AwsGuardDutyDetectorDataSourcesMalwareProtectionScanEc2InstanceWithFindingsDetails;
+    /**
+     *  The GuardDuty Malware Protection service role. 
+     */
+    ServiceRole?: NonEmptyString;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesMalwareProtectionScanEc2InstanceWithFindingsDetails {
+    /**
+     *  Describes the configuration of scanning EBS volumes (Malware Protection) as a data source. 
+     */
+    EbsVolumes?: AwsGuardDutyDetectorDataSourcesMalwareProtectionScanEc2InstanceWithFindingsEbsVolumesDetails;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesMalwareProtectionScanEc2InstanceWithFindingsEbsVolumesDetails {
+    /**
+     *  Specifies the reason why scanning EBS volumes (Malware Protection) isn’t activated as a data source. 
+     */
+    Reason?: NonEmptyString;
+    /**
+     *  Describes whether scanning EBS volumes is activated as a data source for the detector. 
+     */
+    Status?: NonEmptyString;
+  }
+  export interface AwsGuardDutyDetectorDataSourcesS3LogsDetails {
+    /**
+     *  A value that describes whether S3 data event logs are automatically enabled for new members of an organization. 
+     */
+    Status?: NonEmptyString;
+  }
+  export interface AwsGuardDutyDetectorDetails {
+    /**
+     *  Describes which data sources are activated for the detector. 
+     */
+    DataSources?: AwsGuardDutyDetectorDataSourcesDetails;
+    /**
+     *  Describes which features are activated for the detector. 
+     */
+    Features?: AwsGuardDutyDetectorFeaturesList;
+    /**
+     *  The publishing frequency of the finding. 
+     */
+    FindingPublishingFrequency?: NonEmptyString;
+    /**
+     *  The GuardDuty service role. 
+     */
+    ServiceRole?: NonEmptyString;
+    /**
+     *  The activation status of the detector. 
+     */
+    Status?: NonEmptyString;
+  }
+  export interface AwsGuardDutyDetectorFeaturesDetails {
+    /**
+     *  Indicates the name of the feature that is activated for the detector. 
+     */
+    Name?: NonEmptyString;
+    /**
+     *  Indicates the status of the feature that is activated for the detector. 
+     */
+    Status?: NonEmptyString;
+  }
+  export type AwsGuardDutyDetectorFeaturesList = AwsGuardDutyDetectorFeaturesDetails[];
   export interface AwsIamAccessKeyDetails {
     /**
      * The user associated with the IAM access key related to a finding. The UserName parameter has been replaced with the PrincipalName parameter because access keys can also be assigned to principals that are not IAM users.
@@ -9006,7 +9775,7 @@ declare namespace SecurityHub {
      */
     Region?: NonEmptyString;
     /**
-     * The identifier for the solution-specific component (a discrete unit of logic) that generated a finding. In various security-findings providers' solutions, this generator can be called a rule, a check, a detector, a plugin, etc. 
+     * The identifier for the solution-specific component (a discrete unit of logic) that generated a finding. In various security findings providers' solutions, this generator can be called a rule, a check, a detector, a plugin, etc. 
      */
     GeneratorId: NonEmptyString;
     /**
@@ -9018,19 +9787,19 @@ declare namespace SecurityHub {
      */
     Types?: TypeList;
     /**
-     * Indicates when the security-findings provider first observed the potential security issue that a finding captured. Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces, and date and time should be separated by T. For example, 2020-03-22T13:22:13.933Z.
+     * Indicates when the security findings provider first observed the potential security issue that a finding captured. Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces, and date and time should be separated by T. For example, 2020-03-22T13:22:13.933Z.
      */
     FirstObservedAt?: NonEmptyString;
     /**
-     * Indicates when the security-findings provider most recently observed the potential security issue that a finding captured. Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces, and date and time should be separated by T. For example, 2020-03-22T13:22:13.933Z.
+     * Indicates when the security findings provider most recently observed the potential security issue that a finding captured. Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces, and date and time should be separated by T. For example, 2020-03-22T13:22:13.933Z.
      */
     LastObservedAt?: NonEmptyString;
     /**
-     * Indicates when the security-findings provider created the potential security issue that a finding captured. Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces, and date and time should be separated by T. For example, 2020-03-22T13:22:13.933Z.
+     * Indicates when the security findings provider created the potential security issue that a finding captured. Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces, and date and time should be separated by T. For example, 2020-03-22T13:22:13.933Z.
      */
     CreatedAt: NonEmptyString;
     /**
-     * Indicates when the security-findings provider last updated the finding record. Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces, and date and time should be separated by T. For example, 2020-03-22T13:22:13.933Z.
+     * Indicates when the security findings provider last updated the finding record. Uses the date-time format specified in RFC 3339 section 5.6, Internet Date/Time Format. The value cannot contain spaces, and date and time should be separated by T. For example, 2020-03-22T13:22:13.933Z.
      */
     UpdatedAt: NonEmptyString;
     /**
@@ -9058,11 +9827,11 @@ declare namespace SecurityHub {
      */
     Remediation?: Remediation;
     /**
-     * A URL that links to a page about the current finding in the security-findings provider's solution.
+     * A URL that links to a page about the current finding in the security findings provider's solution.
      */
     SourceUrl?: NonEmptyString;
     /**
-     * A data type where security-findings providers can include additional solution-specific details that aren't part of the defined AwsSecurityFinding format. Can contain up to 50 key-value pairs. For each key-value pair, the key can contain up to 128 characters, and the value can contain up to 2048 characters.
+     * A data type where security findings providers can include additional solution-specific details that aren't part of the defined AwsSecurityFinding format. Can contain up to 50 key-value pairs. For each key-value pair, the key can contain up to 128 characters, and the value can contain up to 2048 characters.
      */
     ProductFields?: FieldMap;
     /**
@@ -9160,7 +9929,7 @@ declare namespace SecurityHub {
      */
     Id?: StringFilterList;
     /**
-     * The identifier for the solution-specific component (a discrete unit of logic) that generated a finding. In various security-findings providers' solutions, this generator can be called a rule, a check, a detector, a plugin, etc.
+     * The identifier for the solution-specific component (a discrete unit of logic) that generated a finding. In various security findings providers' solutions, this generator can be called a rule, a check, a detector, a plugin, etc.
      */
     GeneratorId?: StringFilterList;
     /**
@@ -9172,23 +9941,23 @@ declare namespace SecurityHub {
      */
     Type?: StringFilterList;
     /**
-     * An ISO8601-formatted timestamp that indicates when the security-findings provider first observed the potential security issue that a finding captured. A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format.
+     * An ISO8601-formatted timestamp that indicates when the security findings provider first observed the potential security issue that a finding captured. A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format.
      */
     FirstObservedAt?: DateFilterList;
     /**
-     * An ISO8601-formatted timestamp that indicates when the security-findings provider most recently observed the potential security issue that a finding captured. A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format.
+     * An ISO8601-formatted timestamp that indicates when the security findings provider most recently observed the potential security issue that a finding captured. A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format.
      */
     LastObservedAt?: DateFilterList;
     /**
-     * An ISO8601-formatted timestamp that indicates when the security-findings provider captured the potential security issue that a finding captured. A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format.
+     * An ISO8601-formatted timestamp that indicates when the security findings provider captured the potential security issue that a finding captured. A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format.
      */
     CreatedAt?: DateFilterList;
     /**
-     * An ISO8601-formatted timestamp that indicates when the security-findings provider last updated the finding record.  A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format.
+     * An ISO8601-formatted timestamp that indicates when the security findings provider last updated the finding record.  A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format.
      */
     UpdatedAt?: DateFilterList;
     /**
-     * The native severity as defined by the security-findings provider's solution that generated the finding.
+     * The native severity as defined by the security findings provider's solution that generated the finding.
      */
     SeverityProduct?: NumberFilterList;
     /**
@@ -9220,11 +9989,11 @@ declare namespace SecurityHub {
      */
     RecommendationText?: StringFilterList;
     /**
-     * A URL that links to a page about the current finding in the security-findings provider's solution.
+     * A URL that links to a page about the current finding in the security findings provider's solution.
      */
     SourceUrl?: StringFilterList;
     /**
-     * A data type where security-findings providers can include additional solution-specific details that aren't part of the defined AwsSecurityFinding format.
+     * A data type where security findings providers can include additional solution-specific details that aren't part of the defined AwsSecurityFinding format.
      */
     ProductFields?: MapFilterList;
     /**
@@ -9708,6 +10477,73 @@ declare namespace SecurityHub {
      * Information about the status of a patch.
      */
     Patch?: AwsSsmPatch;
+  }
+  export interface AwsStepFunctionStateMachineDetails {
+    /**
+     *  A user-defined or an auto-generated string that identifies a Map state. This parameter is present only if the stateMachineArn specified in input is a qualified state machine ARN. 
+     */
+    Label?: NonEmptyString;
+    /**
+     *  Used to set CloudWatch Logs options. 
+     */
+    LoggingConfiguration?: AwsStepFunctionStateMachineLoggingConfigurationDetails;
+    /**
+     *  The name of the state machine. 
+     */
+    Name?: NonEmptyString;
+    /**
+     *  The Amazon Resource Name (ARN) of the IAM role used when creating this state machine. 
+     */
+    RoleArn?: NonEmptyString;
+    /**
+     *  The ARN that identifies the state machine. 
+     */
+    StateMachineArn?: NonEmptyString;
+    /**
+     *  The current status of the state machine. 
+     */
+    Status?: NonEmptyString;
+    /**
+     *  Specifies whether X-Ray tracing is enabled. 
+     */
+    TracingConfiguration?: AwsStepFunctionStateMachineTracingConfigurationDetails;
+    /**
+     *  The type of the state machine (STANDARD or EXPRESS). 
+     */
+    Type?: NonEmptyString;
+  }
+  export interface AwsStepFunctionStateMachineLoggingConfigurationDestinationsCloudWatchLogsLogGroupDetails {
+    /**
+     * The ARN (ends with :*) of the CloudWatch Logs log group to which you want your logs emitted.
+     */
+    LogGroupArn?: NonEmptyString;
+  }
+  export interface AwsStepFunctionStateMachineLoggingConfigurationDestinationsDetails {
+    /**
+     *  An object describing a CloudWatch Logs log group. For more information, see  Amazon Web Services::Logs::LogGroup in the CloudFormation User Guide. 
+     */
+    CloudWatchLogsLogGroup?: AwsStepFunctionStateMachineLoggingConfigurationDestinationsCloudWatchLogsLogGroupDetails;
+  }
+  export type AwsStepFunctionStateMachineLoggingConfigurationDestinationsList = AwsStepFunctionStateMachineLoggingConfigurationDestinationsDetails[];
+  export interface AwsStepFunctionStateMachineLoggingConfigurationDetails {
+    /**
+     *  An array of objects that describes where your execution history events will be logged. 
+     */
+    Destinations?: AwsStepFunctionStateMachineLoggingConfigurationDestinationsList;
+    /**
+     *  Determines whether execution data is included in your log. When set to false, data is excluded. 
+     */
+    IncludeExecutionData?: Boolean;
+    /**
+     *  Defines which category of execution history events are logged. 
+     */
+    Level?: NonEmptyString;
+  }
+  export interface AwsStepFunctionStateMachineTracingConfigurationDetails {
+    /**
+     *  When set to true, X-Ray tracing is enabled. 
+     */
+    Enabled?: Boolean;
   }
   export interface AwsWafRateBasedRuleDetails {
     /**
@@ -10267,6 +11103,22 @@ declare namespace SecurityHub {
      */
     Type?: NonEmptyString;
   }
+  export interface BatchDeleteAutomationRulesRequest {
+    /**
+     *  A list of Amazon Resource Names (ARNs) for the rules that are to be deleted. 
+     */
+    AutomationRulesArns: AutomationRulesArnsList;
+  }
+  export interface BatchDeleteAutomationRulesResponse {
+    /**
+     *  A list of properly processed rule ARNs. 
+     */
+    ProcessedAutomationRules?: AutomationRulesArnsList;
+    /**
+     *  A list of objects containing RuleArn, ErrorCode, and ErrorMessage. This parameter tells you which automation rules the request didn't delete and why. 
+     */
+    UnprocessedAutomationRules?: UnprocessedAutomationRulesList;
+  }
   export interface BatchDisableStandardsRequest {
     /**
      * The ARNs of the standards subscriptions to disable.
@@ -10290,6 +11142,22 @@ declare namespace SecurityHub {
      * The details of the standards subscriptions that were enabled.
      */
     StandardsSubscriptions?: StandardsSubscriptions;
+  }
+  export interface BatchGetAutomationRulesRequest {
+    /**
+     *  A list of rule ARNs to get details for. 
+     */
+    AutomationRulesArns: AutomationRulesArnsList;
+  }
+  export interface BatchGetAutomationRulesResponse {
+    /**
+     *  A list of rule details for the provided rule ARNs. 
+     */
+    Rules?: AutomationRulesConfigList;
+    /**
+     *  A list of objects containing RuleArn, ErrorCode, and ErrorMessage. This parameter tells you which automation rules the request didn't retrieve and why. 
+     */
+    UnprocessedAutomationRules?: UnprocessedAutomationRulesList;
   }
   export interface BatchGetSecurityControlsRequest {
     /**
@@ -10343,6 +11211,22 @@ declare namespace SecurityHub {
      * The list of findings that failed to import.
      */
     FailedFindings?: ImportFindingsErrorList;
+  }
+  export interface BatchUpdateAutomationRulesRequest {
+    /**
+     *  An array of ARNs for the rules that are to be updated. Optionally, you can also include RuleStatus and RuleOrder. 
+     */
+    UpdateAutomationRulesRequestItems: UpdateAutomationRulesRequestItemsList;
+  }
+  export interface BatchUpdateAutomationRulesResponse {
+    /**
+     *  A list of properly processed rule ARNs. 
+     */
+    ProcessedAutomationRules?: AutomationRulesArnsList;
+    /**
+     *  A list of objects containing RuleArn, ErrorCode, and ErrorMessage. This parameter tells you which automation rules the request didn't update and why. 
+     */
+    UnprocessedAutomationRules?: UnprocessedAutomationRulesList;
   }
   export interface BatchUpdateFindingsRequest {
     /**
@@ -10589,6 +11473,46 @@ declare namespace SecurityHub {
      * The Amazon Resource Name (ARN) for the custom action target.
      */
     ActionTargetArn: NonEmptyString;
+  }
+  export interface CreateAutomationRuleRequest {
+    /**
+     *  User-defined tags that help you label the purpose of a rule. 
+     */
+    Tags?: TagMap;
+    /**
+     *  Whether the rule is active after it is created. If this parameter is equal to Enabled, Security Hub will apply the rule to findings and finding updates after the rule is created. To change the value of this parameter after creating a rule, use BatchUpdateAutomationRules. 
+     */
+    RuleStatus?: RuleStatus;
+    /**
+     * An integer ranging from 1 to 1000 that represents the order in which the rule action is applied to findings. Security Hub applies rules with lower values for this parameter first. 
+     */
+    RuleOrder: RuleOrderValue;
+    /**
+     *  The name of the rule. 
+     */
+    RuleName: NonEmptyString;
+    /**
+     *  A description of the rule. 
+     */
+    Description: NonEmptyString;
+    /**
+     * Specifies whether a rule is the last to be applied with respect to a finding that matches the rule criteria. This is useful when a finding matches the criteria for multiple rules, and each rule has different actions. If the value of this field is set to true for a rule, Security Hub applies the rule action to a finding that matches the rule criteria and won't evaluate other rules for the finding. The default value of this field is false. 
+     */
+    IsTerminal?: Boolean;
+    /**
+     *  A set of ASFF finding field attributes and corresponding expected values that Security Hub uses to filter findings. If a finding matches the conditions specified in this parameter, Security Hub applies the rule action to the finding. 
+     */
+    Criteria: AutomationRulesFindingFilters;
+    /**
+     *  One or more actions to update finding fields if a finding matches the conditions specified in Criteria. 
+     */
+    Actions: ActionList;
+  }
+  export interface CreateAutomationRuleResponse {
+    /**
+     *  The Amazon Resource Name (ARN) of the automation rule that you created. 
+     */
+    RuleArn?: NonEmptyString;
   }
   export interface CreateFindingAggregatorRequest {
     /**
@@ -11053,6 +11977,56 @@ declare namespace SecurityHub {
     FindingAggregatorArn?: NonEmptyString;
   }
   export type FindingAggregatorList = FindingAggregator[];
+  export interface FindingHistoryRecord {
+    FindingIdentifier?: AwsSecurityFindingIdentifier;
+    /**
+     *  An ISO 8601-formatted timestamp that indicates when Security Hub processed the updated finding record. A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format. 
+     */
+    UpdateTime?: Timestamp;
+    /**
+     *  Identifies whether the event marks the creation of a new finding. A value of True means that the finding is newly created. A value of False means that the finding isn’t newly created. 
+     */
+    FindingCreated?: Boolean;
+    /**
+     *  Identifies the source of the event that changed the finding. For example, an integrated Amazon Web Service or third-party partner integration may call  BatchImportFindings , or an Security Hub customer may call  BatchUpdateFindings . 
+     */
+    UpdateSource?: FindingHistoryUpdateSource;
+    /**
+     *  An array of objects that provides details about the finding change event, including the Amazon Web Services Security Finding Format (ASFF) field that changed, the value of the field before the change, and the value of the field after the change. 
+     */
+    Updates?: FindingHistoryUpdatesList;
+    /**
+     *  A token for pagination purposes. Provide this token in the subsequent request to  GetFindingsHistory  to get up to an additional 100 results of history for the same finding that you specified in your initial request. 
+     */
+    NextToken?: NextToken;
+  }
+  export type FindingHistoryRecordList = FindingHistoryRecord[];
+  export interface FindingHistoryUpdate {
+    /**
+     *  The ASFF field that changed during the finding change event. 
+     */
+    UpdatedField?: NonEmptyString;
+    /**
+     *  The value of the ASFF field before the finding change event. 
+     */
+    OldValue?: NonEmptyString;
+    /**
+     *  The value of the ASFF field after the finding change event. To preserve storage and readability, Security Hub omits this value if  FindingHistoryRecord  exceeds database limits. 
+     */
+    NewValue?: NonEmptyString;
+  }
+  export interface FindingHistoryUpdateSource {
+    /**
+     *  Describes the type of finding change event, such as a call to  BatchImportFindings  (by an integrated Amazon Web Service or third party partner integration) or  BatchUpdateFindings  (by a Security Hub customer). 
+     */
+    Type?: FindingHistoryUpdateSourceType;
+    /**
+     *  The identity of the source that initiated the finding change event. For example, the Amazon Resource Name (ARN) of a partner that calls BatchImportFindings or of a customer that calls BatchUpdateFindings. 
+     */
+    Identity?: NonEmptyString;
+  }
+  export type FindingHistoryUpdateSourceType = "BATCH_UPDATE_FINDINGS"|"BATCH_IMPORT_FINDINGS"|string;
+  export type FindingHistoryUpdatesList = FindingHistoryUpdate[];
   export interface FindingProviderFields {
     /**
      * A finding's confidence. Confidence is defined as the likelihood that a finding accurately identifies the behavior or issue that it was intended to identify. Confidence is scored on a 0-100 basis using a ratio scale, where 0 means zero percent confidence and 100 means 100 percent confidence.
@@ -11198,6 +12172,35 @@ declare namespace SecurityHub {
      * The list of excluded Regions or included Regions.
      */
     Regions?: StringList;
+  }
+  export interface GetFindingHistoryRequest {
+    FindingIdentifier: AwsSecurityFindingIdentifier;
+    /**
+     *  An ISO 8601-formatted timestamp that indicates the start time of the requested finding history. A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format. If you provide values for both StartTime and EndTime, Security Hub returns finding history for the specified time period. If you provide a value for StartTime but not for EndTime, Security Hub returns finding history from the StartTime to the time at which the API is called. If you provide a value for EndTime but not for StartTime, Security Hub returns finding history from the CreatedAt timestamp of the finding to the EndTime. If you provide neither StartTime nor EndTime, Security Hub returns finding history from the CreatedAt timestamp of the finding to the time at which the API is called. In all of these scenarios, the response is limited to 100 results, and the maximum time period is limited to 90 days. 
+     */
+    StartTime?: Timestamp;
+    /**
+     *  An ISO 8601-formatted timestamp that indicates the end time of the requested finding history. A correctly formatted example is 2020-05-21T20:16:34.724Z. The value cannot contain spaces, and date and time should be separated by T. For more information, see RFC 3339 section 5.6, Internet Date/Time Format. If you provide values for both StartTime and EndTime, Security Hub returns finding history for the specified time period. If you provide a value for StartTime but not for EndTime, Security Hub returns finding history from the StartTime to the time at which the API is called. If you provide a value for EndTime but not for StartTime, Security Hub returns finding history from the CreatedAt timestamp of the finding to the EndTime. If you provide neither StartTime nor EndTime, Security Hub returns finding history from the CreatedAt timestamp of the finding to the time at which the API is called. In all of these scenarios, the response is limited to 100 results, and the maximum time period is limited to 90 days.
+     */
+    EndTime?: Timestamp;
+    /**
+     *  A token for pagination purposes. Provide NULL as the initial value. In subsequent requests, provide the token included in the response to get up to an additional 100 results of finding history. If you don’t provide NextToken, Security Hub returns up to 100 results of finding history for each request. 
+     */
+    NextToken?: NextToken;
+    /**
+     *  The maximum number of results to be returned. If you don’t provide it, Security Hub returns up to 100 results of finding history. 
+     */
+    MaxResults?: MaxResults;
+  }
+  export interface GetFindingHistoryResponse {
+    /**
+     *  A list of events that altered the specified finding during the specified time period. 
+     */
+    Records?: FindingHistoryRecordList;
+    /**
+     *  A token for pagination purposes. Provide this token in the subsequent request to GetFindingsHistory to get up to an additional 100 results of history for the same finding that you specified in your initial request. 
+     */
+    NextToken?: NextToken;
   }
   export interface GetFindingsRequest {
     /**
@@ -11446,6 +12449,26 @@ declare namespace SecurityHub {
     Value?: NonEmptyString;
   }
   export type KeywordFilterList = KeywordFilter[];
+  export interface ListAutomationRulesRequest {
+    /**
+     *  A token to specify where to start paginating the response. This is the NextToken from a previously truncated response. On your first call to the ListAutomationRules API, set the value of this parameter to NULL. 
+     */
+    NextToken?: NextToken;
+    /**
+     *  The maximum number of rules to return in the response. This currently ranges from 1 to 100. 
+     */
+    MaxResults?: MaxResults;
+  }
+  export interface ListAutomationRulesResponse {
+    /**
+     *  Metadata for rules in the calling account. The response includes rules with a RuleStatus of ENABLED and DISABLED. 
+     */
+    AutomationRulesMetadata?: AutomationRulesMetadataList;
+    /**
+     *  A pagination token for the response. 
+     */
+    NextToken?: NextToken;
+  }
   export interface ListEnabledProductsForImportRequest {
     /**
      * The token that is required for pagination. On your first call to the ListEnabledProductsForImport operation, set the value of this parameter to NULL. For subsequent calls to the operation, to continue listing data, set the value of this parameter to the value returned from the previous response.
@@ -12472,6 +13495,26 @@ declare namespace SecurityHub {
      *  Provides details about a route table. A route table contains a set of rules, called routes, that determine where to direct network traffic from your subnet or gateway. 
      */
     AwsEc2RouteTable?: AwsEc2RouteTableDetails;
+    /**
+     *  Provides details about AppSync message broker. A message broker allows software applications and components to communicate using various programming languages, operating systems, and formal messaging protocols. 
+     */
+    AwsAmazonMqBroker?: AwsAmazonMqBrokerDetails;
+    /**
+     *  Provides details about an AppSync Graph QL API, which lets you query multiple databases, microservices, and APIs from a single GraphQL endpoint. 
+     */
+    AwsAppSyncGraphQlApi?: AwsAppSyncGraphQlApiDetails;
+    /**
+     *  A schema defines the structure of events that are sent to Amazon EventBridge. Schema registries are containers for schemas. They collect and organize schemas so that your schemas are in logical groups. 
+     */
+    AwsEventSchemasRegistry?: AwsEventSchemasRegistryDetails;
+    /**
+     *  Provides details about an Amazon GuardDuty detector. A detector is an object that represents the GuardDuty service. A detector is required for GuardDuty to become operational. 
+     */
+    AwsGuardDutyDetector?: AwsGuardDutyDetectorDetails;
+    /**
+     *  Provides details about an Step Functions state machine, which is a workflow consisting of a series of event-driven steps. 
+     */
+    AwsStepFunctionStateMachine?: AwsStepFunctionStateMachineDetails;
   }
   export type ResourceList = Resource[];
   export interface Result {
@@ -12785,6 +13828,8 @@ declare namespace SecurityHub {
      */
     Definition?: NonEmptyStringList;
   }
+  export type RuleOrderValue = number;
+  export type RuleStatus = "ENABLED"|"DISABLED"|string;
   export interface SecurityControl {
     /**
      *  The unique identifier of a security control across standards. Values for this field typically consist of an Amazon Web Service name and a number, such as APIGateway.3. 
@@ -13310,6 +14355,21 @@ declare namespace SecurityHub {
   export type ThreatList = Threat[];
   export type Timestamp = Date;
   export type TypeList = NonEmptyString[];
+  export interface UnprocessedAutomationRule {
+    /**
+     *  The Amazon Resource Name (ARN) for the unprocessed automation rule. 
+     */
+    RuleArn?: NonEmptyString;
+    /**
+     *  The error code associated with the unprocessed automation rule. 
+     */
+    ErrorCode?: Integer;
+    /**
+     *  An error message describing why a request didn't process a specific rule. 
+     */
+    ErrorMessage?: NonEmptyString;
+  }
+  export type UnprocessedAutomationRulesList = UnprocessedAutomationRule[];
   export type UnprocessedErrorCode = "INVALID_INPUT"|"ACCESS_DENIED"|"NOT_FOUND"|"LIMIT_EXCEEDED"|string;
   export interface UnprocessedSecurityControl {
     /**
@@ -13384,6 +14444,41 @@ declare namespace SecurityHub {
   }
   export interface UpdateActionTargetResponse {
   }
+  export interface UpdateAutomationRulesRequestItem {
+    /**
+     *  The Amazon Resource Name (ARN) for the rule. 
+     */
+    RuleArn: NonEmptyString;
+    /**
+     *  Whether the rule is active after it is created. If this parameter is equal to ENABLED, Security Hub will apply the rule to findings and finding updates after the rule is created. To change the value of this parameter after creating a rule, use BatchUpdateAutomationRules. 
+     */
+    RuleStatus?: RuleStatus;
+    /**
+     *  An integer ranging from 1 to 1000 that represents the order in which the rule action is applied to findings. Security Hub applies rules with lower values for this parameter first. 
+     */
+    RuleOrder?: RuleOrderValue;
+    /**
+     *  A description of the rule. 
+     */
+    Description?: NonEmptyString;
+    /**
+     *  The name of the rule. 
+     */
+    RuleName?: NonEmptyString;
+    /**
+     * Specifies whether a rule is the last to be applied with respect to a finding that matches the rule criteria. This is useful when a finding matches the criteria for multiple rules, and each rule has different actions. If the value of this field is set to true for a rule, Security Hub applies the rule action to a finding that matches the rule criteria and won't evaluate other rules for the finding.&#x2028; The default value of this field is false. 
+     */
+    IsTerminal?: Boolean;
+    /**
+     *  A set of ASFF finding field attributes and corresponding expected values that Security Hub uses to filter findings. If a finding matches the conditions specified in this parameter, Security Hub applies the rule action to the finding. 
+     */
+    Criteria?: AutomationRulesFindingFilters;
+    /**
+     *  One or more actions to update finding fields if a finding matches the conditions specified in Criteria. 
+     */
+    Actions?: ActionList;
+  }
+  export type UpdateAutomationRulesRequestItemsList = UpdateAutomationRulesRequestItem[];
   export interface UpdateFindingAggregatorRequest {
     /**
      * The ARN of the finding aggregator. To obtain the ARN, use ListFindingAggregators.

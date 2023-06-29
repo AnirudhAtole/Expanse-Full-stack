@@ -11,7 +11,7 @@ function setTodayDate(){
     let currentDate = `${day}-${monthName[month]}-${year}`;
 
     const title = document.getElementById('date-heading');
-    title.innerHTML = `Today's Expanse of ${currentDate}`;
+    title.innerHTML = `All Expanses and total`;
 }
 
 
@@ -102,54 +102,54 @@ async function showDailyExpanses(){
     
 }
 
-async function showCurrentMonthExpanse(){
-    const token = localStorage.getItem('token')
-    const result = await axios.get('http://localhost:5000/expanse/currentMonthExpanse', { headers :{"Authorization":token}});
-    if(result.data.success){
-        const currentMonthExpanse = document.getElementById('currentMonth-entries');
-        let sumOfMonth = 0;
-        const expanses = result.data.result;
-        expanses.forEach(element => {
-            sumOfMonth += parseInt(element.amount);
-            createCurrentMonthExpanse( currentMonthExpanse,element);
-        });
+// async function showCurrentMonthExpanse(){
+//     const token = localStorage.getItem('token')
+//     const result = await axios.get('http://localhost:5000/expanse/currentMonthExpanse', { headers :{"Authorization":token}});
+//     if(result.data.success){
+//         const currentMonthExpanse = document.getElementById('currentMonth-entries');
+//         let sumOfMonth = 0;
+//         const expanses = result.data.result;
+//         expanses.forEach(element => {
+//             sumOfMonth += parseInt(element.amount);
+//             createCurrentMonthExpanse( currentMonthExpanse,element);
+//         });
 
-        const tr = document.createElement('tr');
-        tr.className = "bg-info";
+//         const tr = document.createElement('tr');
+//         tr.className = "bg-info";
 
-        tr.innerHTML = `<tr class="bg-info"><th scope="row"></th><td colspan="1">total</td><td class="bg-primary">${sumOfMonth} Rs</td></tr>`
+//         tr.innerHTML = `<tr class="bg-info"><th scope="row"></th><td colspan="1">total</td><td class="bg-primary">${sumOfMonth} Rs</td></tr>`
 
-        currentMonthExpanse.appendChild(tr);
-    }
-    else{
-        alert('Unable to show Current month expanse');
-    }
+//         currentMonthExpanse.appendChild(tr);
+//     }
+//     else{
+//         alert('Unable to show Current month expanse');
+//     }
     
 
-}
+// }
 
-async function showYearlyExpanse(){
-    const token = localStorage.getItem('token')
-    const result = await axios.get('http://localhost:5000/expanse/monthlyExpanse', { headers :{"Authorization":token}});
-    if(result.data.success){
-        const expanses = result.data.result;
-        const yearlyExpanse = document.getElementById('yearly-entries');
-    expanses.forEach(element => {
-        createYearlyExpanse( yearlyExpanse,element);
-    });
-    }
-    else{
-        alert('Unable to show yearly expanse')
-    }
+// async function showYearlyExpanse(){
+//     const token = localStorage.getItem('token')
+//     const result = await axios.get('http://localhost:5000/expanse/monthlyExpanse', { headers :{"Authorization":token}});
+//     if(result.data.success){
+//         const expanses = result.data.result;
+//         const yearlyExpanse = document.getElementById('yearly-entries');
+//     expanses.forEach(element => {
+//         createYearlyExpanse( yearlyExpanse,element);
+//     });
+//     }
+//     else{
+//         alert('Unable to show yearly expanse')
+//     }
     
-}
+// }
 
 function createDailyEntry(dailyTable , obj){
     let entry = document.createElement('tr');
 
     let row = document.createElement('th');
     row.scope = "row";
-    row.appendChild(document.createTextNode(obj.time));
+    row.appendChild(document.createTextNode(obj.createdAt));
 
     let cat = document.createElement('td');
     cat.appendChild(document.createTextNode(obj.category));
@@ -169,53 +169,53 @@ function createDailyEntry(dailyTable , obj){
 }
 
 
-function createCurrentMonthExpanse(monthTable,obj){
-    let entry = document.createElement('tr');
+// function createCurrentMonthExpanse(monthTable,obj){
+//     let entry = document.createElement('tr');
 
-    let row = document.createElement('th');
-    row.scope = "row";
-    row.appendChild(document.createTextNode(obj.date));
+//     let row = document.createElement('th');
+//     row.scope = "row";
+//     row.appendChild(document.createTextNode(obj.date));
 
-    const theDate = new Date(obj.date);
-    const weekday = theDate.getDay();
-    let day = document.createElement('td');
-    day.appendChild(document.createTextNode(weekDays[weekday]));
+//     const theDate = new Date(obj.date);
+//     const weekday = theDate.getDay();
+//     let day = document.createElement('td');
+//     day.appendChild(document.createTextNode(weekDays[weekday]));
 
 
-    let amount = document.createElement('td');
-    amount.appendChild(document.createTextNode(obj.amount));
+//     let amount = document.createElement('td');
+//     amount.appendChild(document.createTextNode(obj.amount));
 
-    entry.appendChild(row);
-    entry.appendChild(day);
-    entry.appendChild(amount);
+//     entry.appendChild(row);
+//     entry.appendChild(day);
+//     entry.appendChild(amount);
 
-    monthTable.appendChild(entry);
-}
+//     monthTable.appendChild(entry);
+// }
 
-function createYearlyExpanse(yearlyTable , obj){
-    let entry = document.createElement('tr');
+// function createYearlyExpanse(yearlyTable , obj){
+//     let entry = document.createElement('tr');
 
-    const monthNum = obj.month - 1;
-    let row = document.createElement('th');
-    row.scope = "row";
-    row.appendChild(document.createTextNode(monthName[monthNum]));
+//     const monthNum = obj.month - 1;
+//     let row = document.createElement('th');
+//     row.scope = "row";
+//     row.appendChild(document.createTextNode(monthName[monthNum]));
 
-    let amount = document.createElement('td');
-    amount.appendChild(document.createTextNode(obj.amount));
+//     let amount = document.createElement('td');
+//     amount.appendChild(document.createTextNode(obj.amount));
 
-    let year = document.createElement('td');
-    year.appendChild(document.createTextNode(obj.year));
+//     let year = document.createElement('td');
+//     year.appendChild(document.createTextNode(obj.year));
 
-    entry.appendChild(row);
-    entry.appendChild(amount);
-    entry.appendChild(year);
+//     entry.appendChild(row);
+//     entry.appendChild(amount);
+//     entry.appendChild(year);
 
-    yearlyTable.appendChild(entry);
-}
+//     yearlyTable.appendChild(entry);
+// }
 
 window.addEventListener("DOMContentLoaded",()=>{
     showDailyExpanses();
-    showCurrentMonthExpanse()
+    // showCurrentMonthExpanse()
     setTodayDate();
-    showYearlyExpanse();
+    // showYearlyExpanse();
 })

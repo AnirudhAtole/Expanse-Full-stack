@@ -11,7 +11,5 @@ router.post('/add-expanse',Authenticate.authenticate,expanseController.addExpans
 router.get('/download/getexpanses' , Authenticate.authenticate , expanseController.downloadExpanse);
 router.get('/download/alldownloads' , Authenticate.authenticate , expanseController.getDownloadUrls);
 router.get('/expanse/todaysExpanse' , Authenticate.authenticate , expanseController.getTodayExpanse);
-router.get('/expanse/currentMonthExpanse' , Authenticate.authenticate , expanseController.getDailyExpanse);
-router.get('/expanse/monthlyExpanse' , Authenticate.authenticate , expanseController.getMonthlyExpanse);
 
 module.exports = router;

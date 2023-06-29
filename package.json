@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/AnirudhAtole/Expanse-Full-stack#readme",
   "dependencies": {
-    "aws-sdk": "^2.1352.0",
+    "@aws-sdk/client-s3": "^3.360.0",
+    "@getbrevo/brevo": "^1.0.1",
+    "aws-sdk": "^2.1406.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -30,7 +32,6 @@
     "mysql2": "^3.2.0",
     "razorpay": "^2.8.6",
     "sequelize": "^6.30.0",
-    "sib-api-v3-sdk": "^8.5.0",
     "uuid": "^9.0.0"
   },
   "description": ""

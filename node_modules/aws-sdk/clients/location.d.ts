@@ -60,11 +60,11 @@ declare class Location extends Service {
    */
   batchPutGeofence(callback?: (err: AWSError, data: Location.Types.BatchPutGeofenceResponse) => void): Request<Location.Types.BatchPutGeofenceResponse, AWSError>;
   /**
-   * Uploads position update data for one or more devices to a tracker resource. Amazon Location uses the data when it reports the last known device position and position history. Amazon Location retains location data for 30 days.  Position updates are handled based on the PositionFiltering property of the tracker. When PositionFiltering is set to TimeBased, updates are evaluated against linked geofence collections, and location data is stored at a maximum of one position per 30 second interval. If your update frequency is more often than every 30 seconds, only one update per 30 seconds is stored for each unique device ID. When PositionFiltering is set to DistanceBased filtering, location data is stored and evaluated against linked geofence collections only if the device has moved more than 30 m (98.4 ft). When PositionFiltering is set to AccuracyBased filtering, location data is stored and evaluated against linked geofence collections only if the device has moved more than the measured accuracy. For example, if two consecutive updates from a device have a horizontal accuracy of 5 m and 10 m, the second update is neither stored or evaluated if the device has moved less than 15 m. If PositionFiltering is set to AccuracyBased filtering, Amazon Location uses the default value { "Horizontal": 0} when accuracy is not provided on a DevicePositionUpdate. 
+   * Uploads position update data for one or more devices to a tracker resource (up to 10 devices per batch). Amazon Location uses the data when it reports the last known device position and position history. Amazon Location retains location data for 30 days.  Position updates are handled based on the PositionFiltering property of the tracker. When PositionFiltering is set to TimeBased, updates are evaluated against linked geofence collections, and location data is stored at a maximum of one position per 30 second interval. If your update frequency is more often than every 30 seconds, only one update per 30 seconds is stored for each unique device ID. When PositionFiltering is set to DistanceBased filtering, location data is stored and evaluated against linked geofence collections only if the device has moved more than 30 m (98.4 ft). When PositionFiltering is set to AccuracyBased filtering, location data is stored and evaluated against linked geofence collections only if the device has moved more than the measured accuracy. For example, if two consecutive updates from a device have a horizontal accuracy of 5 m and 10 m, the second update is neither stored or evaluated if the device has moved less than 15 m. If PositionFiltering is set to AccuracyBased filtering, Amazon Location uses the default value { "Horizontal": 0} when accuracy is not provided on a DevicePositionUpdate. 
    */
   batchUpdateDevicePosition(params: Location.Types.BatchUpdateDevicePositionRequest, callback?: (err: AWSError, data: Location.Types.BatchUpdateDevicePositionResponse) => void): Request<Location.Types.BatchUpdateDevicePositionResponse, AWSError>;
   /**
-   * Uploads position update data for one or more devices to a tracker resource. Amazon Location uses the data when it reports the last known device position and position history. Amazon Location retains location data for 30 days.  Position updates are handled based on the PositionFiltering property of the tracker. When PositionFiltering is set to TimeBased, updates are evaluated against linked geofence collections, and location data is stored at a maximum of one position per 30 second interval. If your update frequency is more often than every 30 seconds, only one update per 30 seconds is stored for each unique device ID. When PositionFiltering is set to DistanceBased filtering, location data is stored and evaluated against linked geofence collections only if the device has moved more than 30 m (98.4 ft). When PositionFiltering is set to AccuracyBased filtering, location data is stored and evaluated against linked geofence collections only if the device has moved more than the measured accuracy. For example, if two consecutive updates from a device have a horizontal accuracy of 5 m and 10 m, the second update is neither stored or evaluated if the device has moved less than 15 m. If PositionFiltering is set to AccuracyBased filtering, Amazon Location uses the default value { "Horizontal": 0} when accuracy is not provided on a DevicePositionUpdate. 
+   * Uploads position update data for one or more devices to a tracker resource (up to 10 devices per batch). Amazon Location uses the data when it reports the last known device position and position history. Amazon Location retains location data for 30 days.  Position updates are handled based on the PositionFiltering property of the tracker. When PositionFiltering is set to TimeBased, updates are evaluated against linked geofence collections, and location data is stored at a maximum of one position per 30 second interval. If your update frequency is more often than every 30 seconds, only one update per 30 seconds is stored for each unique device ID. When PositionFiltering is set to DistanceBased filtering, location data is stored and evaluated against linked geofence collections only if the device has moved more than 30 m (98.4 ft). When PositionFiltering is set to AccuracyBased filtering, location data is stored and evaluated against linked geofence collections only if the device has moved more than the measured accuracy. For example, if two consecutive updates from a device have a horizontal accuracy of 5 m and 10 m, the second update is neither stored or evaluated if the device has moved less than 15 m. If PositionFiltering is set to AccuracyBased filtering, Amazon Location uses the default value { "Horizontal": 0} when accuracy is not provided on a DevicePositionUpdate. 
    */
   batchUpdateDevicePosition(callback?: (err: AWSError, data: Location.Types.BatchUpdateDevicePositionResponse) => void): Request<Location.Types.BatchUpdateDevicePositionResponse, AWSError>;
   /**
@@ -673,6 +673,10 @@ declare namespace Location {
      */
     GeofenceId: Id;
     /**
+     * Specifies additional user-defined properties to store with the Geofence. An array of key-value pairs.
+     */
+    GeofenceProperties?: PropertyMap;
+    /**
      * Contains the details of the position of the geofence. Can be either a polygon or a circle. Including both will return a validation error.  Each  geofence polygon can have a maximum of 1,000 vertices. 
      */
     Geometry: GeofenceGeometry;
@@ -723,7 +727,7 @@ declare namespace Location {
      */
     TrackerName: ResourceName;
     /**
-     * Contains the position update details for each device.
+     * Contains the position update details for each device, up to 10 devices.
      */
     Updates: BatchUpdateDevicePositionRequestUpdatesList;
   }
@@ -937,6 +941,8 @@ declare namespace Location {
     Radius: Double;
   }
   export type CountryCode = string;
+  export type CountryCode3 = string;
+  export type CountryCode3OrEmpty = string;
   export type CountryCodeList = CountryCode[];
   export interface CreateGeofenceCollectionRequest {
     /**
@@ -1092,7 +1098,7 @@ declare namespace Location {
     /**
      * The Amazon Resource Name (ARN) for the place index resource. Used to specify a resource across Amazon Web Services.    Format example: arn:aws:geo:region:account-id:place-index/ExamplePlaceIndex   
      */
-    IndexArn: Arn;
+    IndexArn: GeoArn;
     /**
      * The name for the place index resource.
      */
@@ -1124,7 +1130,7 @@ declare namespace Location {
     /**
      * The Amazon Resource Name (ARN) for the route calculator resource. Use the ARN when you specify a resource across all Amazon Web Services.   Format example: arn:aws:geo:region:account-id:route-calculator/ExampleCalculator   
      */
-    CalculatorArn: Arn;
+    CalculatorArn: GeoArn;
     /**
      * The name of the route calculator resource.    For example, ExampleRouteCalculator.  
      */
@@ -1387,7 +1393,7 @@ declare namespace Location {
     /**
      * The Amazon Resource Name (ARN) for the place index resource. Used to specify a resource across Amazon Web Services.    Format example: arn:aws:geo:region:account-id:place-index/ExamplePlaceIndex   
      */
-    IndexArn: Arn;
+    IndexArn: GeoArn;
     /**
      * The name of the place index resource being described.
      */
@@ -1415,7 +1421,7 @@ declare namespace Location {
     /**
      * The Amazon Resource Name (ARN) for the Route calculator resource. Use the ARN when you specify a resource across Amazon Web Services.   Format example: arn:aws:geo:region:account-id:route-calculator/ExampleCalculator   
      */
-    CalculatorArn: Arn;
+    CalculatorArn: GeoArn;
     /**
      * The name of the route calculator resource being described.
      */
@@ -1557,6 +1563,7 @@ declare namespace Location {
   }
   export type DistanceUnit = "Kilometers"|"Miles"|string;
   export type Double = number;
+  export type FilterPlaceCategoryList = PlaceCategory[];
   export type GeoArn = string;
   export interface GeofenceGeometry {
     /**
@@ -1661,6 +1668,10 @@ declare namespace Location {
      */
     GeofenceId: Id;
     /**
+     * Contains additional user-defined properties stored with the geofence. An array of key-value pairs.
+     */
+    GeofenceProperties?: PropertyMap;
+    /**
      * Contains the geofence geometry details describing a polygon or a circle.
      */
     Geometry: GeofenceGeometry;
@@ -1675,7 +1686,7 @@ declare namespace Location {
   }
   export interface GetMapGlyphsRequest {
     /**
-     * A comma-separated list of fonts to load glyphs from in order of preference. For example, Noto Sans Regular, Arial Unicode. Valid fonts stacks for Esri styles:    VectorEsriDarkGrayCanvas – Ubuntu Medium Italic | Ubuntu Medium | Ubuntu Italic | Ubuntu Regular | Ubuntu Bold    VectorEsriLightGrayCanvas – Ubuntu Italic | Ubuntu Regular | Ubuntu Light | Ubuntu Bold    VectorEsriTopographic – Noto Sans Italic | Noto Sans Regular | Noto Sans Bold | Noto Serif Regular | Roboto Condensed Light Italic    VectorEsriStreets – Arial Regular | Arial Italic | Arial Bold    VectorEsriNavigation – Arial Regular | Arial Italic | Arial Bold    Valid font stacks for HERE Technologies styles:   VectorHereContrast – Fira GO Regular | Fira GO Bold    VectorHereExplore, VectorHereExploreTruck, HybridHereExploreSatellite – Fira GO Italic | Fira GO Map | Fira GO Map Bold | Noto Sans CJK JP Bold | Noto Sans CJK JP Light | Noto Sans CJK JP Regular    Valid font stacks for GrabMaps styles:   VectorGrabStandardLight, VectorGrabStandardDark – Noto Sans Regular | Noto Sans Medium | Noto Sans Bold    Valid font stacks for Open Data styles:   VectorOpenDataStandardLight, VectorOpenDataStandardDark, VectorOpenDataVisualizationLight, VectorOpenDataVisualizationDark – Amazon Ember Regular,Noto Sans Regular | Amazon Ember Bold,Noto Sans Bold | Amazon Ember Medium,Noto Sans Medium | Amazon Ember Regular Italic,Noto Sans Italic | Amazon Ember Condensed RC Regular,Noto Sans Regular | Amazon Ember Condensed RC Bold,Noto Sans Bold     The fonts used by the Open Data map styles are combined fonts that use Amazon Ember for most glyphs but Noto Sans for glyphs unsupported by Amazon Ember. 
+     * A comma-separated list of fonts to load glyphs from in order of preference. For example, Noto Sans Regular, Arial Unicode. Valid fonts stacks for Esri styles:    VectorEsriDarkGrayCanvas – Ubuntu Medium Italic | Ubuntu Medium | Ubuntu Italic | Ubuntu Regular | Ubuntu Bold    VectorEsriLightGrayCanvas – Ubuntu Italic | Ubuntu Regular | Ubuntu Light | Ubuntu Bold    VectorEsriTopographic – Noto Sans Italic | Noto Sans Regular | Noto Sans Bold | Noto Serif Regular | Roboto Condensed Light Italic    VectorEsriStreets – Arial Regular | Arial Italic | Arial Bold    VectorEsriNavigation – Arial Regular | Arial Italic | Arial Bold    Valid font stacks for HERE Technologies styles:   VectorHereContrast – Fira GO Regular | Fira GO Bold    VectorHereExplore, VectorHereExploreTruck, HybridHereExploreSatellite – Fira GO Italic | Fira GO Map | Fira GO Map Bold | Noto Sans CJK JP Bold | Noto Sans CJK JP Light | Noto Sans CJK JP Regular    Valid font stacks for GrabMaps styles:   VectorGrabStandardLight, VectorGrabStandardDark – Noto Sans Regular | Noto Sans Medium | Noto Sans Bold    Valid font stacks for Open Data styles:   VectorOpenDataStandardLight, VectorOpenDataStandardDark, VectorOpenDataVisualizationLight, VectorOpenDataVisualizationDark – Amazon Ember Regular,Noto Sans Regular | Amazon Ember Bold,Noto Sans Bold | Amazon Ember Medium,Noto Sans Medium | Amazon Ember Regular Italic,Noto Sans Italic | Amazon Ember Condensed RC Regular,Noto Sans Regular | Amazon Ember Condensed RC Bold,Noto Sans Bold | Amazon Ember Regular,Noto Sans Regular,Noto Sans Arabic Regular | Amazon Ember Condensed RC Bold,Noto Sans Bold,Noto Sans Arabic Condensed Bold | Amazon Ember Bold,Noto Sans Bold,Noto Sans Arabic Bold | Amazon Ember Regular Italic,Noto Sans Italic,Noto Sans Arabic Regular | Amazon Ember Condensed RC Regular,Noto Sans Regular,Noto Sans Arabic Condensed Regular | Amazon Ember Medium,Noto Sans Medium,Noto Sans Arabic Medium     The fonts used by the Open Data map styles are combined fonts that use Amazon Ember for most glyphs but Noto Sans for glyphs unsupported by Amazon Ember. 
      */
     FontStack: String;
     /**
@@ -1966,6 +1977,10 @@ declare namespace Location {
      * The geofence identifier.
      */
     GeofenceId: Id;
+    /**
+     * Contains additional user-defined properties stored with the geofence. An array of key-value pairs.
+     */
+    GeofenceProperties?: PropertyMap;
     /**
      * Contains the geofence geometry details describing a polygon or a circle.
      */
@@ -2285,9 +2300,19 @@ declare namespace Location {
   export type ListTrackersResponseEntryList = ListTrackersResponseEntry[];
   export interface MapConfiguration {
     /**
-     * Specifies the map style selected from an available data provider. Valid Esri map styles:    VectorEsriDarkGrayCanvas – The Esri Dark Gray Canvas map style. A vector basemap with a dark gray, neutral background with minimal colors, labels, and features that's designed to draw attention to your thematic content.     RasterEsriImagery – The Esri Imagery map style. A raster basemap that provides one meter or better satellite and aerial imagery in many parts of the world and lower resolution satellite imagery worldwide.     VectorEsriLightGrayCanvas – The Esri Light Gray Canvas map style, which provides a detailed vector basemap with a light gray, neutral background style with minimal colors, labels, and features that's designed to draw attention to your thematic content.     VectorEsriTopographic – The Esri Light map style, which provides a detailed vector basemap with a classic Esri map style.    VectorEsriStreets – The Esri World Streets map style, which provides a detailed vector basemap for the world symbolized with a classic Esri street map style. The vector tile layer is similar in content and style to the World Street Map raster map.    VectorEsriNavigation – The Esri World Navigation map style, which provides a detailed basemap for the world symbolized with a custom navigation map style that's designed for use during the day in mobile devices.   Valid HERE Technologies map styles:    VectorHereContrast – The HERE Contrast (Berlin) map style is a high contrast detailed base map of the world that blends 3D and 2D rendering.  The VectorHereContrast style has been renamed from VectorHereBerlin. VectorHereBerlin has been deprecated, but will continue to work in applications that use it.     VectorHereExplore – A default HERE map style containing a neutral, global map and its features including roads, buildings, landmarks, and water features. It also now includes a fully designed map of Japan.    VectorHereExploreTruck – A global map containing truck restrictions and attributes (e.g. width / height / HAZMAT) symbolized with highlighted segments and icons on top of HERE Explore to support use cases within transport and logistics.    RasterHereExploreSatellite – A global map containing high resolution satellite imagery.    HybridHereExploreSatellite – A global map displaying the road network, street names, and city labels over satellite imagery. This style will automatically retrieve both raster and vector tiles, and your charges will be based on total tiles retrieved.  Hybrid styles use both vector and raster tiles when rendering the map that you see. This means that more tiles are retrieved than when using either vector or raster tiles alone. Your charges will include all tiles retrieved.    Valid GrabMaps map styles:    VectorGrabStandardLight – The Grab Standard Light map style provides a basemap with detailed land use coloring, area names, roads, landmarks, and points of interest covering Southeast Asia.    VectorGrabStandardDark – The Grab Standard Dark map style provides a dark variation of the standard basemap covering Southeast Asia.    Grab provides maps only for countries in Southeast Asia, and is only available in the Asia Pacific (Singapore) Region (ap-southeast-1). For more information, see GrabMaps countries and area covered.  Valid Open Data map styles:    VectorOpenDataStandardLight – The Open Data Standard Light map style provides a detailed basemap for the world suitable for website and mobile application use. The map includes highways major roads, minor roads, railways, water features, cities, parks, landmarks, building footprints, and administrative boundaries.    VectorOpenDataStandardDark – Open Data Standard Dark is a dark-themed map style that provides a detailed basemap for the world suitable for website and mobile application use. The map includes highways major roads, minor roads, railways, water features, cities, parks, landmarks, building footprints, and administrative boundaries.    VectorOpenDataVisualizationLight – The Open Data Visualization Light map style is a light-themed style with muted colors and fewer features that aids in understanding overlaid data.    VectorOpenDataVisualizationDark – The Open Data Visualization Dark map style is a dark-themed style with muted colors and fewer features that aids in understanding overlaid data.  
+     * Specifies the political view for the style. Leave unset to not use a political view, or, for styles that support specific political views, you can choose a view, such as IND for the Indian view. Default is unset.  Not all map resources or styles support political view styles. See Political views for more information. 
+     */
+    PoliticalView?: CountryCode3;
+    /**
+     * Specifies the map style selected from an available data provider. Valid Esri map styles:    VectorEsriDarkGrayCanvas – The Esri Dark Gray Canvas map style. A vector basemap with a dark gray, neutral background with minimal colors, labels, and features that's designed to draw attention to your thematic content.     RasterEsriImagery – The Esri Imagery map style. A raster basemap that provides one meter or better satellite and aerial imagery in many parts of the world and lower resolution satellite imagery worldwide.     VectorEsriLightGrayCanvas – The Esri Light Gray Canvas map style, which provides a detailed vector basemap with a light gray, neutral background style with minimal colors, labels, and features that's designed to draw attention to your thematic content.     VectorEsriTopographic – The Esri Light map style, which provides a detailed vector basemap with a classic Esri map style.    VectorEsriStreets – The Esri Street Map style, which provides a detailed vector basemap for the world symbolized with a classic Esri street map style. The vector tile layer is similar in content and style to the World Street Map raster map.    VectorEsriNavigation – The Esri Navigation map style, which provides a detailed basemap for the world symbolized with a custom navigation map style that's designed for use during the day in mobile devices.   Valid HERE Technologies map styles:    VectorHereContrast – The HERE Contrast (Berlin) map style is a high contrast detailed base map of the world that blends 3D and 2D rendering.  The VectorHereContrast style has been renamed from VectorHereBerlin. VectorHereBerlin has been deprecated, but will continue to work in applications that use it.     VectorHereExplore – A default HERE map style containing a neutral, global map and its features including roads, buildings, landmarks, and water features. It also now includes a fully designed map of Japan.    VectorHereExploreTruck – A global map containing truck restrictions and attributes (e.g. width / height / HAZMAT) symbolized with highlighted segments and icons on top of HERE Explore to support use cases within transport and logistics.    RasterHereExploreSatellite – A global map containing high resolution satellite imagery.    HybridHereExploreSatellite – A global map displaying the road network, street names, and city labels over satellite imagery. This style will automatically retrieve both raster and vector tiles, and your charges will be based on total tiles retrieved.  Hybrid styles use both vector and raster tiles when rendering the map that you see. This means that more tiles are retrieved than when using either vector or raster tiles alone. Your charges will include all tiles retrieved.    Valid GrabMaps map styles:    VectorGrabStandardLight – The Grab Standard Light map style provides a basemap with detailed land use coloring, area names, roads, landmarks, and points of interest covering Southeast Asia.    VectorGrabStandardDark – The Grab Standard Dark map style provides a dark variation of the standard basemap covering Southeast Asia.    Grab provides maps only for countries in Southeast Asia, and is only available in the Asia Pacific (Singapore) Region (ap-southeast-1). For more information, see GrabMaps countries and area covered.  Valid Open Data map styles:    VectorOpenDataStandardLight – The Open Data Standard Light map style provides a detailed basemap for the world suitable for website and mobile application use. The map includes highways major roads, minor roads, railways, water features, cities, parks, landmarks, building footprints, and administrative boundaries.    VectorOpenDataStandardDark – Open Data Standard Dark is a dark-themed map style that provides a detailed basemap for the world suitable for website and mobile application use. The map includes highways major roads, minor roads, railways, water features, cities, parks, landmarks, building footprints, and administrative boundaries.    VectorOpenDataVisualizationLight – The Open Data Visualization Light map style is a light-themed style with muted colors and fewer features that aids in understanding overlaid data.    VectorOpenDataVisualizationDark – The Open Data Visualization Dark map style is a dark-themed style with muted colors and fewer features that aids in understanding overlaid data.  
      */
     Style: MapStyle;
+  }
+  export interface MapConfigurationUpdate {
+    /**
+     * Specifies the political view for the style. Set to an empty string to not use a political view, or, for styles that support specific political views, you can choose a view, such as IND for the Indian view.  Not all map resources or styles support political view styles. See Political views for more information. 
+     */
+    PoliticalView?: CountryCode3OrEmpty;
   }
   export type MapStyle = string;
   export interface Place {
@@ -2295,6 +2320,10 @@ declare namespace Location {
      * The numerical portion of an address, such as a building number. 
      */
     AddressNumber?: String;
+    /**
+     * The Amazon Location categories that describe this Place. For more information about using categories, including a list of Amazon Location categories, see Categories and filtering, in the Amazon Location Service Developer Guide.
+     */
+    Categories?: PlaceCategoryList;
     /**
      * A country/region specified using ISO 3166 3-digit country/region code. For example, CAN.
      */
@@ -2333,18 +2362,24 @@ declare namespace Location {
      */
     SubRegion?: String;
     /**
-     * The time zone in which the Place is located. Returned only when using HERE as the selected partner.
+     * Categories from the data provider that describe the Place that are not mapped to any Amazon Location categories.
+     */
+    SupplementalCategories?: PlaceSupplementalCategoryList;
+    /**
+     * The time zone in which the Place is located. Returned only when using HERE or Grab as the selected partner.
      */
     TimeZone?: TimeZone;
     /**
-     * For addresses with multiple units, the unit identifier. Can include numbers and letters, for example 3B or Unit 123.  Returned only for a place index that uses Esri as a data provider. Is not returned for SearchPlaceIndexForPosition. 
+     * For addresses with multiple units, the unit identifier. Can include numbers and letters, for example 3B or Unit 123.  Returned only for a place index that uses Esri or Grab as a data provider. Is not returned for SearchPlaceIndexForPosition. 
      */
     UnitNumber?: String;
     /**
-     * For addresses with a UnitNumber, the type of unit. For example, Apartment.
+     * For addresses with a UnitNumber, the type of unit. For example, Apartment.  Returned only for a place index that uses Esri as a data provider. 
      */
     UnitType?: String;
   }
+  export type PlaceCategory = string;
+  export type PlaceCategoryList = PlaceCategory[];
   export interface PlaceGeometry {
     /**
      * A single point geometry specifies a location for a Place using WGS 84 coordinates:    x — Specifies the x coordinate or longitude.     y — Specifies the y coordinate or latitude.   
@@ -2353,6 +2388,8 @@ declare namespace Location {
   }
   export type PlaceId = string;
   export type PlaceIndexSearchResultLimit = number;
+  export type PlaceSupplementalCategory = string;
+  export type PlaceSupplementalCategoryList = PlaceSupplementalCategory[];
   export type Position = Double[];
   export type PositionFiltering = "TimeBased"|"DistanceBased"|"AccuracyBased"|string;
   export interface PositionalAccuracy {
@@ -2375,6 +2412,10 @@ declare namespace Location {
      * An identifier for the geofence. For example, ExampleGeofence-1.
      */
     GeofenceId: Id;
+    /**
+     * Specifies additional user-defined properties to store with the Geofence. An array of key-value pairs.
+     */
+    GeofenceProperties?: PropertyMap;
     /**
      * Contains the details to specify the position of the geofence. Can be either a polygon or a circle. Including both will return a validation error.  Each  geofence polygon can have a maximum of 1,000 vertices. 
      */
@@ -2444,9 +2485,17 @@ declare namespace Location {
   export type SearchForPositionResultList = SearchForPositionResult[];
   export interface SearchForSuggestionsResult {
     /**
-     * The unique identifier of the place. You can use this with the GetPlace operation to find the place again later.  For SearchPlaceIndexForSuggestions operations, the PlaceId is returned by place indexes that use Esri, Grab, or HERE as data providers. 
+     * The Amazon Location categories that describe the Place. For more information about using categories, including a list of Amazon Location categories, see Categories and filtering, in the Amazon Location Service Developer Guide.
+     */
+    Categories?: PlaceCategoryList;
+    /**
+     * The unique identifier of the Place. You can use this with the GetPlace operation to find the place again later, or to get full information for the Place. The GetPlace request must use the same PlaceIndex resource as the SearchPlaceIndexForSuggestions that generated the Place ID.  For SearchPlaceIndexForSuggestions operations, the PlaceId is returned by place indexes that use Esri, Grab, or HERE as data providers. 
      */
     PlaceId?: PlaceId;
+    /**
+     * Categories from the data provider that describe the Place that are not mapped to any Amazon Location categories.
+     */
+    SupplementalCategories?: PlaceSupplementalCategoryList;
     /**
      * The text of the place suggestion, typically formatted as an address string.
      */
@@ -2530,6 +2579,10 @@ declare namespace Location {
      */
     FilterBBox?: BoundingBox;
     /**
+     * A list of one or more Amazon Location categories to filter the returned places. If you include more than one category, the results will include results that match any of the categories listed. For more information about using categories, including a list of Amazon Location categories, see Categories and filtering, in the Amazon Location Service Developer Guide.
+     */
+    FilterCategories?: FilterPlaceCategoryList;
+    /**
      * An optional parameter that limits the search results by returning only suggestions within the provided list of countries.   Use the ISO 3166 3-digit country code. For example, Australia uses three upper-case characters: AUS.  
      */
     FilterCountries?: CountryCodeList;
@@ -2576,6 +2629,10 @@ declare namespace Location {
      */
     FilterBBox?: BoundingBox;
     /**
+     * The optional category filter specified in the request.
+     */
+    FilterCategories?: FilterPlaceCategoryList;
+    /**
      * Contains the optional country filter specified in the request.
      */
     FilterCountries?: CountryCodeList;
@@ -2601,6 +2658,10 @@ declare namespace Location {
      * An optional parameter that limits the search results by returning only places that are within the provided bounding box.  If provided, this parameter must contain a total of four consecutive numbers in two pairs. The first pair of numbers represents the X and Y coordinates (longitude and latitude, respectively) of the southwest corner of the bounding box; the second pair of numbers represents the X and Y coordinates (longitude and latitude, respectively) of the northeast corner of the bounding box. For example, [-12.7935, -37.4835, -12.0684, -36.9542] represents a bounding box where the southwest corner has longitude -12.7935 and latitude -37.4835, and the northeast corner has longitude -12.0684 and latitude -36.9542.   FilterBBox and BiasPosition are mutually exclusive. Specifying both options results in an error.  
      */
     FilterBBox?: BoundingBox;
+    /**
+     * A list of one or more Amazon Location categories to filter the returned places. If you include more than one category, the results will include results that match any of the categories listed. For more information about using categories, including a list of Amazon Location categories, see Categories and filtering, in the Amazon Location Service Developer Guide.
+     */
+    FilterCategories?: FilterPlaceCategoryList;
     /**
      * An optional parameter that limits the search results by returning only places that are in a specified list of countries.   Valid values include ISO 3166 3-digit country codes. For example, Australia uses three upper-case characters: AUS.  
      */
@@ -2646,6 +2707,10 @@ declare namespace Location {
      * Contains the coordinates for the optional bounding box specified in the request.
      */
     FilterBBox?: BoundingBox;
+    /**
+     * The optional category filter specified in the request.
+     */
+    FilterCategories?: FilterPlaceCategoryList;
     /**
      * Contains the optional country filter specified in the request.
      */
@@ -2843,6 +2908,10 @@ declare namespace Location {
   }
   export interface UpdateMapRequest {
     /**
+     * Updates the parts of the map configuration that can be updated, including the political view.
+     */
+    ConfigurationUpdate?: MapConfigurationUpdate;
+    /**
      * Updates the description for the map resource.
      */
     Description?: ResourceDescription;
@@ -2891,7 +2960,7 @@ declare namespace Location {
     /**
      * The Amazon Resource Name (ARN) of the upated place index resource. Used to specify a resource across Amazon Web Services.   Format example: arn:aws:geo:region:account-id:place- index/ExamplePlaceIndex   
      */
-    IndexArn: Arn;
+    IndexArn: GeoArn;
     /**
      * The name of the updated place index resource.
      */
@@ -2919,7 +2988,7 @@ declare namespace Location {
     /**
      * The Amazon Resource Name (ARN) of the updated route calculator resource. Used to specify a resource across AWS.   Format example: arn:aws:geo:region:account-id:route- calculator/ExampleCalculator   
      */
-    CalculatorArn: Arn;
+    CalculatorArn: GeoArn;
     /**
      * The name of the updated route calculator resource.
      */

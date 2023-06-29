@@ -100,6 +100,14 @@ declare class EMRcontainers extends Service {
    */
   describeVirtualCluster(callback?: (err: AWSError, data: EMRcontainers.Types.DescribeVirtualClusterResponse) => void): Request<EMRcontainers.Types.DescribeVirtualClusterResponse, AWSError>;
   /**
+   * Generate a session token to connect to a managed endpoint. 
+   */
+  getManagedEndpointSessionCredentials(params: EMRcontainers.Types.GetManagedEndpointSessionCredentialsRequest, callback?: (err: AWSError, data: EMRcontainers.Types.GetManagedEndpointSessionCredentialsResponse) => void): Request<EMRcontainers.Types.GetManagedEndpointSessionCredentialsResponse, AWSError>;
+  /**
+   * Generate a session token to connect to a managed endpoint. 
+   */
+  getManagedEndpointSessionCredentials(callback?: (err: AWSError, data: EMRcontainers.Types.GetManagedEndpointSessionCredentialsResponse) => void): Request<EMRcontainers.Types.GetManagedEndpointSessionCredentialsResponse, AWSError>;
+  /**
    * Lists job runs based on a set of parameters. A job run is a unit of work, such as a Spark jar, PySpark script, or SparkSQL query, that you submit to Amazon EMR on EKS.
    */
   listJobRuns(params: EMRcontainers.Types.ListJobRunsRequest, callback?: (err: AWSError, data: EMRcontainers.Types.ListJobRunsResponse) => void): Request<EMRcontainers.Types.ListJobRunsResponse, AWSError>;
@@ -239,6 +247,16 @@ declare namespace EMRcontainers {
      * The information about the Amazon EKS cluster.
      */
     eksInfo?: EksInfo;
+  }
+  export interface ContainerLogRotationConfiguration {
+    /**
+     * The file size at which to rotate logs. Minimum of 2KB, Maximum of 2GB.
+     */
+    rotationSize: RotationSize;
+    /**
+     * The number of files to keep in container after rotation.
+     */
+    maxFilesToKeep: MaxFilesToKeep;
   }
   export interface ContainerProvider {
     /**
@@ -382,6 +400,13 @@ declare namespace EMRcontainers {
      * This output contains the ARN of virtual cluster.
      */
     arn?: VirtualClusterArn;
+  }
+  export type CredentialType = string;
+  export interface Credentials {
+    /**
+     * The actual session token being returned.
+     */
+    token?: Token;
   }
   export type _Date = Date;
   export interface DeleteJobTemplateRequest {
@@ -574,6 +599,50 @@ declare namespace EMRcontainers {
   export type EntryPointArguments = EntryPointArgument[];
   export type EntryPointPath = string;
   export type FailureReason = "INTERNAL_ERROR"|"USER_ERROR"|"VALIDATION_ERROR"|"CLUSTER_UNAVAILABLE"|string;
+  export interface GetManagedEndpointSessionCredentialsRequest {
+    /**
+     * The ARN of the managed endpoint for which the request is submitted. 
+     */
+    endpointIdentifier: String2048;
+    /**
+     * The ARN of the Virtual Cluster which the Managed Endpoint belongs to. 
+     */
+    virtualClusterIdentifier: String2048;
+    /**
+     * The IAM Execution Role ARN that will be used by the job run. 
+     */
+    executionRoleArn: IAMRoleArn;
+    /**
+     * Type of the token requested. Currently supported and default value of this field is “TOKEN.”
+     */
+    credentialType: CredentialType;
+    /**
+     * Duration in seconds for which the session token is valid. The default duration is 15 minutes and the maximum is 12 hours.
+     */
+    durationInSeconds?: JavaInteger;
+    /**
+     * String identifier used to separate sections of the execution logs uploaded to S3.
+     */
+    logContext?: LogContext;
+    /**
+     * The client idempotency token of the job run request.
+     */
+    clientToken?: ClientToken;
+  }
+  export interface GetManagedEndpointSessionCredentialsResponse {
+    /**
+     * The identifier of the session token returned.
+     */
+    id?: ResourceIdString;
+    /**
+     * The structure containing the session credentials.
+     */
+    credentials?: Credentials;
+    /**
+     * The date and time when the session token will expire.
+     */
+    expiresAt?: _Date;
+  }
   export type IAMRoleArn = string;
   export type JavaInteger = number;
   export type JobArn = string;
@@ -889,7 +958,9 @@ declare namespace EMRcontainers {
      */
     nextToken?: NextToken;
   }
+  export type LogContext = string;
   export type LogGroupName = string;
+  export type MaxFilesToKeep = number;
   export interface MonitoringConfiguration {
     /**
      * Monitoring configurations for the persistent application UI. 
@@ -903,6 +974,10 @@ declare namespace EMRcontainers {
      * Amazon S3 configuration for monitoring log publishing.
      */
     s3MonitoringConfiguration?: S3MonitoringConfiguration;
+    /**
+     * Enable or disable container log rotation.
+     */
+    containerLogRotationConfiguration?: ContainerLogRotationConfiguration;
   }
   export type NextToken = string;
   export interface ParametricCloudWatchMonitoringConfiguration {
@@ -964,6 +1039,7 @@ declare namespace EMRcontainers {
      */
     currentAttemptCount: JavaInteger;
   }
+  export type RotationSize = string;
   export type RsiArn = string;
   export interface S3MonitoringConfiguration {
     /**
@@ -1097,6 +1173,7 @@ declare namespace EMRcontainers {
   export type TemplateParameterDataType = "NUMBER"|"STRING"|string;
   export type TemplateParameterInputMap = {[key: string]: String1024};
   export type TemplateParameterName = string;
+  export type Token = string;
   export interface UntagResourceRequest {
     /**
      * The ARN of resources.

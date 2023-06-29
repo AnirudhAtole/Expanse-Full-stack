@@ -1302,6 +1302,10 @@ declare namespace IoTWireless {
     Description?: Description;
     Tags?: TagList;
     ClientRequestToken?: ClientRequestToken;
+    /**
+     * Multicast Group resources to add to the network analyzer configruation. Provide the MulticastGroupId of the resource to add in the input array.
+     */
+    MulticastGroups?: NetworkAnalyzerMulticastGroupList;
   }
   export interface CreateNetworkAnalyzerConfigurationResponse {
     /**
@@ -1855,6 +1859,7 @@ declare namespace IoTWireless {
      */
     DownlinkFrequency: DownlinkFrequency;
   }
+  export type GatewayMaxEirp = number;
   export type GenAppKey = string;
   export type GeoJsonPayload = Buffer|Uint8Array|Blob|string;
   export type GeranCid = number;
@@ -2003,6 +2008,10 @@ declare namespace IoTWireless {
      */
     Arn?: NetworkAnalyzerConfigurationArn;
     Name?: NetworkAnalyzerConfigurationName;
+    /**
+     * List of multicast group resources that have been added to the network analyzer configuration.
+     */
+    MulticastGroups?: NetworkAnalyzerMulticastGroupList;
   }
   export interface GetPartnerAccountRequest {
     /**
@@ -2334,7 +2343,7 @@ declare namespace IoTWireless {
      */
     WirelessDeviceId?: WirelessDeviceId;
     /**
-     * The date and time when the most recent uplink was received.
+     * The date and time when the most recent uplink was received.  This value is only valid for 3 months. 
      */
     LastUplinkReceivedAt?: ISODateTimeString;
     /**
@@ -2426,7 +2435,7 @@ declare namespace IoTWireless {
      */
     WirelessGatewayId?: WirelessGatewayId;
     /**
-     * The date and time when the most recent uplink was received.
+     * The date and time when the most recent uplink was received.  This value is only valid for 3 months. 
      */
     LastUplinkReceivedAt?: ISODateTimeString;
     /**
@@ -2474,7 +2483,7 @@ declare namespace IoTWireless {
      */
     WirelessGatewayTaskDefinitionId?: WirelessGatewayTaskDefinitionId;
     /**
-     * The date and time when the most recent uplink was received.
+     * The date and time when the most recent uplink was received.  This value is only valid for 3 months. 
      */
     LastUplinkReceivedAt?: ISODateTimeString;
     /**
@@ -3176,6 +3185,10 @@ declare namespace IoTWireless {
      * Beaconing object information, which consists of the data rate and frequency parameters.
      */
     Beaconing?: Beaconing;
+    /**
+     * The MaxEIRP value.
+     */
+    MaxEirp?: GatewayMaxEirp;
   }
   export interface LoRaWANGatewayCurrentVersion {
     /**
@@ -3326,6 +3339,10 @@ declare namespace IoTWireless {
     DlFreq?: DlFreq;
     SessionStartTime?: SessionStartTimeTimestamp;
     SessionTimeout?: SessionTimeout;
+    /**
+     * The PingSlotPeriod value.
+     */
+    PingSlotPeriod?: PingSlotPeriod;
   }
   export interface LoRaWANSendDataToDevice {
     FPort?: FPort;
@@ -3347,6 +3364,14 @@ declare namespace IoTWireless {
      * The DrMax value.
      */
     DrMax?: DrMaxBox;
+    /**
+     * The PRAllowed value that describes whether passive roaming is allowed.
+     */
+    PrAllowed?: PrAllowed;
+    /**
+     * The RAAllowed value that describes whether roaming activation is allowed.
+     */
+    RaAllowed?: RaAllowed;
   }
   export interface LoRaWANStartFuotaTask {
     StartTime?: StartTime;
@@ -3503,6 +3528,7 @@ declare namespace IoTWireless {
   export type MinGwDiversity = number;
   export type Model = string;
   export type MulticastDeviceStatus = string;
+  export type MulticastFrameInfo = "ENABLED"|"DISABLED"|string;
   export interface MulticastGroup {
     Id?: MulticastGroupId;
     Arn?: MulticastGroupArn;
@@ -3534,6 +3560,7 @@ declare namespace IoTWireless {
     Arn?: NetworkAnalyzerConfigurationArn;
     Name?: NetworkAnalyzerConfigurationName;
   }
+  export type NetworkAnalyzerMulticastGroupList = MulticastGroupId[];
   export type NetworkId = number;
   export type NextToken = string;
   export type NumberOfDevicesInGroup = number;
@@ -4226,6 +4253,7 @@ declare namespace IoTWireless {
   export interface TraceContent {
     WirelessDeviceFrameInfo?: WirelessDeviceFrameInfo;
     LogLevel?: LogLevel;
+    MulticastFrameInfo?: MulticastFrameInfo;
   }
   export type TransmissionInterval = number;
   export type TransmitMode = number;
@@ -4365,6 +4393,14 @@ declare namespace IoTWireless {
      */
     WirelessGatewaysToRemove?: WirelessGatewayList;
     Description?: Description;
+    /**
+     * Multicast group resources to add to the network analyzer configuration. Provide the MulticastGroupId of the resource to add in the input array.
+     */
+    MulticastGroupsToAdd?: NetworkAnalyzerMulticastGroupList;
+    /**
+     * Multicast group resources to remove from the network analyzer configuration. Provide the MulticastGroupId of the resource to remove in the input array.
+     */
+    MulticastGroupsToRemove?: NetworkAnalyzerMulticastGroupList;
   }
   export interface UpdateNetworkAnalyzerConfigurationResponse {
   }
@@ -4508,6 +4544,10 @@ declare namespace IoTWireless {
     Description?: Description;
     JoinEuiFilters?: JoinEuiFilters;
     NetIdFilters?: NetIdFilters;
+    /**
+     * The MaxEIRP value.
+     */
+    MaxEirp?: GatewayMaxEirp;
   }
   export interface UpdateWirelessGatewayResponse {
   }
@@ -4712,7 +4752,7 @@ declare namespace IoTWireless {
      */
     DestinationName?: DestinationName;
     /**
-     * The date and time when the most recent uplink was received.
+     * The date and time when the most recent uplink was received.  Theis value is only valid for 3 months. 
      */
     LastUplinkReceivedAt?: ISODateTimeString;
     /**
@@ -4772,7 +4812,7 @@ declare namespace IoTWireless {
      */
     LoRaWAN?: LoRaWANGateway;
     /**
-     * The date and time when the most recent uplink was received.
+     * The date and time when the most recent uplink was received.  This value is only valid for 3 months. 
      */
     LastUplinkReceivedAt?: ISODateTimeString;
   }

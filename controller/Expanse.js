@@ -83,13 +83,14 @@ exports.downloadExpanse = async(req,res)=>{
         });
         const stringifiedData = JSON.stringify(expanses);
     
-        const fileName = `expanse.txt${req.user.dataValues.userId}&${new Date()}`;
+        const fileName = `expanse${req.user._id.toString()}&${new Date()}.txt`;
     
         const fileUrl = await S3services.uploadToS3(stringifiedData,fileName);
+        console.log(fileUrl)
     
         await DownloadUrls.create({
             url : fileUrl,
-            UserUserId : req.user.dataValues.userId
+            UserUserId : req.user._id.toString()
         });
     
         res.status(200).json({fileUrl:fileUrl , success:true});
@@ -116,41 +117,11 @@ exports.getDownloadUrls = async(req,res) =>{
 
 exports.getTodayExpanse = async(req,res) =>{
     try{
-        const userId = req.user.userId
+        const userId = req.user._id.toString()
+        const result = await Expanse.find({UserUserId:userId}).select('createdAt amount category description -_id')
         // const result = await sequelize.query(`Select time(createdAt) as time ,category ,description as description , amount 
         // from expanse.expanselists
         // Where date(createdAt) = curdate() and UserUserId = ${userId};`,{ type: QueryTypes.SELECT });
-        res.status(200).json({success:true , result:result});
-    }
-    catch(err){
-        console.log(err);
-        res.status(400).json({success:false});
-    }
-    
-}
-
-exports.getDailyExpanse = async(req,res) =>{
-    try{
-        const userId = req.user.userId;
-        const result = await sequelize.query(`Select date(createdAt) as date , sum(amount) as amount from expanse.expanselists
-        Where month(createdAt) = month(curdate())and year(createdAt)= year(curdate()) and UserUserId = ${userId}
-        group by date(createdAt)`,{ type: QueryTypes.SELECT });
-        res.status(200).json({success:true , result:result});
-    }
-    catch(err){
-        console.log(err);
-        res.status(400).json({success : false});
-    }
-    
-}
-
-exports.getMonthlyExpanse = async(req,res) =>{
-    try{
-        const userId = req.user.userId
-        const result = await sequelize.query(`Select  month(createdAt) as month , sum(amount) as amount , year(createdAt) as year
-        from expanse.expanselists
-        Where UserUserId = ${userId}
-        group by month(createdAt) , UserUserId , year(createdAt);`,{ type: QueryTypes.SELECT })
         res.status(200).json({success:true , result:result});
     }
     catch(err){

@@ -1,4 +1,4 @@
-const sib = require('sib-api-v3-sdk');
+const sib = require('@getbrevo/brevo');
 
 const ForgotPasswordRequest = require('../models/ForgotPassRequests');
 const User = require('../models/User')
@@ -24,7 +24,7 @@ exports.forgotPassword = async(req,res) =>{
                 //sending mail
                 const client = sib.ApiClient.instance;
                 const apiKey = client.authentications['api-key']
-                apiKey.apiKey = process.env.SEND_IN_BLUE;
+                apiKey.apiKey = process.env.SEND_IN_BLUE
 
                 const transEmailApi = new sib.TransactionalEmailsApi();
 
@@ -149,7 +149,6 @@ exports.resetPassword = async (req,res) => {
 }
 
 exports.updatePassword = async(req,res) =>{
-    const t = await sequelize.transaction();
     try{
         const newPassword = req.body.password;
         const resetId = req.params.uuid;

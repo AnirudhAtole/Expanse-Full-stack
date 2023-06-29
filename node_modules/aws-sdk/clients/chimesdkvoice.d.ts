@@ -872,6 +872,7 @@ declare namespace ChimeSDKVoice {
      */
     IsCaller?: Boolean;
   }
+  export type CallLegType = "Caller"|"Callee"|string;
   export type CallingName = string;
   export type CallingNameStatus = "Unassigned"|"UpdateInProgress"|"UpdateSucceeded"|"UpdateFailed"|string;
   export type CallingRegion = string;
@@ -1011,6 +1012,10 @@ declare namespace ChimeSDKVoice {
      * List of endpoints (Lambda ARNs) specified for the SIP media application.
      */
     Endpoints: SipMediaApplicationEndpointList;
+    /**
+     * The tags assigned to the SIP media application.
+     */
+    Tags?: TagList;
   }
   export interface CreateSipMediaApplicationResponse {
     /**
@@ -1075,6 +1080,10 @@ declare namespace ChimeSDKVoice {
      * Enables or disables encryption for the Voice Connector.
      */
     RequireEncryption: Boolean;
+    /**
+     * The tags assigned to the Voice Connector.
+     */
+    Tags?: TagList;
   }
   export interface CreateVoiceConnectorResponse {
     /**
@@ -1286,7 +1295,7 @@ declare namespace ChimeSDKVoice {
   export type GeoMatchLevel = "Country"|"AreaCode"|string;
   export interface GeoMatchParams {
     /**
-     * The country. 
+     * The country.
      */
     Country: Country;
     /**
@@ -1826,7 +1835,7 @@ declare namespace ChimeSDKVoice {
   }
   export interface LoggingConfiguration {
     /**
-     * Boolean that enables sending SIP message logs to Amazon CloudWatch logs.
+     * Boolean that enables sending SIP message logs to Amazon CloudWatch.
      */
     EnableSIPLogs?: Boolean;
     /**
@@ -2388,7 +2397,7 @@ declare namespace ChimeSDKVoice {
      */
     Name?: SipMediaApplicationName;
     /**
-     * List of endpoints for SIP media application. Currently, only one endpoint per SIP media application is permitted.
+     * List of endpoints for a SIP media application. Currently, only one endpoint per SIP media application is permitted.
      */
     Endpoints?: SipMediaApplicationEndpointList;
     /**
@@ -2399,6 +2408,10 @@ declare namespace ChimeSDKVoice {
      * The time at which the SIP media application was updated.
      */
     UpdatedTimestamp?: Iso8601Timestamp;
+    /**
+     * The ARN of the SIP media application.
+     */
+    SipMediaApplicationArn?: NonEmptyString;
   }
   export interface SipMediaApplicationAlexaSkillConfiguration {
     /**
@@ -2555,6 +2568,10 @@ declare namespace ChimeSDKVoice {
      * The unique identifier for the client request. Use a different token for different speaker search tasks.
      */
     ClientRequestToken?: ClientRequestId;
+    /**
+     * Specifies which call leg to stream for speaker search.
+     */
+    CallLeg?: CallLegType;
   }
   export interface StartSpeakerSearchTaskResponse {
     /**
